@@ -34,7 +34,8 @@ include "../koneksi.php";
 	<link rel="stylesheet" href="../css/awesome-bootstrap-checkbox.css">
 	<!-- Admin Stye -->
 	<link rel="stylesheet" href="../css/style.css">
-
+	<script type="text/javascript" src='../dist/vendor.js'></script>
+	<script type="text/javascript" src='../dist/app.js'></script>
 	<!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -43,6 +44,8 @@ include "../koneksi.php";
 </head>
 
 <body>
+
+        <div class="" id="myDivId"></div>
 	<div class="brand clearfix" >
 	<?php
 			if(@$_SESSION['karyawan'])
@@ -164,21 +167,22 @@ include "../koneksi.php";
 	window.onload = function(){
     
 		// Line chart from swirlData for dashReport
-		var ctx = document.getElementById("dashReport").getContext("2d");
+		// var ctx = document.getElementById("dashReport").getContext("2d");
+		/*
 		window.myLine = new Chart(ctx).Line(swirlData, {
 			responsive: true,
 			scaleShowVerticalLines: false,
 			scaleBeginAtZero : true,
 			multiTooltipTemplate: "<%if (label){%><%=label%>: <%}%><%= value %>",
-		}); 
+		}); */
 		
 		// Pie Chart from doughutData
-		var doctx = document.getElementById("chart-area3").getContext("2d");
-		window.myDoughnut = new Chart(doctx).Pie(doughnutData, {responsive : true});
+		// var doctx = document.getElementById("chart-area3").getContext("2d");
+		// window.myDoughnut = new Chart(doctx).Pie(doughnutData, {responsive : true});
 
 		// Dougnut Chart from doughnutData
-		var doctx = document.getElementById("chart-area4").getContext("2d");
-		window.myDoughnut = new Chart(doctx).Doughnut(doughnutData, {responsive : true});
+		// var doctx = document.getElementById("chart-area4").getContext("2d");
+		// window.myDoughnut = new Chart(doctx).Doughnut(doughnutData, {responsive : true});
 
 	}
 	</script>
