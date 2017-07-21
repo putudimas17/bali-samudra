@@ -1,0 +1,7 @@
+{
+	"mode_option": {
+		"debug": true
+	},
+	"DEBUG_URL": "http://localhost/aditya/dist/",
+	"DIST_URL": "http://localhost/aditya/dist/"
+}
