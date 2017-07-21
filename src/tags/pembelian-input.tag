@@ -2,141 +2,159 @@
 	<div class="header">
 		<h3>Transaksi Pembelian</h3>
 	</div>
-	<div class="panel-heading">
-		<p><a href="#" class="btn btn-success" onclick="{back.bind(this)}">Kembali</a>
-		</p>
-	</div>
 	<div class="form" >
 		<div>
 			<form class="row">
 				<div class="col-md-12">
-					<div class="form-group">
-						<label class="control-label control-label-left col-sm-3" for="field1">No Pembelian</label>
-						<div class="controls col-sm-9">
-							
-							<input id="field1" type="text" class="form-control k-textbox" value="{tb_pembelian.INV}" data-role="text" data-parsley-errors-container="#errId1">
-							<span id="errId1" class="error"></span>
+					<div class="row">
+						<div class="form-group">
+							<label class="control-label control-label-left col-sm-3" for="field1">No Pembelian</label>
+							<div class="controls col-sm-9">
+								<input id="field1" type="text" class="form-control k-textbox" value="{tb_pembelian.INV}" data-role="text" data-parsley-errors-container="#errId1" readonly>
+								<span id="errId1" class="error"></span>
+							</div>
 						</div>
-						
-					</div>
-					<div class="form-group">
-						<label class="control-label control-label-left col-sm-3" for="field1">TANGGAL</label>
-						<div class="controls col-sm-9">
-							
-							<input id="field1" type="text" class="form-control k-textbox" value="{translateToDate(tb_pembelian.tgl)}" data-role="text" data-parsley-errors-container="#errId1">
-							<span id="errId1" class="error"></span>
+						<div class="form-group">
+							<label class="control-label control-label-left col-sm-3" for="field1">Tanggal</label>
+							<div class="controls col-sm-9">
+								<input id="field1" type="text" class="form-control k-textbox" value="{translateToDate(tb_pembelian.tgl)}" data-role="text" data-parsley-errors-container="#errId1" readonly>
+								<span id="errId1" class="error"></span>
+							</div>
 						</div>
-						
-					</div>
-					<div class="form-group">
-						<label class="control-label control-label-left col-sm-3" for="field2">Supplier</label>
-						<div class="controls col-sm-9">
-							
-							<select id="field2" class="form-control" data-role="select" data-parsley-errors-container="#errId2">
-								<option value=""></option>
-								<option value="{item.id}" each="{item,index in tb_supplier}">{item.Nama}</option>
-							</select>
-							<span id="errId2" class="error"></span></div>
-							
-						</div>
+						<div class="form-group">
+							<label class="control-label control-label-left col-sm-3" for="field2">Supplier</label>
+							<div class="controls col-sm-9">
+								<select id="field2" class="form-control" data-role="select" data-parsley-errors-container="#errId2">
+									<option value=""></option>
+									<option value="{item.id}" each="{item,index in tb_supplier}">{item.Nama}</option>
+								</select>
+								<span id="errId2" class="error"></span>
+							</div>
+						</div>						
 					</div>
 				</div>
-			</div>
+			</form><br>
 			<form  id="form2345">
 				<div class="row">
 					<div class="col-md-2">
 						<div class="form-group">
 							<label class="control-label" for="field1">Kode Barang</label>
 							<div class="controls">
-								<input id="inp_kode_barang" ref="kode_brg" value="{inputBarang.kode_brg}" type="text" class="form-control k-textbox" data-role="text" data-parsley-errors-container="#errId1"><span id="errId1" class="error"></span></div>
+								<input id="inp_kode_barang" ref="kode_brg" value="{inputBarang.kode_brg}" type="text" class="form-control k-textbox" data-role="text" data-parsley-errors-container="#errId1"><span id="errId1" class="error"></span>
 							</div>
 						</div>
-						<div class="col-md-2">
+					</div>				
+					<div class="col-md-3">
+						<div class="form-group">
+							<label class="control-label" for="field1">Nama Barang</label>
+							<div class="controls">
+								<input id="field1" ref="nama_brg" value="{inputBarang.nama_brg}"type="text" class="form-control k-textbox" data-role="text" data-parsley-errors-container="#errId1"><span id="errId1" class="error"></span>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-2">
+						<div class="form-group">
+							<label class="control-label" for="field1">Harga</label>
+							<div class="controls">
+								<input id="field1" ref="harga" value="{inputBarang.harga}" type="text" class="form-control k-textbox" data-role="text" data-parsley-errors-container="#errId1"><span id="errId1" class="error"></span>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-2">
+						<div class="form-group">
+							<label class="control-label" for="field1">Jumlah</label>
+							<div class="controls">
+								<input id="field1" ref="jumlah" value="{inputBarang.jumlah}" type="number" class="form-control k-textbox" data-role="text" data-parsley-errors-container="#errId1"><span id="errId1" class="error"></span>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-2">
+						<div class="form-group">
+							<label class="control-label" for="field1"></label>
+							<div class="controls">
+								<button type="submit" class="btn btn-primary">Tambah</button>
+							</div>
+						</div>								
+					</div>
+					<div class="col-md-12">
+						<div class="row">
+							<div class="col-md-12">
+								<div class="table-responsive">
+									<table id="zctb" class="table table-striped table-bordered table-hover">
+										<thead>
+											<tr>
+												<th>No</th>
+												<th>Kode Barang</th>
+												<th>Nama Barang</th>
+												<th>Harga</th>
+												<th>Jumlah</th>
+												<th>Sub Total</th>
+												<th>Aksi</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr each="{item, index in tb_detail_pembelian}">
+												<td>
+													{index+1}
+												</td>
+												<td>
+													{item.id_barang}
+												</td>
+												<td>
+													{item.nama_brg}
+												</td>
+												<td>
+													{item.harga}
+												</td>
+												<td>
+													{item.jumlah}
+												</td>
+												<td>
+													{item.total}
+												</td>
+												<td align="center">
+													<a href="penjualan/penjualan_edit.php?id=<?php echo $r['id']; ?>" data-target="#EditDataPenjualan" data-toggle="modal" data-backdrop="static" class="fa fa-edit"-></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+													<a href="#" onclick="{handleDelete.bind(this,index)}" class="hapus_modal fa fa-trash-o"></a>
+												</td>
+											</tr>
+										</tbody>
+									</table>												
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</form>
+			<form>
+				<div class="row">
+					<div class="col-md-8"></div>
+					<div class="col-md-4">
+						<div class="row">
 							<div class="form-group">
-								<label class="control-label" for="field1">Nama Barang</label>
-								<div class="controls">
-									<input id="field1" ref="nama_brg" value="{inputBarang.nama_brg}"type="text" class="form-control k-textbox" data-role="text" data-parsley-errors-container="#errId1"><span id="errId1" class="error"></span></div>
+								<label class="control-label control-label-left col-sm-4">Grand Total</label>
+								<div class="controls col-sm-8">
+									<input id="txtGrandTotal" type="text" class="form-control k-textbox text-right" readonly>
 								</div>
-							</div>
-							<div class="col-md-2">
-								<div class="form-group">
-									<label class="control-label" for="field1">Harga</label>
-									<div class="controls">
-										<input id="field1" ref="harga" value="{inputBarang.harga}" type="text" class="form-control k-textbox" data-role="text" data-parsley-errors-container="#errId1"><span id="errId1" class="error"></span></div>
-									</div>
-								</div>
-								<div class="col-md-2">
-									<div class="form-group">
-										<label class="control-label" for="field1">Jumlah</label>
-										<div class="controls">
-											<input id="field1" ref="jumlah" value="{inputBarang.jumlah}" type="number" class="form-control k-textbox" data-role="text" data-parsley-errors-container="#errId1"><span id="errId1" class="error"></span></div>
-										</div>
-									</div>
-									<div class="col-md-2">
-										<button type="submit" class="btn btn-primary">Tambah</button>
-									</div>
-								</div>
-							</div>
-							<div>
-								<div class="row">
-									<div class="col-md-12">
-										<div class="wr-table">
-											<div class="panel panel-default">
-												
-												<div class="panel-body">
-													<table id="zctb" class="table table-striped table-bordered table-hover">
-														<thead>
-															<tr>
-																<th>No</th>
-																<th>Kode Barang</th>
-																<th>Nama Barang</th>
-																
-																<th>Harga</th>
-																<th>Jumlah</th>
-																<th>Sub Total</th>
-																<th>Aksi</th>
-															</tr>
-														</thead>
-														<tbody>
-															<tr each="{item, index in tb_detail_pembelian}">
-																<td>
-																	{index+1}
-																</td>
-																<td>
-																	{item.id_barang}
-																</td>
-																<td>
-																	{item.nama_brg}
-																</td>
-																<td>
-																	{item.harga}
-																</td>
-																<td>
-																	{item.jumlah}
-																</td>
-																<td>
-																	{item.total}
-																</td>
-																<td align="center">
-																	<a href="penjualan/penjualan_edit.php?id=<?php echo $r['id']; ?>" data-target="#EditDataPenjualan" data-toggle="modal" data-backdrop="static" class="fa fa-edit"-></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-																	<a href="#" onclick="{handleDelete.bind(this,index)}" class="hapus_modal fa fa-trash-o" onclick="confirm_modal('penjualan/penjualan_hapus.php?&id=<?php echo  $r['id']; ?>');"></a>
-																</td>
-															</tr>
-														</tbody>
-														
-													</table>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-				</form>
-			</div>
+							</div>								
+						</div>				
+					</div>
+				</div>
+			</form><hr>
+			<form>
+				<div class="row">
+					<div class="col-md-6 text-left">
+						<a href="#" class="btn btn-primary" onclick="{back.bind(this)}"><i class="fa fa-floppy-o"></i> Simpan</a>
+						<a href="#" class="btn btn-success" onclick="{back.bind(this)}"><i class="fa fa-reply"></i> Kembali</a>
+					</div>	
+					<div class="col-md-6 text-right">
+						<a href="#" class="btn btn-default" onclick="{back.bind(this)}"><i class="fa fa-trash-o"></i> Hapus</a>
+					</div>					
+				</div>			
+			</form>			
 		</div>
 	</div>
 	<script>
+		// u can require at this 
 		let debounce = require('lodash/debounce.js');
 		require('../scss/pembelian.scss');	
 		let momentjs = require('moment');
