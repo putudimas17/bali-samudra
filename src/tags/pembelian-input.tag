@@ -133,7 +133,7 @@
 							<div class="form-group">
 								<label class="control-label control-label-left col-sm-4">Grand Total</label>
 								<div class="controls col-sm-8">
-									<input id="txtGrandTotal" type="text" class="form-control k-textbox text-right" readonly>
+									<input id="txtGrandTotal" ref="text-total" type="text" class="form-control k-textbox text-right" readonly>
 								</div>
 							</div>								
 						</div>				
@@ -164,6 +164,14 @@
 			supplierRequest,
 			getRestApiService
 		} = require('../helpers/httpServices.js');
+		let reqSaveTotal = function(callback){
+			var formData = new FormData();
+			formData.append('empty','');
+			getRestApiService(formData,pembelianRequest.saveTotal,function(data){
+				data = JSON.parse(data);
+				callback(data);
+			});
+		}
 		let reqSaveDetail = function(callback){
 			var formData = new FormData();
 			formData.append('id_pembelian',vm.tb_pembelian.id_pembelian);
@@ -254,10 +262,17 @@
 			e.preventUpdate = true;
 			reqSaveDetail(function(data){
 				vm.tb_detail_pembelian = data.tb_detail_pembelian;
+				var kk = 0;
+				for(var a=0;a<vm.tb_detail_pembelian.length;a++){
+					kk += parseInt(vm.tb_detail_pembelian[a].total);
+				}
+				console.log(kk);
+				$('[ref=text-total]').val(kk);
 				vm.setState(function(){
 					vm.inputBarang = new newInputBarang();
 					$('[ref=kode_brg]').focus();
-					vm.setState(function(){})
+					vm.setState(function(){
+					})
 				})
 			})
 		}
@@ -268,9 +283,16 @@
 			})
 		}
 		this.handleChange = function(whatKey,e){
-			
 			switch(whatKey){
+				case 'jumlah':
+					vm.inputBarang[whatKey] = e.target.value;
+					vm.setState(function(){
+						console.log(vm.inputBarang);
+					})
+					
+				break;
 				default:
+					alert(e.target.value);
 					vm.inputBarang[whatKey] = e.target.value;
 					vm.setState(function(){
 						console.log(vm.inputBarang);
@@ -290,7 +312,7 @@
 					vm.handleSaveItem(e);
 				}
 			})
-			$('[ref=jumlah]').on('change',function(e){
+			$('[ref=jumlah]').on('change keydown',function(e){
 				vm.handleChange($(this).attr('ref'),e);
 			})
 			vm.inputBarang = new newInputBarang();

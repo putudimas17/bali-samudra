@@ -2,6 +2,11 @@
 import { staticVariable } from './configService.js';
 
 export const pembelianRequest = {
+    saveTotal: {
+        url : '/pembelian.php?action=total',
+        method : 'POST',
+        param : ''
+    },
     newOrder : {
         url : '/pembelian.php?action=new',
         method : 'POST',
