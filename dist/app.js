@@ -166,11 +166,9 @@ $(document).ready(function () {
 window.runningPage = function (route, data) {
     switch (route) {
         case 'penjualan':
-            __webpack_require__.e/* require.ensure */(1).then((function () {
-                __webpack_require__(7);
-                _riot2.default.mount('penjualan', {
-                    data: data
-                });
+            __webpack_require__.e/* require.ensure */(1/* empty */).then((function () {
+                var pp = __webpack_require__(149);
+                pp.init(data);
             }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
             break;
         case 'pembelian':

@@ -1,12 +1,12 @@
-<table-pembelian>
+<penjualan-list>
 	<div class="container-fluid">
 		<!-- row -->
 		<div class="row">
 			<!--col-->
 			<div class="col-md-12">
-				<h2 class="page-title">Data Pembelian</h2>
+				<h2 class="page-title">Data Penjualan</h2>
 				<div class="panel-heading">
-					<p><a href="#" class="btn btn-success" onclick="{handleTambahBeli.bind(this)}">Tambah Transaksi Pembelian</a>
+					<p><a href="#" class="btn btn-success" onclick="{handleTambahJual.bind(this)}">Tambah Transaksi Penjualan</a>
 					</p>
 				</div>
 				<div class="form">
@@ -24,13 +24,12 @@
 									<th>INV </th>
 									<th>Tanggal </th>
 									<th>Total</th>
-									<th>Suplier</th>
 									<th>Pegawai</th>
 									<th>View Detail</th>
 								</tr>
 							</thead>
 							<tbody>
-								<tr each="{item,index in tb_pembelian}">
+								<tr each="{item,index in tb_penjualan}">
 									
 									<td>
 										{index+1}
@@ -45,13 +44,10 @@
 										{item.total}
 									</td>
 									<td>
-										{item.nama_suplier}
-									</td>
-									<td>
 										{item.nama}
 									</td>
 									<td align="center">
-										<a href="#" data-target="#EditDataPembelian" data-toggle="modal" data-backdrop="static" onclick="{handleViewDetail.bind(this,item.id_pembelian)}" class="fa fa-edit"-></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+										<a href="#" data-target="#EditDataPembelian" data-toggle="modal" data-backdrop="static" onclick="{handleViewDetail.bind(this,item.id_penjualan)}" class="fa fa-edit"-></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 										<!--
 										<a href="#" class="hapus_modal fa fa-trash-o" onclick="confirm_modal('pembelian/pembelian_hapus.php?&id=<?php echo  $r['id']; ?>');"></a>
 										-->
@@ -155,43 +151,45 @@
 		require('../scss/pembelian.scss');	
 		let momentjs = require('moment');
 		let {
-			pembelianRequest,
+			penjualanRequest,
 			barangRequest,
 			supplierRequest,
 			getRestApiService
 		} = require('../helpers/httpServices.js');
 		let riot = require('riot');
-		let req_tbPembelian = function(callback){
+		let req_tbPenjualan = function(callback){
 			var formData = new FormData();
 			formData.append('empty','');
-			getRestApiService(formData,pembelianRequest.fetchPembelian,function(data){
+			getRestApiService(formData,penjualanRequest.fetchPenjualan,function(data){
 				data = JSON.parse(data);
 				callback(data.message);
 				
 			})
 		}
-		this.tb_pembelian = [];
-		this.handleTambahBeli = function(e){
+		this.tb_penjualan = [];
+		this.handleTambahJual = function(e){
+			e.preventUpdate = true;
 			vm.opts.changePage({
 				action : 'open-input'
 			})
 		}
-		this.handleViewDetail = function(id_pembelian,e){
+		this.handleViewDetail = function(id_penjualan,e){
 			e.preventUpdate = true;
 			vm.opts.changePage({
 				action : 'open-view',
-				id_pembelian : id_pembelian
+				id_penjualan : id_penjualan
 			})
 		}
 		this.on('mount',function(){
-			req_tbPembelian(function(data){
-				vm.tb_pembelian = data;
-				console.log(vm.tb_pembelian);
+			req_tbPenjualan(function(data){
+				vm.tb_penjualan = data;
+				console.log(vm.tb_penjualan);
 				vm.setState(function(){
 
 				})
 			})
 		})
 		let vm = this;
+
 	</script>
-</table-pembelian>
+</penjualan-list>

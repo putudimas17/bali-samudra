@@ -2,6 +2,16 @@
 import { staticVariable } from './configService.js';
 
 export const pembelianRequest = {
+    viewDetail : {
+        url : '/pembelian.php?action=view',
+        method : 'POST',
+        param : ''
+    },
+    fetchPembelian:{
+        url : '/pembelian.php?action=fetch',
+        method : 'POST',
+        param : ''
+    },
     saveTotal: {
         url : '/pembelian.php?action=total',
         method : 'POST',
@@ -28,6 +38,45 @@ export const pembelianRequest = {
         param: ''
     }
 }
+
+export const penjualanRequest = {
+    viewDetail : {
+        url : '/penjualan.php?action=view',
+        method : 'POST',
+        param : ''
+    },
+    newOrder : {
+        url : '/penjualan.php?action=new',
+        method : 'POST',
+        param : ''
+    },
+    fetchPenjualan:{
+        url : '/penjualan.php?action=fetch',
+        method : 'POST',
+        param : ''
+    },
+    searchItem:{
+        url: '/penjualan.php?action=search',
+        method: 'GET',
+        param: '/[take]/[skip]'
+    },
+    saveItem:{
+        url: '/penjualan.php?action=save',
+        method: 'POST',
+        param: ''
+    },
+    deleteItem:{
+        url: '/penjualan.php?action=delete',
+        method: 'POST',
+        param: ''
+    },
+    saveTotal: {
+        url : '/penjualan.php?action=total',
+        method : 'POST',
+        param : ''
+    },
+}
+
 export const barangRequest = {
     searchItem : {
         url : '/barang.php?action=search-barang',

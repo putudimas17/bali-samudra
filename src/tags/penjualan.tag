@@ -1,4 +1,0 @@
-<penjualan>
-	
-	<script></script>
-</penjualan>

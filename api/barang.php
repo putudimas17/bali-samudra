@@ -22,8 +22,17 @@ if(isset($_GET['action'])){
 	 					'satuan' => $row['satuan']
 	 				];
 		 		}
+		 	}else{
+		 		$toJSON = [
+    				'status' => 'rejected',
+			 		'message' => 'Tidak ada produk ini'
+			 	];
+			 	header('Content-Type: application/json');
+			 	echo json_encode($toJSON);
+		 		return;
 		 	}
 		 	$toJSON = [
+		 		'status' => 'success',
 		 		'tb_barang' => $barang
 		 	];
 		 	header('Content-Type: application/json');
@@ -55,6 +64,7 @@ if(isset($_GET['action'])){
 		 		}
 		 	}
 		 	$toJSON = [
+		 		'status' => 'success',
 		 		'tb_barang' => $barang
 		 	];
 		 	header('Content-Type: application/json');

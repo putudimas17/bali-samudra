@@ -16,10 +16,8 @@ window.runningPage = function (route,data) {
     switch (route) {
         case 'penjualan':
             require.ensure([], function () {
-                require('./tags/penjualan.tag');
-                riot.mount('penjualan',{
-                    data : data
-                })
+                let pp = require('./modules/penjualan.js');    
+                pp.init(data);        
             });
             break;
         case 'pembelian':

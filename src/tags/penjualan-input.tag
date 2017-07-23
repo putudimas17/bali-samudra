@@ -1,6 +1,6 @@
-<pembelian class="container-fluid transaksi">
+<penjualan-input class="container-fluid transaksi">
 	<div class="header">
-		<h3>Transaksi Pembelian</h3>
+		<h3>Transaksi Penjualan</h3>
 	</div>
 	<div class="form" >
 		<div>
@@ -8,33 +8,23 @@
 				<div class="col-md-12">
 					<div class="row">
 						<div class="form-group">
-							<label class="control-label control-label-left col-sm-3" for="field1">No Pembelian</label>
+							<label class="control-label control-label-left col-sm-3" for="field1">No Penjualan</label>
 							<div class="controls col-sm-9">
-								<input id="field1" type="text" class="form-control k-textbox" value="{tb_pembelian.INV}" data-role="text" data-parsley-errors-container="#errId1" readonly>
+								<input id="field1" type="text" class="form-control k-textbox" value="{tb_penjualan.INV}" data-role="text" data-parsley-errors-container="#errId1" readonly>
 								<span id="errId1" class="error"></span>
 							</div>
 						</div>
 						<div class="form-group">
 							<label class="control-label control-label-left col-sm-3" for="field1">Tanggal</label>
 							<div class="controls col-sm-9">
-								<input id="field1" type="text" class="form-control k-textbox" value="{translateToDate(tb_pembelian.tgl)}" data-role="text" data-parsley-errors-container="#errId1" readonly>
+								<input id="field1" type="text" class="form-control k-textbox" value="{translateToDate(tb_penjualan.tgl)}" data-role="text" data-parsley-errors-container="#errId1" readonly>
 								<span id="errId1" class="error"></span>
 							</div>
-						</div>
-						<div class="form-group">
-							<label class="control-label control-label-left col-sm-3" for="field2">Supplier</label>
-							<div class="controls col-sm-9">
-								<select id="field2" class="form-control" ref='id_supel' data-role="select" data-parsley-errors-container="#errId2">
-									<option value=""></option>
-									<option value="{item.id}" each="{item,index in tb_supplier}">{item.Nama}</option>
-								</select>
-								<span id="errId2" class="error"></span>
-							</div>
-						</div>						
+						</div>			
 					</div>
 				</div>
 			</form><br>
-			<form  id="form2345">
+			<div  id="form2345">
 				<div class="row">
 					<div class="col-md-2">
 						<div class="form-group">
@@ -72,7 +62,7 @@
 						<div class="form-group">
 							<label class="control-label" for="field1"></label>
 							<div class="controls">
-								<button type="submit" class="btn btn-primary">Tambah</button>
+								<button type="submit" onclick="{handleSaveItem.bind(this)}" class="btn btn-primary">Tambah</button>
 							</div>
 						</div>								
 					</div>
@@ -93,12 +83,12 @@
 											</tr>
 										</thead>
 										<tbody>
-											<tr each="{item, index in tb_detail_pembelian}">
+											<tr each="{item, index in tb_detail_penjualan}">
 												<td>
 													{index+1}
 												</td>
 												<td>
-													{item.id_barang}
+													{item.kode_brg}
 												</td>
 												<td>
 													{item.nama_brg}
@@ -110,7 +100,7 @@
 													{item.jumlah}
 												</td>
 												<td>
-													{item.total}
+													{item.subtotal}
 												</td>
 												<td align="center">
 													<a href="penjualan/penjualan_edit.php?id=<?php echo $r['id']; ?>" data-target="#EditDataPenjualan" data-toggle="modal" data-backdrop="static" class="fa fa-edit"-></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -124,7 +114,7 @@
 						</div>
 					</div>
 				</div>
-			</form>
+			</div>
 			<form>
 				<div class="row">
 					<div class="col-md-8"></div>
@@ -143,7 +133,7 @@
 			<form>
 				<div class="row">
 					<div class="col-md-6 text-left">
-						<a href="#" class="btn btn-primary" onclick="{handleSaveTotal.bind(this)}"><i class="fa fa-floppy-o"></i> Simpan</a>
+						<a href="#" class="btn btn-primary" onclick="{handleFinishOrder.bind(this)}"><i class="fa fa-floppy-o"></i> Simpan</a>
 						<a href="#" class="btn btn-success" onclick="{back.bind(this)}"><i class="fa fa-reply"></i> Kembali</a>
 					</div>	
 					<div class="col-md-6 text-right">
@@ -159,28 +149,37 @@
 		require('../scss/pembelian.scss');	
 		let momentjs = require('moment');
 		let {
-			pembelianRequest,
+			penjualanRequest,
 			barangRequest,
-			supplierRequest,
 			getRestApiService
 		} = require('../helpers/httpServices.js');
-		let reqSaveTotal = function(callback){
-			var formData = new FormData();
-			if(vm.total.id_supel == 0){
-				alert('Supplier belum di pilih');
-				return;
-			}
-			formData.append('id_pembelian',vm.tb_pembelian.id_pembelian);
-			formData.append('total',$('[ref=text-total]').val());
-			formData.append('id_supel',vm.total.id_supel);
-			getRestApiService(formData,pembelianRequest.saveTotal,function(data){
+		let pendingSearch = null;
+		let req_newOrder = function(callback){
+			var dd = {}
+			getRestApiService(JSON.stringify(dd),penjualanRequest.newOrder,function(data){
 				data = JSON.parse(data);
 				callback(data);
+			})
+		}
+		let req_FinishOrder = function(callback){
+			var formData = new FormData();
+			formData.append('id_penjualan',vm.tb_penjualan.id_penjualan);
+			formData.append('total',$('[ref=text-total]').val());
+			getRestApiService(formData,penjualanRequest.saveTotal,function(data){
+				data = JSON.parse(data);
+				switch(data.status){
+					case 'rejected':
+						alert(data.message);
+					break;
+					default:
+						callback(data);
+					break;
+				}
 			});
 		}
-		let reqSaveDetail = function(callback){
+		let req_saveDetail = function(callback){
 			var formData = new FormData();
-			formData.append('id_pembelian',vm.tb_pembelian.id_pembelian);
+			formData.append('id_penjualan',vm.tb_penjualan.id_penjualan);
 			formData.append('kode_brg',vm.inputBarang.kode_brg);
 			formData.append('id_kategori',vm.inputBarang.id_kategori);
 			formData.append('nama_brg',vm.inputBarang.nama_brg);
@@ -188,65 +187,41 @@
 			formData.append('stok',vm.inputBarang.stok);
 			formData.append('harga',vm.inputBarang.harga);
 			formData.append('jumlah',vm.inputBarang.jumlah);
-			getRestApiService(formData,pembelianRequest.saveItem,function(data){
+			getRestApiService(formData,penjualanRequest.saveItem,function(data){
+				console.log('234234',data);
 				data = JSON.parse(data);
 				switch(data.status){
-					case 'success':
-						callback(data);
-					break;
 					case 'rejected':
 						alert(data.message);
+						return;
+					break;
+					case 'success': 
+						callback(data);
 					break;
 				}
+				
 			})
 		}
-		let reqDelete = function(item,callback){
+		let req_deleteItem = function(item,callback){
 			var formData = new FormData();
-			formData.append('id_pembelian',item.id_pembelian);
-			formData.append('kode_brg',item.id_barang);
-			getRestApiService(formData,pembelianRequest.deleteItem,function(data){
+			formData.append('id_penjualan',item.id_penjualan);
+			formData.append('kode_brg',item.kode_brg);
+			getRestApiService(formData,penjualanRequest.deleteItem,function(data){
 				data = JSON.parse(data);
 				callback(data);
 			})
 		}
-		let reqFetchSupplier = function(callback){
-			var dd = {};
-			getRestApiService(JSON.stringify(dd),supplierRequest.fetch,function(data){
-				data = JSON.parse(data);
-				callback(data);
-			})
-		}
-		let reqBarang = function(idbarang,callback){
+		let req_barang = function(idbarang,callback){
 			var formData = new FormData();
 			formData.append('kode_brg',idbarang);
 			getRestApiService(formData,barangRequest.searchItem,function(data){
 				data = JSON.parse(data);
-				switch(data.status){
-					case 'success':
-						callback(data);
-					break;
-					case 'rejected':
-						alert(data.message);
-					break;
-				}
-			})
-		}
-		let pendingSearch = null;
-		let reqCreateNewOrder = function(callback){
-			var dd = {}
-			getRestApiService(JSON.stringify(dd),pembelianRequest.newOrder,function(data){
-				data = JSON.parse(data);
 				callback(data);
 			})
-		}	
-		let searchItem = function(callback){
-			var dd = {};
-			getRestApiService(JSON.stringify(dd),)
 		}
 		let newTotal = function(){
-			this.id_supel = 0;
-			this.total = 0;
 			this.inv = '';
+			this.subtotal = 0;
 		}
 		let newInputBarang = function(value){
 			this.kode_brg = '';
@@ -268,58 +243,10 @@
 			}
 			this.init(value);
 		}
-		this.handleSaveTotal = function(e){
-			e.preventUpdate = true;
-			reqSaveTotal(function(data){
-				vm.opts.changePage({
-					action : 'open-table'
-				})
-			})
-		}
-		this.handleDelete = function(index,e){
-			e.preventUpdate = true;
-			reqDelete(vm.tb_detail_pembelian[index],function(data){
-				vm.tb_detail_pembelian = data.tb_detail_pembelian;
-				vm.setState(function(){
-					vm.inputBarang = new newInputBarang();
-					$('[ref=kode_brg]').focus();
-					vm.setState(function(){})
-				})
-			})
-		}
-		this.total = new newTotal();
-		this.inputBarang = new newInputBarang();
-		this.translateToDate = function(value){
-			return momentjs(value,'yyyy-mm-dd').format('LLL')
-		}
-		this.handleSaveItem = function(e){
-			e.preventUpdate = true;
-			reqSaveDetail(function(data){
-				vm.tb_detail_pembelian = data.tb_detail_pembelian;
-				var kk = 0;
-				for(var a=0;a<vm.tb_detail_pembelian.length;a++){
-					kk += parseInt(vm.tb_detail_pembelian[a].total);
-				}
-				vm.total.total = kk;
-				$('[ref=text-total]').val(kk);
-				vm.setState(function(){
-					vm.inputBarang = new newInputBarang();
-					$('[ref=kode_brg]').focus();
-					vm.setState(function(){
-					})
-				})
-			})
-		}
-		this.back = function(e){
-			console.log(vm.opts);
-			vm.opts.changePage({
-				action : 'open-table'
-			})
-		}
 		this.handleChange = function(whatKey,e){
 			switch(whatKey){
 				case 'id_supel':
-					vm.total[whatKey] = e.target.value;
+					vm.subtotal[whatKey] = e.target.value;
 					vm.setState(function(){})
 				break;
 				case 'jumlah':
@@ -338,48 +265,74 @@
 				break;
 			}
 		}
-		this.tb_supplier = [];
-		this.tb_pembelian = [];
-		this.tb_detail_pembelian = [];
+		this.handleSaveItem = function(e){
+			e.preventUpdate = true;
+			req_saveDetail(function(data){
+				vm.tb_detail_penjualan = data.tb_detail_penjualan;
+				var kk = 0;
+				for(var a=0;a<vm.tb_detail_penjualan.length;a++){
+					kk += parseInt(vm.tb_detail_penjualan[a].subtotal);
+				}
+				vm.total.subtotal = kk;
+				$('[ref=text-total]').val(kk);
+				vm.setState(function(){
+					vm.inputBarang = new newInputBarang();
+					$('[ref=kode_brg]').focus();
+					vm.setState(function(){
+					})
+				})
+			})
+		}
+		this.translateToDate = function(value){
+			return momentjs(value,'yyyy-mm-dd').format('LLL')
+		}
+		this.handleFinishOrder = function(e){
+			e.preventUpdate = true;
+			req_FinishOrder(function(data){
+				vm.opts.changePage({
+					action : 'open-table'
+				})
+			})
+		}
+		this.handleDelete = function(index,e){
+			e.preventUpdate = true;
+			req_deleteItem(vm.tb_detail_penjualan[index],function(data){
+				vm.tb_detail_penjualan = data.tb_detail_penjualan;
+				vm.setState(function(){
+					vm.inputBarang = new newInputBarang();
+					$('[ref=kode_brg]').focus();
+					vm.setState(function(){})
+				})
+			})
+		}
+		this.back = function(e){
+			console.log(vm.opts);
+			vm.opts.changePage({
+				action : 'open-table'
+			})
+		}
+		this.inputBarang = new newInputBarang();
+		this.total = new newTotal();
+		this.tb_penjualan = {};
+		this.tb_detail_penjualan = [];
 		this.on('mount',function(){
-			$('[ref=id_supel]').on('change',function(e){
-				vm.handleChange($(this).attr('ref'),e);
-			})
-			$('#form2345').on('submit',function(e){
-				e.preventDefault();
-			})
 			$('[ref=jumlah]').on('keypress',function(e){
 				if(e.which == 13) {
 					vm.handleSaveItem(e);
 				}
 			})
-			$('[ref=jumlah]').on('change keydown',function(e){
+			$('[ref=jumlah]').on('keydown',function(e){
 				vm.handleChange($(this).attr('ref'),e);
 			})
-			vm.inputBarang = new newInputBarang();
-			$('#inp_kode_barang').bind('paste',function(e){
-				var pastedData = e.originalEvent.clipboardData.getData('text');
-				var idBarang = pastedData;
-				if(pendingSearch != null){
-					pendingSearch.cancel();
-				}
-				pendingSearch = debounce(function(){
-					reqBarang(idBarang,function(data){
-						console.log(data[0]);
-						vm.inputBarang = new newInputBarang(data.tb_barang[0]);
-						vm.setState(function(){})
-					})
-				},1000);
-				(pendingSearch)();
-			})
-			$('#inp_kode_barang').on('change keypress',function(e){
+			$('#inp_kode_barang').on('keypress',function(e){
+				e.preventUpdate = true;
 				if(e.which == 13) {
 					var gg = e.target.value;
 			        if(pendingSearch != null){
 						pendingSearch.cancel();
 					}
 					pendingSearch = debounce(function(){
-						reqBarang(gg,function(data){
+						req_barang(gg,function(data){
 							console.log(data[0]);
 							vm.inputBarang = new newInputBarang(data.tb_barang[0]);
 							vm.setState(function(){
@@ -390,23 +343,35 @@
 					(pendingSearch)();
 			    }
 			})
-			reqCreateNewOrder(function(data){
-				vm.tb_pembelian = data.tb_pembelian[0];
-				vm.tb_detail_pembelian = data.tb_detail_pembelian;
-				var kk = 0;
-				for(var a=0;a<vm.tb_detail_pembelian.length;a++){
-					kk += parseInt(vm.tb_detail_pembelian[a].total);
+			$('#inp_kode_barang').bind('paste',function(e){
+				e.preventUpdate = true;
+				var pastedData = e.originalEvent.clipboardData.getData('text');
+				var idBarang = pastedData;
+				if(pendingSearch != null){
+					pendingSearch.cancel();
 				}
-				vm.total.total = kk;
+				pendingSearch = debounce(function(){
+					req_barang(idBarang,function(data){
+						console.log(data[0]);
+						vm.inputBarang = new newInputBarang(data.tb_barang[0]);
+						vm.setState(function(){})
+					})
+				},1000);
+				(pendingSearch)();
+			})
+			req_newOrder(function(data){
+				var kk = 0;
+				vm.tb_penjualan = data.tb_penjualan[0];
+				vm.tb_detail_penjualan = data.tb_detail_penjualan;
+				for(var a=0;a<vm.tb_detail_penjualan.length;a++){
+					kk += parseInt(vm.tb_detail_penjualan[a].subtotal);
+				}
+				vm.total.subtotal = kk;
 				$('[ref=text-total]').val(kk);
 				vm.setState(function(){
 				})
-			});
-			reqFetchSupplier(function(data){
-				vm.tb_supplier = data.tb_supel;
-				vm.setState(function(){})
 			})
-		})	
+		})
 		let vm = this;
 	</script>
-</pembelian>
+</penjualan-input>
