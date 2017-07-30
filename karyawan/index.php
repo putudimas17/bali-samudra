@@ -80,8 +80,8 @@ include "../koneksi.php";
 				</li>
 				<li><a href="#"><i class="fa fa-retweet"></i> Data Retur</a>
 					<ul>
-						<li><a href="?page=retur"><i class="fa fa-database"></i>Data Retur Penjualan</a></li>
-						<li><a href="?page=retur"><i class="fa fa-database"></i>Data Retur Pembelian</a></li>
+						<li><a href="?page=retur-penjualan"><i class="fa fa-database"></i>Data Retur Penjualan</a></li>
+						<li><a href="?page=retur-pembelian"><i class="fa fa-database"></i>Data Retur Pembelian</a></li>
 					</ul>
 				</li>
 				
@@ -116,7 +116,13 @@ include "../koneksi.php";
 	{
 		include "pembelian/pembelian.php";
 		
-	} else if($page == "databarang")
+	}else if($page == 'retur-pembelian'){
+		include 'retur_pembelian/retur_pembelian.php';
+	} 
+	else if($page == 'retur-penjualan'){
+		include 'retur_penjualan/retur_penjualan.php';
+	} 
+	else if($page == "databarang")
 	{
 		include "barang/barang.php";
 		

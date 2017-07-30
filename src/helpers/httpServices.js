@@ -90,7 +90,100 @@ export const supplierRequest = {
         method : 'POST',
         param : ''
     },
-
+}
+export const returPembelianRequest = {
+    fetchReturPembelian:{
+        url : '/retur-pembelian.php?action=fetch',
+        method : 'POST',
+        param : ''
+    },
+    updateNoPembelian : {
+        url : '/retur-pembelian.php?action=pasang-pembelian-dengan-retur-pembelian',
+        method : 'POST',
+        param : ''
+    },
+    resetKetikaGantiPembeli:{
+        url : '/retur-pembelian.php?action=reset-ketika-ganti-id-pembeli',
+        method : 'POST',
+        param : ''
+    },
+    fetchBarangDariPembelian:{
+        url : '/retur-pembelian.php?action=fetch-barang-dari-pembelian',
+        method : 'POST',
+        param : ''
+    },
+    newOrder : {
+        url : '/retur-pembelian.php?action=new',
+        method : 'POST',
+        param : ''
+    },
+    saveItem:{
+        url: '/retur-pembelian.php?action=save',
+        method: 'POST',
+        param: ''
+    },
+    saveTotal: {
+        url : '/retur-pembelian.php?action=total',
+        method : 'POST',
+        param : ''
+    },
+    deleteItem:{
+        url: '/retur-pembelian.php?action=delete',
+        method: 'POST',
+        param: ''
+    },
+    viewDetail : {
+        url : '/retur-pembelian.php?action=view',
+        method : 'POST',
+        param : ''
+    },
+}
+export const returPenjualanRequest = {
+    fetchReturPenjualan:{
+        url : '/retur-penjualan.php?action=fetch',
+        method : 'POST',
+        param : ''
+    },
+    updateNoPenjualan : {
+        url : '/retur-penjualan.php?action=pasang-penjualan-dengan-retur-penjualan',
+        method : 'POST',
+        param : ''
+    },
+    resetKetikaGantiPenjual:{
+        url : '/retur-penjualan.php?action=reset-ketika-ganti-id-penjual',
+        method : 'POST',
+        param : ''
+    },
+    fetchBarangDariPenjualan:{
+        url : '/retur-penjualan.php?action=fetch-barang-dari-penjualan',
+        method : 'POST',
+        param : ''
+    },
+    newOrder : {
+        url : '/retur-penjualan.php?action=new',
+        method : 'POST',
+        param : ''
+    },
+    saveItem:{
+        url: '/retur-penjualan.php?action=save',
+        method: 'POST',
+        param: ''
+    },
+    saveTotal: {
+        url : '/retur-penjualan.php?action=total',
+        method : 'POST',
+        param : ''
+    },
+    deleteItem:{
+        url: '/retur-penjualan.php?action=delete',
+        method: 'POST',
+        param: ''
+    },
+    viewDetail : {
+        url : '/retur-penjualan.php?action=view',
+        method : 'POST',
+        param : ''
+    },
 }
 var loadingNumber = 0;
 export const getRestApiService = function (postdata, tempApiRequest, param3, param4) {

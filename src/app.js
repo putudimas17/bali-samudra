@@ -26,6 +26,18 @@ window.runningPage = function (route,data) {
                 pp.init(data);            
             })
             break;
+        case 'retur-pembelian':
+            require.ensure([], function(){
+                let pp = require('./modules/retur_pembelian.js');    
+                pp.init(data);  
+            })
+            break;
+        case 'retur-penjualan':
+            require.ensure([], function(){
+                let pp = require('./modules/retur_penjualan.js');    
+                pp.init(data);  
+            })
+            break;
     }
 }
 
