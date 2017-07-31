@@ -31,6 +31,7 @@
     "require-ensure": "^1.0.2",
     "riot": "^3.6.1",
     "sass-loader": "^6.0.6",
+    "select2": "^4.0.3",
     "style-loader": "^0.18.2",
     "tag-loader": "^0.3.0",
     "webpack": "^3.3.0"
