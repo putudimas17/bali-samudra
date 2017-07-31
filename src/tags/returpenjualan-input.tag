@@ -297,7 +297,7 @@
 		}	
 		let searchItem = function(callback){
 			var dd = {};
-			getRestApiService(JSON.stringify(dd),)
+			// getRestApiService(JSON.stringify(dd),)
 		}
 		let newTotal = function(){
 			this.id_supel = 0;
