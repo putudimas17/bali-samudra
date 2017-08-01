@@ -129,11 +129,37 @@
 						</div>				
 					</div>
 				</div>
+				<div class="row">
+					<div class="col-md-8"></div>
+					<div class="col-md-4">
+						<div class="row">
+							<div class="form-group">
+								<label class="control-label control-label-left col-sm-4">Bayar</label>
+								<div class="controls col-sm-8">
+									<input id="txtBayar" type="text" class="form-control k-textbox text-right">
+								</div>
+							</div>								
+						</div>				
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-8"></div>
+					<div class="col-md-4">
+						<div class="row">
+							<div class="form-group">
+								<label class="control-label control-label-left col-sm-4">Kembali</label>
+								<div class="controls col-sm-8">
+									<input id="txtKembali" type="text" class="form-control k-textbox text-right" readonly>
+								</div>
+							</div>								
+						</div>				
+					</div>
+				</div>
 			</form><hr>
 			<form>
 				<div class="row">
 					<div class="col-md-6 text-left">
-						<a href="#" class="btn btn-primary" onclick="{handleFinishOrder.bind(this)}"><i class="fa fa-floppy-o"></i> Simpan</a>
+						<a href="#" id="saveTotal" class="btn btn-primary" onclick="{handleFinishOrder.bind(this)}"><i class="fa fa-floppy-o"></i> Simpan</a>
 						<a href="#" class="btn btn-success" onclick="{back.bind(this)}"><i class="fa fa-reply"></i> Kembali</a>
 					</div>	
 					<div class="col-md-6 text-right">
@@ -165,6 +191,7 @@
 			var formData = new FormData();
 			formData.append('id_penjualan',vm.tb_penjualan.id_penjualan);
 			formData.append('total',$('[ref=text-total]').val());
+			formData.append('bayar',$('#txtBayar').val());
 			getRestApiService(formData,penjualanRequest.saveTotal,function(data){
 				data = JSON.parse(data);
 				switch(data.status){
@@ -219,6 +246,7 @@
 				callback(data);
 			})
 		}
+		
 		let newTotal = function(){
 			this.inv = '';
 			this.subtotal = 0;
@@ -243,6 +271,7 @@
 			}
 			this.init(value);
 		}
+		this.belumLunas = true;
 		this.handleChange = function(whatKey,e){
 			switch(whatKey){
 				case 'id_supel':
@@ -288,6 +317,15 @@
 		}
 		this.handleFinishOrder = function(e){
 			e.preventUpdate = true;
+			var ee = $.Event("keypress");
+			ee.which = 13; // # Some key code value
+			e.keyCode = 13;
+			$('#txtBayar').trigger(ee);
+			if(vm.belumLunas == true){
+				return;
+			}else{
+				alert('Lunas');
+			}
 			req_FinishOrder(function(data){
 				vm.opts.changePage({
 					action : 'open-table'
@@ -318,15 +356,27 @@
 		this.on('mount',function(){
 			$('[ref=jumlah]').on('keypress',function(e){
 				if(e.which == 13) {
-					vm.handleSaveItem(e);
+					vm.addItem(e);
 				}
 			})
 			$('[ref=jumlah]').on('keydown',function(e){
 				vm.handleChange($(this).attr('ref'),e);
 			})
-			$('#inp_kode_barang').on('keypress',function(e){
-				e.preventUpdate = true;
+			$('#txtBayar').on('keypress',function(e){
 				if(e.which == 13) {
+					let kembalinya = $('#txtBayar').val() - $('#txtGrandTotal').val();
+					if(kembalinya < 0){
+						alert('Kurang dari Total!');
+						vm.belumLunas = true;
+						return;
+					}
+					vm.belumLunas = false;
+					$('#txtKembali').val(kembalinya);
+				}
+			})
+			$('#inp_kode_barang').on('keypress',function(e){
+				if(e.which == 13) {
+					e.preventUpdate = true;
 					var gg = e.target.value;
 			        if(pendingSearch != null){
 						pendingSearch.cancel();

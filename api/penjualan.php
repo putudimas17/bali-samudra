@@ -286,7 +286,8 @@ if(isset($_GET['action'])){
 			 	echo json_encode($toJSON);
 			 	return;
 		 	}
-			$sql = "UPDATE tb_penjualan set total = '".$_POST['total'] ."', status='1' WHERE id_penjualan= '".$_POST['id_penjualan']."'";
+			$sql = "UPDATE tb_penjualan set total = '".$_POST['total'] ."', bayar='".$_POST['bayar']."', kembali='".($_POST['bayar']-$_POST['total'])."', status='1' WHERE id_penjualan= '".$_POST['id_penjualan']."'";
+		 	echo $db->error;
 		 	if ($db->query($sql) === TRUE) {
 		    	// select kembali detail transaksi pembeliannya
 		    	$sql = "select * from tb_detail_penjualan i left join tb_barang j on i.kode_brg = j.kode_brg  where  i.id_penjualan = '".$_POST['id_penjualan']."'";

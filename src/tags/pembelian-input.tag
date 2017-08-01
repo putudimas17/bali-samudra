@@ -72,7 +72,7 @@
 						<div class="form-group">
 							<label class="control-label" for="field1"></label>
 							<div class="controls">
-								<button type="submit" class="btn btn-primary">Tambah</button>
+								<button type="submit" class="btn btn-primary" onclick="{handleSaveItem.bind(this)}">Tambah</button>
 							</div>
 						</div>								
 					</div>
