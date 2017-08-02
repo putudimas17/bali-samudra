@@ -24,6 +24,8 @@
 									<th>INV </th>
 									<th>Tanggal </th>
 									<th>Total</th>
+									<th>Bayar</th>
+									<th>Kembali</th>
 									<th>Pegawai</th>
 									<th>View Detail</th>
 								</tr>
@@ -42,6 +44,12 @@
 									</td>
 									<td>
 										{item.total}
+									</td>
+									<td>
+										{item.bayar}
+									</td>
+									<td>
+										{item.kembali}
 									</td>
 									<td>
 										{item.nama}

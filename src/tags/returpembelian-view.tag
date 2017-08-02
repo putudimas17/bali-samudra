@@ -46,7 +46,6 @@
 												<th>Harga</th>
 												<th>Jumlah</th>
 												<th>Sub Total</th>
-												<th>Aksi</th>
 											</tr>
 										</thead>
 										<tbody>
@@ -68,9 +67,6 @@
 												</td>
 												<td>
 													{item.total}
-												</td>
-												<td align="center">
-													
 												</td>
 											</tr>
 										</tbody>

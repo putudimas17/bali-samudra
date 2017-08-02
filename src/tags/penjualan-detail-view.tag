@@ -1,6 +1,6 @@
 <penjualan-detail-view class="container-fluid transaksi">
 	<div class="header">
-		<h3>Transaksi Pembelian</h3>
+		<h3>Detail Transaksi Penjualan</h3>
 	</div>
 	<div class="form" >
 		<div>
@@ -11,6 +11,27 @@
 							<label class="control-label control-label-left col-sm-3" for="field1">No Pembelian</label>
 							<div class="controls col-sm-9">
 								<input id="field1" type="text" class="form-control k-textbox" value="{tb_penjualan.INV}" data-role="text" data-parsley-errors-container="#errId1" readonly>
+								<span id="errId1" class="error"></span>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label control-label-left col-sm-3" for="field1">TOTAL</label>
+							<div class="controls col-sm-9">
+								<input id="field1" type="text" class="form-control k-textbox" value="{tb_penjualan.total}" data-role="text" data-parsley-errors-container="#errId1" readonly>
+								<span id="errId1" class="error"></span>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label control-label-left col-sm-3" for="field1">Bayar</label>
+							<div class="controls col-sm-9">
+								<input id="field1" type="text" class="form-control k-textbox" value="{tb_penjualan.bayar}" data-role="text" data-parsley-errors-container="#errId1" readonly>
+								<span id="errId1" class="error"></span>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label control-label-left col-sm-3" for="field1">Kembali</label>
+							<div class="controls col-sm-9">
+								<input id="field1" type="text" class="form-control k-textbox" value="{tb_penjualan.kembali}" data-role="text" data-parsley-errors-container="#errId1" readonly>
 								<span id="errId1" class="error"></span>
 							</div>
 						</div>
@@ -40,7 +61,6 @@
 												<th>Harga</th>
 												<th>Jumlah</th>
 												<th>Sub Total</th>
-												<th>Aksi</th>
 											</tr>
 										</thead>
 										<tbody>
@@ -49,7 +69,7 @@
 													{index+1}
 												</td>
 												<td>
-													{item.id_barang}
+													{item.kode_brg}
 												</td>
 												<td>
 													{item.nama_brg}
@@ -63,10 +83,7 @@
 												<td>
 													{item.subtotal}
 												</td>
-												<td align="center">
-													<a href="penjualan/penjualan_edit.php?id=<?php echo $r['id']; ?>" data-target="#EditDataPenjualan" data-toggle="modal" data-backdrop="static" class="fa fa-edit"-></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-													
-												</td>
+												
 											</tr>
 										</tbody>
 									</table>												

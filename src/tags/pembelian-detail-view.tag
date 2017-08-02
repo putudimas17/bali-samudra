@@ -46,7 +46,6 @@
 												<th>Harga</th>
 												<th>Jumlah</th>
 												<th>Sub Total</th>
-												<th>Aksi</th>
 											</tr>
 										</thead>
 										<tbody>
@@ -68,10 +67,6 @@
 												</td>
 												<td>
 													{item.total}
-												</td>
-												<td align="center">
-													<a href="penjualan/penjualan_edit.php?id=<?php echo $r['id']; ?>" data-target="#EditDataPenjualan" data-toggle="modal" data-backdrop="static" class="fa fa-edit"-></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-													
 												</td>
 											</tr>
 										</tbody>

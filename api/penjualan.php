@@ -54,7 +54,7 @@ function readyInput($db){
 if(isset($_GET['action'])){
 	switch($_GET['action']){
 		case 'view':
-			$sql = "select i.id_penjualan, i.tgl, i.total, i.INV, k.Nama as pegawai from tb_penjualan i left join tb_user k on i.id_user = k.id where i.id_penjualan = '".$_POST['id_penjualan']."' order by i.id_penjualan desc";
+			$sql = "select i.id_penjualan,i.bayar,i.kembali, i.tgl, i.total, i.INV, k.Nama as pegawai from tb_penjualan i left join tb_user k on i.id_user = k.id where i.id_penjualan = '".$_POST['id_penjualan']."' order by i.id_penjualan desc";
 		 	$gg = $db->query($sql);
 		 	if($gg->num_rows > 0){
 		 		$uuu = [];
@@ -63,6 +63,8 @@ if(isset($_GET['action'])){
 		 				'id_penjualan'=>$row['id_penjualan'],
 		 				'tgl' => $row['tgl'],
 		 				'total' => $row['total'],
+		 				'bayar' => $row['bayar'],
+		 				'kembali' => $row['kembali'],
 		 				'INV' => $row['INV'],
 		 				'nama' => $row['pegawai'],
 		 			];
@@ -252,7 +254,7 @@ if(isset($_GET['action'])){
  			}
 		break;
 		case 'fetch':
-			$sql = "select i.id_penjualan, i.tgl, i.total, i.INV, k.Nama as pegawai from tb_penjualan i left join tb_user k on i.id_user = k.id where i.status = 1 order by i.id_penjualan desc";
+			$sql = "select i.id_penjualan, i.tgl, i.total, i.bayar, i.kembali, i.INV, k.Nama as pegawai from tb_penjualan i left join tb_user k on i.id_user = k.id where i.status = 1 order by i.id_penjualan desc";
 		 	$gg = $db->query($sql);
 		 	
 		 	if($gg->num_rows > 0){
@@ -263,6 +265,8 @@ if(isset($_GET['action'])){
 		 				'tgl' => $row['tgl'],
 		 				'total' => $row['total'],
 		 				'INV' => $row['INV'],
+		 				'bayar' => $row['bayar'],
+		 				'kembali' => $row['kembali'],
 		 				'nama' => $row['pegawai'],
 		 			];
 		 		}
