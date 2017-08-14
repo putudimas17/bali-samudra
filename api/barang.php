@@ -19,6 +19,7 @@ if(isset($_GET['action'])){
 	 					'nama_brg' => $row['nama_brg'],
 	 					'stok' => $row['stok'],
 	 					'harga' => $row['harga'],
+	 					'harga_beli' => $row['harga_beli'],
 	 					'satuan' => $row['satuan']
 	 				];
 		 		}
@@ -59,6 +60,7 @@ if(isset($_GET['action'])){
 	 					'nama_brg' => $row['nama_brg'],
 	 					'stok' => $row['stok'],
 	 					'harga' => $row['harga'],
+	 					'harga_beli' => $row['harga_beli'],
 	 					'satuan' => $row['satuan']
 	 				];
 		 		}

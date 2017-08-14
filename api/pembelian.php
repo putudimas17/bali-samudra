@@ -128,7 +128,7 @@ if(isset($_GET['action'])){
 			 		while($row = mysqli_fetch_assoc($gg)) {
 			 			$in_stock = "INSERT INTO  in_stok (no_transaksi,tanggal,kd_barang,qty,harga) VALUES (".$_POST['id_pembelian'].", '".date("Y-m-d")."','".$row['id_barang']."',".$row['jumlah'].", ".$row['harga'].")";
 			 			if ($db->query($in_stock) === TRUE) {
-			 				$updateStokBarang = "UPDATE tb_barang set stok = (stok+".$row['jumlah'].") where kode_brg = '".$row['id_barang']."'";
+			 				$updateStokBarang = "UPDATE tb_barang set harga_beli = ".$row['harga']." ,stok = (stok+".$row['jumlah'].") where kode_brg = '".$row['id_barang']."'";
 			 				if ($db->query($updateStokBarang) === TRUE) {
 
 			 				}

@@ -255,6 +255,7 @@
 			this.satuan = '';
 			this.stok = '';
 			this.harga = '';
+			this.harga_beli = '';
 			this.jumlah = 1;
 			this.init = function(value){
 				if(value == null)
@@ -264,7 +265,7 @@
 				this.nama_brg = value.nama_brg;
 				this.satuan = value.satuan;
 				this.stok = value.stok;
-				this.harga = 0;
+				this.harga = value.harga_beli;
 			}
 			this.init(value);
 		}
