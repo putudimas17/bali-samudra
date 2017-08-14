@@ -26,7 +26,7 @@ function readyInput($db){
  			];
  		}
  		// get detail 
-	    $sql = "select * from tb_detail_pembelian i left join tb_barang j on i.id_barang = j.kode_brg where id_pembelian = '".$head[0]['id_pembelian']."'";
+	    $sql = "select i.id_detail_pem, i.id_pembelian, i.id_barang, i.jumlah ,j.nama_brg ,i.harga,i.total from tb_detail_pembelian i left join tb_barang j on i.id_barang = j.kode_brg where id_pembelian = '".$head[0]['id_pembelian']."'";
 	 	$gg = $db->query($sql);
  		$detail = array();
 	 	if($gg->num_rows > 0){
@@ -69,7 +69,7 @@ if(isset($_GET['action'])){
 		 			];
 		 		}		 		
 			 	$detail = [];
-			 	$sql = "select * from tb_detail_pembelian i left join tb_barang j on i.id_barang = j.kode_brg where i.id_pembelian = '".$_POST['id_pembelian']."'";
+			 	$sql = "select i.id_detail_pem, i.id_pembelian, i.id_barang, i.jumlah ,j.nama_brg ,i.harga,i.total from tb_detail_pembelian i left join tb_barang j on i.id_barang = j.kode_brg where i.id_pembelian = '".$_POST['id_pembelian']."'";
 			 	$gg = $db->query($sql);
 			 	if($gg->num_rows > 0){
 		 			while($row = mysqli_fetch_assoc($gg)) {
@@ -122,7 +122,7 @@ if(isset($_GET['action'])){
 			$sql = "UPDATE tb_pembelian set id_supel = '".$_POST['id_supel']."', total = '".$_POST['total'] ."', status='1' WHERE id_pembelian= '".$_POST['id_pembelian']."'";
 		 	if ($db->query($sql) === TRUE) {
 		    	// select kembali detail transaksi pembeliannya
-		    	$sql = "select * from tb_detail_pembelian i left join tb_barang j on i.id_barang = j.kode_brg  where  i.id_pembelian = '".$_POST['id_pembelian']."'";
+		    	$sql = "select i.id_detail_pem, i.id_pembelian, i.id_barang, i.jumlah ,j.nama_brg ,i.harga,i.total from tb_detail_pembelian i left join tb_barang j on i.id_barang = j.kode_brg  where  i.id_pembelian = '".$_POST['id_pembelian']."'";
 			 	$gg = $db->query($sql);
 			 	if($gg->num_rows > 0){
 			 		while($row = mysqli_fetch_assoc($gg)) {
@@ -248,7 +248,7 @@ if(isset($_GET['action'])){
 			 					'id_barang' => $row['id_barang'],
 			 					'nama_brg' => $row['nama_brg'],
 			 					'jumlah' => $row['jumlah'],
-			 					'harga' => $row['harga'],
+			 					'harga' => $_POST['harga'],
 			 					'total' => $row['total']
 			 				];
 				 		}

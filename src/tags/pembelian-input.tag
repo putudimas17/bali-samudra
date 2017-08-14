@@ -48,15 +48,15 @@
 						<div class="form-group">
 							<label class="control-label" for="field1">Nama Barang</label>
 							<div class="controls">
-								<input id="field1" ref="nama_brg" value="{inputBarang.nama_brg}"type="text" class="form-control k-textbox" data-role="text" data-parsley-errors-container="#errId1"><span id="errId1" class="error"></span>
+								<input id="nama_brg" ref="nama_brg" value="{inputBarang.nama_brg}"type="text" class="form-control k-textbox" data-role="text" data-parsley-errors-container="#errId1"><span id="errId1" class="error"></span>
 							</div>
 						</div>
 					</div>
 					<div class="col-md-2">
 						<div class="form-group">
-							<label class="control-label" for="field1">Harga</label>
+							<label class="control-label" for="field1">Harga Beli</label>
 							<div class="controls">
-								<input id="field1" ref="harga" value="{inputBarang.harga}" type="text" class="form-control k-textbox" data-role="text" data-parsley-errors-container="#errId1"><span id="errId1" class="error"></span>
+								<input id="harga" ref="harga" value="{inputBarang.harga}" type="number" class="form-control k-textbox" data-role="text" data-parsley-errors-container="#errId1"><span id="errId1" class="error"></span>
 							</div>
 						</div>
 					</div>
@@ -64,7 +64,7 @@
 						<div class="form-group">
 							<label class="control-label" for="field1">Jumlah</label>
 							<div class="controls">
-								<input id="field1" ref="jumlah" value="{inputBarang.jumlah}" type="number" class="form-control k-textbox" data-role="text" data-parsley-errors-container="#errId1"><span id="errId1" class="error"></span>
+								<input id="jumlah" ref="jumlah" value="{inputBarang.jumlah}" type="number" class="form-control k-textbox" data-role="text" data-parsley-errors-container="#errId1"><span id="errId1" class="error"></span>
 							</div>
 						</div>
 					</div>
@@ -72,7 +72,7 @@
 						<div class="form-group">
 							<label class="control-label" for="field1"></label>
 							<div class="controls">
-								<button type="submit" class="btn btn-primary" onclick="{handleSaveItem.bind(this)}">Tambah</button>
+								<button type="submit" class="btn btn-primary" >Tambah</button>
 							</div>
 						</div>								
 					</div>
@@ -86,7 +86,7 @@
 												<th>No</th>
 												<th>Kode Barang</th>
 												<th>Nama Barang</th>
-												<th>Harga</th>
+												<th>Harga Beli</th>
 												<th>Jumlah</th>
 												<th>Sub Total</th>
 												<th>Aksi</th>
@@ -186,7 +186,7 @@
 			formData.append('nama_brg',vm.inputBarang.nama_brg);
 			formData.append('satuan',vm.inputBarang.satuan);
 			formData.append('stok',vm.inputBarang.stok);
-			formData.append('harga',vm.inputBarang.harga);
+			formData.append('harga',$('[ref=harga]').val());
 			formData.append('jumlah',vm.inputBarang.jumlah);
 			getRestApiService(formData,pembelianRequest.saveItem,function(data){
 				data = JSON.parse(data);
@@ -264,7 +264,7 @@
 				this.nama_brg = value.nama_brg;
 				this.satuan = value.satuan;
 				this.stok = value.stok;
-				this.harga = value.harga;
+				this.harga = 0;
 			}
 			this.init(value);
 		}
@@ -353,6 +353,14 @@
 					vm.handleSaveItem(e);
 				}
 			})
+
+			$('[type=submit]').on('click',function(e){
+				e.preventDefault();
+				if($('[ref=nama_brg]').val() != ''){
+					vm.handleSaveItem(e);
+				}
+				
+			})
 			$('[ref=jumlah]').on('change keydown',function(e){
 				vm.handleChange($(this).attr('ref'),e);
 			})
@@ -383,7 +391,7 @@
 							console.log(data[0]);
 							vm.inputBarang = new newInputBarang(data.tb_barang[0]);
 							vm.setState(function(){
-								$('[ref=jumlah]').focus();
+								$('[ref=harga]').focus();
 							})
 						})
 					},100);

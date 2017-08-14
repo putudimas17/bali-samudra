@@ -43,7 +43,7 @@
 												<th>No</th>
 												<th>Kode Barang</th>
 												<th>Nama Barang</th>
-												<th>Harga</th>
+												<th>Harga Beli</th>
 												<th>Jumlah</th>
 												<th>Sub Total</th>
 											</tr>
