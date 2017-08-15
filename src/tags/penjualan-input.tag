@@ -46,7 +46,7 @@
 						<div class="form-group">
 							<label class="control-label" for="field1">Harga</label>
 							<div class="controls">
-								<input id="field1" ref="harga" value="{inputBarang.harga}" type="text" class="form-control k-textbox" data-role="text" data-parsley-errors-container="#errId1"><span id="errId1" class="error"></span>
+								<input id="harga" ref="harga" value="{inputBarang.harga}" type="text" class="form-control k-textbox" data-role="text" data-parsley-errors-container="#errId1"><span id="errId1" class="error"></span>
 							</div>
 						</div>
 					</div>
@@ -54,7 +54,7 @@
 						<div class="form-group">
 							<label class="control-label" for="field1">Jumlah</label>
 							<div class="controls">
-								<input id="field1" ref="jumlah" value="{inputBarang.jumlah}" type="number" class="form-control k-textbox" data-role="text" data-parsley-errors-container="#errId1"><span id="errId1" class="error"></span>
+								<input id="jumlah" ref="jumlah" value="{inputBarang.jumlah}" type="number" class="form-control k-textbox" data-role="text" data-parsley-errors-container="#errId1"><span id="errId1" class="error"></span>
 							</div>
 						</div>
 					</div>
@@ -204,6 +204,10 @@
 			});
 		}
 		let req_saveDetail = function(callback){
+			if($('[ref=jumlah]').val() <= 0){
+				alert('Tidak boleh dibawah atau 0');
+				return;
+			}
 			var formData = new FormData();
 			formData.append('id_penjualan',vm.tb_penjualan.id_penjualan);
 			formData.append('kode_brg',vm.inputBarang.kode_brg);
@@ -212,7 +216,7 @@
 			formData.append('satuan',vm.inputBarang.satuan);
 			formData.append('stok',vm.inputBarang.stok);
 			formData.append('harga',vm.inputBarang.harga);
-			formData.append('jumlah',vm.inputBarang.jumlah);
+			formData.append('jumlah',$('[ref=jumlah]').val());
 			getRestApiService(formData,penjualanRequest.saveItem,function(data){
 				console.log('234234',data);
 				data = JSON.parse(data);
@@ -355,10 +359,10 @@
 		this.on('mount',function(){
 			$('[ref=jumlah]').on('keypress',function(e){
 				if(e.which == 13) {
-					vm.addItem(e);
+					vm.handleSaveItem(e);
 				}
 			})
-			$('[ref=jumlah]').on('keydown',function(e){
+			$('[ref=jumlah]').on('keypress',function(e){
 				vm.handleChange($(this).attr('ref'),e);
 			})
 			$('#txtBayar').on('keypress',function(e){

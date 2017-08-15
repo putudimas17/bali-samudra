@@ -113,7 +113,6 @@
 													{item.total}
 												</td>
 												<td align="center">
-													<a href="penjualan/penjualan_edit.php?id=<?php echo $r['id']; ?>" data-target="#EditDataPenjualan" data-toggle="modal" data-backdrop="static" class="fa fa-edit"-></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 													<a href="#" onclick="{handleDelete.bind(this,index)}" class="hapus_modal fa fa-trash-o"></a>
 												</td>
 											</tr>
@@ -179,6 +178,10 @@
 			});
 		}
 		let reqSaveDetail = function(callback){
+			if($('[ref=jumlah]').val() <= 0){
+				alert('Tidak boleh di bawah atau 0');
+				return;
+			}
 			var formData = new FormData();
 			formData.append('id_pembelian',vm.tb_pembelian.id_pembelian);
 			formData.append('kode_brg',vm.inputBarang.kode_brg);
@@ -187,7 +190,7 @@
 			formData.append('satuan',vm.inputBarang.satuan);
 			formData.append('stok',vm.inputBarang.stok);
 			formData.append('harga',$('[ref=harga]').val());
-			formData.append('jumlah',vm.inputBarang.jumlah);
+			formData.append('jumlah',$('[ref=jumlah]').val());
 			getRestApiService(formData,pembelianRequest.saveItem,function(data){
 				data = JSON.parse(data);
 				switch(data.status){
