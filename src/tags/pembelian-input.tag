@@ -72,7 +72,7 @@
 						<div class="form-group">
 							<label class="control-label" for="field1"></label>
 							<div class="controls">
-								<button type="submit" class="btn btn-primary" >Tambah</button>
+								<button type="submit" class="btn btn-primary">Tambah</button>
 							</div>
 						</div>								
 					</div>
@@ -127,13 +127,23 @@
 			<div style="display: none">
 				<div id="print-box">
 					<div class="section">
-						<h2>PT GANTI SENDIRI</h2>
-						<h5>
+						<h2 class="left">PT GANTI SENDIRI</h2>
+						<h5 class="left">
 							Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
 						</h5>
+						<div class="row">
+							<div class="col-md-6">
+								<h5 class="left">SUPPLIER : {printSupplier}</h5>
+								<h5 class="left">TGL : {translateToDate(tb_pembelian.tgl)}</h5>
+							</div>
+							<div class="col-md-6">
+								<h5 class="left">INVOICE : {tb_pembelian.INV}</h5>
+							</div>
+						</div>
 					</div>
 					<div class="section">
 						<table>
+							
 							<tr>
 								<th>QTY</th>
 								<th>IN</th>
@@ -144,10 +154,10 @@
 									<div class="divider"></div>
 								</td>
 							</tr>
-							<tr each="{item, index in tb_detail_penjualan}">
+							<tr each="{item, index in tb_detail_pembelian}">
 								<td>{item.jumlah}</td>
 								<td>{item.nama_brg}</td>
-								<td>{toMoneyCurrency(item.subtotal)}</td>
+								<td>{toMoneyCurrency(item.total)}</td>
 							</tr>
 							<!--tr>
 								<td colspan="2">
@@ -171,23 +181,6 @@
 									TOTAL
 								</td>
 								<td>{toMoneyCurrency(printTotal)}</td>
-							</tr>
-							<tr>
-								<td colspan="2">
-									CASH
-								</td>
-								<td>{toMoneyCurrency(printCash)}</td>
-							</tr>
-							<tr>
-								<td colspan="3">
-									<div class="divider"></div>
-								</td>
-							</tr>
-							<tr>
-								<td colspan="2">
-									Kembali
-								</td>
-								<td>{toMoneyCurrency(printKembali)}</td>
 							</tr>
 						</table>
 					</div>
@@ -218,6 +211,7 @@
 				<div class="row">
 					<div class="col-md-6 text-left">
 						<a href="#" class="btn btn-primary" onclick="{handleSaveTotal.bind(this)}"><i class="fa fa-floppy-o"></i> Simpan</a>
+						<a href="#" id="print" class="btn btn-primary" onclick="{handlePrint.bind(this)}"><i class="fa fa-floppy-o"></i> Print</a>
 						<a href="#" class="btn btn-success" onclick="{back.bind(this)}"><i class="fa fa-reply"></i> Kembali</a>
 					</div>	
 					<div class="col-md-6 text-right">
@@ -356,6 +350,7 @@
 				})
 			})
 		}
+		this.printSupplier = '';
 		this.printCash = 0;
 		this.printTotal = 0;
 		this.printKembali = 0;
@@ -385,6 +380,7 @@
 				}
 				vm.total.total = kk;
 				$('[ref=text-total]').val(kk);
+				vm.printTotal = kk;
 				vm.setState(function(){
 					vm.inputBarang = new newInputBarang();
 					$('[ref=kode_brg]').focus();
@@ -421,12 +417,33 @@
 				break;
 			}
 		}
+		this.handlePrint = function(e){
+			vm.printSupplier = $("[ref=id_supel] option:selected").text();
+			console.log($("[ref=id_supel] option:selected").text());
+			vm.setState(function(){})
+			$('#print-box').print({
+				globalStyles: true,
+	        	mediaPrint: false,
+	        	stylesheet: 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css',
+	        	noPrintSelector: ".no-print",
+	        	iframe: false,
+	        	append: null,
+	        	prepend: null,
+	        	manuallyCopyFormValues: true,
+	        	deferred: $.Deferred(),
+	        	timeout: 750,
+	        	title: null,
+	        	doctype: '<!doctype html>'
+			});
+		}
 		this.tb_supplier = [];
 		this.tb_pembelian = [];
 		this.tb_detail_pembelian = [];
 		this.on('mount',function(){
 			$('[ref=id_supel]').on('change',function(e){
 				vm.handleChange($(this).attr('ref'),e);
+				vm.printSupplier = $("[ref=id_supel] option:selected").text();
+				vm.setState(function(){})
 			})
 			$('#form2345').on('submit',function(e){
 				e.preventDefault();
@@ -490,6 +507,7 @@
 				}
 				vm.total.total = kk;
 				$('[ref=text-total]').val(kk);
+				vm.printTotal = kk;
 				vm.setState(function(){
 				})
 			});
