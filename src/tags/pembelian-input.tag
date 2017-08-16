@@ -124,6 +124,81 @@
 					</div>
 				</div>
 			</form>
+			<div style="display: none">
+				<div id="print-box">
+					<div class="section">
+						<h2>PT GANTI SENDIRI</h2>
+						<h5>
+							Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+						</h5>
+					</div>
+					<div class="section">
+						<table>
+							<tr>
+								<th>QTY</th>
+								<th>IN</th>
+								<th></th>
+							</tr>
+							<tr>
+								<td colspan="3">
+									<div class="divider"></div>
+								</td>
+							</tr>
+							<tr each="{item, index in tb_detail_penjualan}">
+								<td>{item.jumlah}</td>
+								<td>{item.nama_brg}</td>
+								<td>{toMoneyCurrency(item.subtotal)}</td>
+							</tr>
+							<!--tr>
+								<td colspan="2">
+									Sub Total
+								</td>
+								<td>{item.subtotal}</td>
+							</tr>
+							<tr>
+								<td colspan="2">
+									Tax
+								</td>
+								<td>27,272</td>
+							</tr-->
+							<tr>
+								<td colspan="3">
+									<div class="divider"></div>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="2">
+									TOTAL
+								</td>
+								<td>{toMoneyCurrency(printTotal)}</td>
+							</tr>
+							<tr>
+								<td colspan="2">
+									CASH
+								</td>
+								<td>{toMoneyCurrency(printCash)}</td>
+							</tr>
+							<tr>
+								<td colspan="3">
+									<div class="divider"></div>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="2">
+									Kembali
+								</td>
+								<td>{toMoneyCurrency(printKembali)}</td>
+							</tr>
+						</table>
+					</div>
+					<div class="section">
+						<h4>Terima Kasih</h4>
+						<h5>
+							Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+						</h5>
+					</div>
+				</div>
+			</div>
 			<form>
 				<div class="row">
 					<div class="col-md-8"></div>
@@ -155,6 +230,7 @@
 	<script>
 		// u can require at this 
 		let debounce = require('lodash/debounce.js');
+		require('../js/jqueryPrint.js');
 		require('../scss/pembelian.scss');	
 		let momentjs = require('moment');
 		let {
@@ -280,6 +356,9 @@
 				})
 			})
 		}
+		this.printCash = 0;
+		this.printTotal = 0;
+		this.printKembali = 0;
 		this.handleDelete = function(index,e){
 			e.preventUpdate = true;
 			reqDelete(vm.tb_detail_pembelian[index],function(data){

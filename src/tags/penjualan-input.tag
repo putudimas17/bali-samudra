@@ -114,6 +114,81 @@
 					</div>
 				</div>
 			</div>
+			<div style="display: none">
+				<div id="print-box">
+					<div class="section">
+						<h2>PT GANTI SENDIRI</h2>
+						<h5>
+							Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+						</h5>
+					</div>
+					<div class="section">
+						<table>
+							<tr>
+								<th>QTY</th>
+								<th>IN</th>
+								<th></th>
+							</tr>
+							<tr>
+								<td colspan="3">
+									<div class="divider"></div>
+								</td>
+							</tr>
+							<tr each="{item, index in tb_detail_penjualan}">
+								<td>{item.jumlah}</td>
+								<td>{item.nama_brg}</td>
+								<td>{toMoneyCurrency(item.subtotal)}</td>
+							</tr>
+							<!--tr>
+								<td colspan="2">
+									Sub Total
+								</td>
+								<td>{item.subtotal}</td>
+							</tr>
+							<tr>
+								<td colspan="2">
+									Tax
+								</td>
+								<td>27,272</td>
+							</tr-->
+							<tr>
+								<td colspan="3">
+									<div class="divider"></div>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="2">
+									TOTAL
+								</td>
+								<td>{toMoneyCurrency(printTotal)}</td>
+							</tr>
+							<tr>
+								<td colspan="2">
+									CASH
+								</td>
+								<td>{toMoneyCurrency(printCash)}</td>
+							</tr>
+							<tr>
+								<td colspan="3">
+									<div class="divider"></div>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="2">
+									Kembali
+								</td>
+								<td>{toMoneyCurrency(printKembali)}</td>
+							</tr>
+						</table>
+					</div>
+					<div class="section">
+						<h4>Terima Kasih</h4>
+						<h5>
+							Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+						</h5>
+					</div>
+				</div>
+			</div>
 			<form>
 				<div class="row">
 					<div class="col-md-8"></div>
@@ -159,6 +234,7 @@
 				<div class="row">
 					<div class="col-md-6 text-left">
 						<a href="#" id="saveTotal" class="btn btn-primary" onclick="{handleFinishOrder.bind(this)}"><i class="fa fa-floppy-o"></i> Simpan</a>
+						<a href="#" id="print" class="btn btn-primary" onclick="{handlePrint.bind(this)}"><i class="fa fa-floppy-o"></i> Print</a>
 						<a href="#" class="btn btn-success" onclick="{back.bind(this)}"><i class="fa fa-reply"></i> Kembali</a>
 					</div>	
 					<div class="col-md-6 text-right">
@@ -171,6 +247,7 @@
 	<script>
 		// u can require at this 
 		let debounce = require('lodash/debounce.js');
+		require('../js/jqueryPrint.js');
 		require('../scss/pembelian.scss');	
 		let momentjs = require('moment');
 		let {
@@ -274,6 +351,12 @@
 			}
 			this.init(value);
 		}
+		this.printCash = 0;
+		this.printTotal = 0;
+		this.printKembali = 0;
+		this.handlePrint = function(e){
+			$('#print-box').print();
+		}
 		this.belumLunas = true;
 		this.handleChange = function(whatKey,e){
 			switch(whatKey){
@@ -307,6 +390,7 @@
 				}
 				vm.total.subtotal = kk;
 				$('[ref=text-total]').val(kk);
+				vm.printTotal = kk;
 				vm.setState(function(){
 					vm.inputBarang = new newInputBarang();
 					$('[ref=kode_brg]').focus();
@@ -366,6 +450,8 @@
 				vm.handleChange($(this).attr('ref'),e);
 			})
 			$('#txtBayar').on('keypress',function(e){
+				vm.printCash = e.target.value;
+				vm.setState(function(){})
 				if(e.which == 13) {
 					let kembalinya = $('#txtBayar').val() - $('#txtGrandTotal').val();
 					if(kembalinya < 0){
@@ -375,6 +461,8 @@
 					}
 					vm.belumLunas = false;
 					$('#txtKembali').val(kembalinya);
+					vm.printKembali = kembalinya;
+					vm.setState(function(){})
 				}
 			})
 			$('#inp_kode_barang').on('keypress',function(e){
@@ -421,6 +509,7 @@
 				}
 				vm.total.subtotal = kk;
 				$('[ref=text-total]').val(kk);
+				vm.printTotal = kk;
 				vm.setState(function(){
 				})
 			})
