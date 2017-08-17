@@ -92,6 +92,11 @@ export const supplierRequest = {
     },
 }
 export const returPembelianRequest = {
+    searchBarang:{
+        url:'/retur-pembelian.php?action=search-barang',
+        method : 'POST',
+        param : ''
+    },
     fetchReturPembelian:{
         url : '/retur-pembelian.php?action=fetch',
         method : 'POST',

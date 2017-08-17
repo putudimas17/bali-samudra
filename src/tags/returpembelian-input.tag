@@ -276,7 +276,7 @@
 			var formData = new FormData();
 			formData.append('kode_brg',idbarang);
 			formData.append('id_pembelian',$('[ref=id_pembelian]').val());
-			getRestApiService(formData,barangRequest.searchItem,function(data){
+			getRestApiService(formData,returPembelianRequest.searchBarang,function(data){
 				data = JSON.parse(data);
 				switch(data.status){
 					case 'success':
