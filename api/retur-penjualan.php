@@ -431,6 +431,38 @@ if(isset($_GET['action'])){
 		case 'save':
 
 		break;
+		case 'search-barang':
+		 	$sql = 'select i.kode_brg ,id_kategori ,nama_brg ,stok ,j.harga,satuan from tb_barang  i left join tb_detail_penjualan j on i.kode_brg = j.kode_brg where j.kode_brg = "'.$_POST['kode_brg'].'" AND  j.id_penjualan = "'.$_POST['id_penjualan'].'"';
+		 	$gg = $db->query($sql);
+	 		$barang = array();
+	 		echo $db->error;
+		 	if($gg->num_rows > 0){
+		 		while($row = mysqli_fetch_assoc($gg)) {
+		 			$barang[] = [
+	 					'kode_brg' => $row['kode_brg'],
+	 					'id_kategori' => $row['id_kategori'],
+	 					'nama_brg' => $row['nama_brg'],
+	 					'stok' => $row['stok'],
+	 					'harga' => $row['harga'],
+	 					'satuan' => $row['satuan']
+	 				];
+		 		}
+		 	}else{
+		 		$toJSON = [
+    				'status' => 'rejected',
+			 		'message' => 'Tidak ada produk ini'
+			 	];
+			 	header('Content-Type: application/json');
+			 	echo json_encode($toJSON);
+		 		return;
+		 	}
+		 	$toJSON = [
+		 		'status' => 'success',
+		 		'tb_barang' => $barang
+		 	];
+		 	header('Content-Type: application/json');
+		 	echo json_encode($toJSON);
+		return;
 		case 'delete-transaksi':
 			$sql = "UPDATE tb_retur_penjualan SET tgl = '' where id = '".$_POST['id_retur']."'";
 			$updated = mysqli_query($db,$sql);

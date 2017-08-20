@@ -159,6 +159,11 @@ export const returPembelianRequest = {
     }
 }
 export const returPenjualanRequest = {
+    searchBarang:{
+        url:'/retur-penjualan.php?action=search-barang',
+        method : 'POST',
+        param : ''
+    },
     fetchReturPenjualan:{
         url : '/retur-penjualan.php?action=fetch',
         method : 'POST',
