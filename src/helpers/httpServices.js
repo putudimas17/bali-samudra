@@ -36,6 +36,11 @@ export const pembelianRequest = {
         url: '/pembelian.php?action=delete',
         method: 'POST',
         param: ''
+    },
+    deleteTransaksi:{
+        url: '/pembelian.php?action=delete-transaksi',
+        method: 'POST',
+        param: ''
     }
 }
 
@@ -75,6 +80,11 @@ export const penjualanRequest = {
         method : 'POST',
         param : ''
     },
+    deleteTransaksi:{
+        url: '/penjualan.php?action=delete-transaksi',
+        method: 'POST',
+        param: ''
+    }
 }
 
 export const barangRequest = {
@@ -142,6 +152,11 @@ export const returPembelianRequest = {
         method : 'POST',
         param : ''
     },
+    deleteTransaksi:{
+        url: '/retur-pembelian.php?action=delete-transaksi',
+        method: 'POST',
+        param: ''
+    }
 }
 export const returPenjualanRequest = {
     fetchReturPenjualan:{
@@ -189,6 +204,11 @@ export const returPenjualanRequest = {
         method : 'POST',
         param : ''
     },
+    deleteTransaksi:{
+        url: '/retur-penjualan.php?action=delete-transaksi',
+        method: 'POST',
+        param: ''
+    }
 }
 var loadingNumber = 0;
 export const getRestApiService = function (postdata, tempApiRequest, param3, param4) {

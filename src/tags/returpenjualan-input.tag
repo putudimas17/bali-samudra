@@ -101,7 +101,7 @@
 													{index+1}
 												</td>
 												<td>
-													{item.id_barang}
+													{item.kode_brg}
 												</td>
 												<td>
 													{item.nama_brg}
@@ -116,7 +116,6 @@
 													{item.total}
 												</td>
 												<td align="center">
-													<a href="penjualan/penjualan_edit.php?id=<?php echo $r['id']; ?>" data-target="#EditDataPenjualan" data-toggle="modal" data-backdrop="static" class="fa fa-edit"-></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 													<a href="#" onclick="{handleDelete.bind(this,index)}" class="hapus_modal fa fa-trash-o"></a>
 												</td>
 											</tr>
@@ -150,7 +149,7 @@
 						<a href="#" class="btn btn-success" onclick="{back.bind(this)}"><i class="fa fa-reply"></i> Kembali</a>
 					</div>	
 					<div class="col-md-6 text-right">
-						<a href="#" class="btn btn-default" onclick="{back.bind(this)}"><i class="fa fa-trash-o"></i> Hapus</a>
+						<a href="#" class="btn btn-default" onclick="{handleDeleteTransaksi.bind(this)}"><i class="fa fa-trash-o"></i> Hapus</a>
 					</div>					
 				</div>			
 			</form>			
@@ -237,7 +236,7 @@
 		let reqSaveDetail = function(callback){
 			var formData = new FormData();
 			formData.append('id_retur',vm.tb_retur_penjualan.id);
-			formData.append('id_barang',vm.inputBarang.kode_brg);
+			formData.append('kode_brg',vm.inputBarang.kode_brg);
 			formData.append('jumlah',vm.inputBarang.jumlah);
 			formData.append('harga',vm.inputBarang.harga);
 			formData.append('total',vm.inputBarang.harga * vm.inputBarang.jumlah);
@@ -258,7 +257,7 @@
 			var formData = new FormData();
 			formData.append('id_retur',item.id_retur);
 			formData.append('id',item.id);
-			formData.append('kode_brg',item.id_barang);
+			formData.append('kode_brg',item.kode_brg);
 			getRestApiService(formData,returPenjualanRequest.deleteItem,function(data){
 				data = JSON.parse(data);
 				callback(data);
@@ -287,6 +286,14 @@
 				}
 			})
 		}
+		let req_deleteTransaksi = function(id,callback){
+			var formData = new FormData();
+			formData.append('id_retur',id);
+			getRestApiService(formData,returPenjualanRequest.deleteTransaksi,function(data){
+				data = JSON.parse(data);
+				callback(data);
+			})
+		}
 		let pendingSearch = null;
 		let reqCreateNewOrder = function(callback){
 			var dd = {}
@@ -303,6 +310,12 @@
 			this.id_supel = 0;
 			this.total = 0;
 			this.inv = '';
+		}
+		this.handleDeleteTransaksi = function(e){
+			e.preventUpdate = true;
+			req_deleteTransaksi(vm.tb_retur_penjualan.id,function(data){
+				vm.back(e);
+			})
 		}
 		let newInputBarang = function(value){
 			this.kode_brg = '';

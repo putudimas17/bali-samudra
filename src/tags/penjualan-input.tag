@@ -238,7 +238,7 @@
 						<a href="#" class="btn btn-success" onclick="{back.bind(this)}"><i class="fa fa-reply"></i> Kembali</a>
 					</div>	
 					<div class="col-md-6 text-right">
-						<a href="#" class="btn btn-default" onclick="{back.bind(this)}"><i class="fa fa-trash-o"></i> Hapus</a>
+						<a href="#" class="btn btn-default" onclick="{handleDeleteTransaksi.bind(this)}"><i class="fa fa-trash-o"></i> Hapus</a>
 					</div>					
 				</div>			
 			</form>			
@@ -326,7 +326,14 @@
 				callback(data);
 			})
 		}
-		
+		let req_deleteTransaksi = function(idPenjualan,callback){
+			var formData = new FormData();
+			formData.append('id_penjualan',idPenjualan);
+			getRestApiService(formData,penjualanRequest.deleteTransaksi,function(data){
+				data = JSON.parse(data);
+				callback(data);
+			})
+		}
 		let newTotal = function(){
 			this.inv = '';
 			this.subtotal = 0;
@@ -356,6 +363,12 @@
 		this.printKembali = 0;
 		this.handlePrint = function(e){
 			$('#print-box').print();
+		}
+		this.handleDeleteTransaksi = function(e){
+			e.preventUpdate = true;
+			req_deleteTransaksi(vm.tb_penjualan.id_penjualan,function(data){
+				vm.back(e);
+			})
 		}
 		this.belumLunas = true;
 		this.handleChange = function(whatKey,e){

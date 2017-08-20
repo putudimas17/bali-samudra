@@ -54,7 +54,7 @@
 													{index+1}
 												</td>
 												<td>
-													{item.id_barang}
+													{item.kode_brg}
 												</td>
 												<td>
 													{item.nama_brg}

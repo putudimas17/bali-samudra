@@ -28,6 +28,7 @@ function readyInput($db){
 	    $sql = "select i.id_detail_pen, i.id_penjualan, i.kode_brg, i.jumlah, i.harga, i.subtotal, j.nama_brg from tb_detail_penjualan i left join tb_barang j on i.kode_brg = j.kode_brg where id_penjualan = '".$head[0]['id_penjualan']."'";
 	 	$gg = $db->query($sql);
  		$detail = array();
+ 		echo $db->error;
 	 	if($gg->num_rows > 0){
 	 		while($row = mysqli_fetch_assoc($gg)) {
 	 			$detail[] = [
@@ -302,26 +303,26 @@ if(isset($_GET['action'])){
 			 			$delStokBarang = "UPDATE tb_barang set stok = (stok - ".$row['jumlah'].") where kode_brg = '".$row['kode_brg']."'";
 			 			$delStokBarang = mysqli_query($db,$delStokBarang);
 						if ($delStokBarang) {
-							$selInstok = "SELECT qty from in_stok where kd_barang = '".$row['kode_brg']."' and qty > 0 order by tanggal asc limit 1";
+							$selInstok = "SELECT qty from in_stok where kode_brg = '".$row['kode_brg']."' and qty > 0 order by tanggal asc limit 1";
 				 			$selInstok = mysqli_query($db,$selInstok);
 						    $selInstok = mysqli_fetch_row($selInstok);
 						    if(isset($selInstok[0])==true){
 						    	while($row['jumlah'] > 0){
 						    		if($selInstok[0] > $row['jumlah']){
 						    			// check dulu harga di in_stok
-						    			$checkHargaInStok = "SELECT harga from in_stok where kd_barang = '".$row['kode_brg']."' and qty > 0 order by tanggal asc limit 1";
+						    			$checkHargaInStok = "SELECT harga from in_stok where kode_brg = '".$row['kode_brg']."' and qty > 0 order by tanggal asc limit 1";
 							 			$checkHargaInStok = mysqli_query($db,$checkHargaInStok);
 						    			$checkHargaInStok = mysqli_fetch_row($checkHargaInStok);
 						    			// baru lakukan update in_stok
 							    		$qqq = $selInstok[0] - $row['jumlah'];
 						    			$stokforOutStok = $row['jumlah'];
-							    		$updateInStok = "UPDATE in_stok SET qty = ".$qqq." where kd_barang = '".$row['kode_brg']."' and qty > 0 order by tanggal asc limit 1";
+							    		$updateInStok = "UPDATE in_stok SET qty = ".$qqq." where kode_brg = '".$row['kode_brg']."' and qty > 0 order by tanggal asc limit 1";
 							    		if ($db->query($updateInStok) === TRUE) {
 							    			$selInstok[0] = $qqq;
 							    			$row['jumlah'] = 0;
 							    			
 							    			// masukan juga out stok nya
-			 								$outstok = "INSERT into out_stok (no_transaksi,tanggal,kd_barang,qty,harga) values (".$_POST['id_penjualan'].",'".date("Y-m-d H:i:s")."','".$row['kode_brg']."',".$stokforOutStok.",".$checkHargaInStok[0].")";
+			 								$outstok = "INSERT into out_stok (no_transaksi,tanggal,kode_brg,qty,harga) values (".$_POST['id_penjualan'].",'".date("Y-m-d H:i:s")."','".$row['kode_brg']."',".$stokforOutStok.",".$checkHargaInStok[0].")";
 							    			if($db->query($outstok) == true){
 
 							    			}else{
@@ -332,20 +333,20 @@ if(isset($_GET['action'])){
 							    		}
 							    	}else{
 							    		// check dulu harga di in_stok
-						    			$checkHargaInStok = "SELECT harga from in_stok where kd_barang = '".$row['kode_brg']."' and qty > 0 order by tanggal asc limit 1";
+						    			$checkHargaInStok = "SELECT harga from in_stok where kode_brg = '".$row['kode_brg']."' and qty > 0 order by tanggal asc limit 1";
 							 			$checkHargaInStok = mysqli_query($db,$checkHargaInStok);
 						    			$checkHargaInStok = mysqli_fetch_row($checkHargaInStok);
 
 							 			// baru lakukan update in_stok
 							    		$qqq = $row['jumlah'] - $selInstok[0];
-							    		$updateInStok = "UPDATE in_stok SET qty = 0 where kd_barang = '".$row['kode_brg']."' and qty > 0 order by tanggal asc limit 1";
+							    		$updateInStok = "UPDATE in_stok SET qty = 0 where kode_brg = '".$row['kode_brg']."' and qty > 0 order by tanggal asc limit 1";
 							    		if ($db->query($updateInStok) === TRUE) {
 							    			$stokforOutStok = $selInstok[0];
 							    			$selInstok[0] = 0;
 							    			$row['jumlah'] = $qqq;
 
 							    			// masukan juga out stok nya
-			 								$outstok = "INSERT INTO out_stok (no_transaksi,tanggal,kd_barang,qty,harga) VALUES ('".$_POST['id_penjualan']."','".date("Y-m-d H:i:s")."','".$row['kode_brg']."',".$stokforOutStok.",".$checkHargaInStok[0].")";
+			 								$outstok = "INSERT INTO out_stok (no_transaksi,tanggal,kode_brg,qty,harga) VALUES ('".$_POST['id_penjualan']."','".date("Y-m-d H:i:s")."','".$row['kode_brg']."',".$stokforOutStok.",".$checkHargaInStok[0].")";
 							    			if($db->query($outstok) == true){
 							    				
 							    			}else{
@@ -377,6 +378,23 @@ if(isset($_GET['action'])){
 			 	header('Content-Type: application/json');
 			 	echo json_encode($toJSON);
 		    }	
+		break;
+		case 'delete-transaksi':
+			$sql = "UPDATE tb_penjualan SET tgl = '' where id_penjualan = '".$_POST['id_penjualan']."'";
+			$updated = mysqli_query($db,$sql);
+			if ($updated) {
+				$sql = 'DELETE from tb_detail_penjualan  where  id_penjualan = "'.$_POST['id_penjualan'].'"';
+			 	$gg = $db->query($sql);
+			 	echo $db->error;
+			 	$toJSON = [
+			 		'status' => 'success',
+			 		'message' => 'tb_detail_penjualan sudah di delete!'
+			 	];
+			 	header('Content-Type: application/json');
+			 	echo json_encode($toJSON);
+			}else{
+				echo 'enggak ada';
+			}
 		break;
 	}
 }

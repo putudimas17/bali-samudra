@@ -60,17 +60,17 @@ define(function (require) {
                 if (callback != null) {
                     var gg = new Promise(function (resolve, reject) {
                         if (callback != null) {
-                            temp_callback = callback;
                             setTimeout(function () {
-                                temp_callback();
+                                resolve();
                             }, 1);
                         } else {
                             reject();
                             return;
                         }
-                        resolve();
+                        
                     })
                     gg.then(function () {
+                        callback();
                         callback = null;
                         console.log('Change State is Done!');
                     }).catch(function () {

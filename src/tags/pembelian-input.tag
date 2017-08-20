@@ -98,7 +98,7 @@
 													{index+1}
 												</td>
 												<td>
-													{item.id_barang}
+													{item.kode_brg}
 												</td>
 												<td>
 													{item.nama_brg}
@@ -215,7 +215,7 @@
 						<a href="#" class="btn btn-success" onclick="{back.bind(this)}"><i class="fa fa-reply"></i> Kembali</a>
 					</div>	
 					<div class="col-md-6 text-right">
-						<a href="#" class="btn btn-default" onclick="{back.bind(this)}"><i class="fa fa-trash-o"></i> Hapus</a>
+						<a href="#" class="btn btn-default" onclick="{handleDeleteTransaksi.bind(this)}"><i class="fa fa-trash-o"></i> Hapus</a>
 					</div>					
 				</div>			
 			</form>			
@@ -276,7 +276,7 @@
 		let reqDelete = function(item,callback){
 			var formData = new FormData();
 			formData.append('id_pembelian',item.id_pembelian);
-			formData.append('kode_brg',item.id_barang);
+			formData.append('kode_brg',item.kode_brg);
 			getRestApiService(formData,pembelianRequest.deleteItem,function(data){
 				data = JSON.parse(data);
 				callback(data);
@@ -302,6 +302,14 @@
 						alert(data.message);
 					break;
 				}
+			})
+		}
+		let req_deleteTransaksi = function(id,callback){
+			var formData = new FormData();
+			formData.append('id_pembelian',id);
+			getRestApiService(formData,pembelianRequest.deleteTransaksi,function(data){
+				data = JSON.parse(data);
+				callback(data);
 			})
 		}
 		let pendingSearch = null;
@@ -348,6 +356,12 @@
 				vm.opts.changePage({
 					action : 'open-table'
 				})
+			})
+		}
+		this.handleDeleteTransaksi = function(e){
+			e.preventUpdate = true;
+			req_deleteTransaksi(vm.tb_pembelian.id_pembelian,function(data){
+				vm.back(e);
 			})
 		}
 		this.printSupplier = '';

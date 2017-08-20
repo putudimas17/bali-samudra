@@ -25,7 +25,7 @@ function readyInput($db){
  			];
  		}
  		// get detail 
-	    $sql = "select * from tb_detail_retur_penjualan i left join tb_barang j on i.id_barang = j.kode_brg where i.id = '".$head[0]['id']."'";
+	    $sql = "select * from tb_detail_retur_penjualan i left join tb_barang j on i.kode_brg = j.kode_brg where i.id = '".$head[0]['id']."'";
 	 	$gg = $db->query($sql);
  		$detail = array();
  		echo $db->error;
@@ -34,7 +34,7 @@ function readyInput($db){
 	 			$detail[] = [
  					'id_retur' => $row['id_retur'],
  					'id' => $row['id'],
- 					'id_barang' => $row['id_barang'],
+ 					'kode_brg' => $row['kode_brg'],
  					'jumlah' => $row['jumlah'],
  					'nama_brg' => $row['nama_brg'],
  					'harga' => $row['harga'],
@@ -71,7 +71,7 @@ if(isset($_GET['action'])){
 		 			];
 		 		}		 		
 			 	$detail = [];
-			 	$sql = 'select i.id_retur, i.id, i.id_barang, j.nama_brg,i.jumlah,i.harga,i.total from tb_detail_retur_penjualan i left join tb_barang j on i.id_barang = j.kode_brg  where  id_retur = "'.$_POST['id'].'"';
+			 	$sql = 'select i.id_retur, i.id, i.kode_brg, j.nama_brg,i.jumlah,i.harga,i.total from tb_detail_retur_penjualan i left join tb_barang j on i.kode_brg = j.kode_brg  where  id_retur = "'.$_POST['id'].'"';
 			 	$gg = $db->query($sql);
 		 		$detail = array();
 			 	if($gg->num_rows > 0){
@@ -79,7 +79,7 @@ if(isset($_GET['action'])){
 			 			$detail[] = [
 		 					'id_retur' => $row['id_retur'],
 		 					'id' => $row['id'],
-		 					'id_barang' => $row['id_barang'],
+		 					'kode_brg' => $row['kode_brg'],
 		 					'nama_brg' => $row['nama_brg'],
 		 					'jumlah' => $row['jumlah'],
 		 					'harga' => $row['harga'],
@@ -129,7 +129,7 @@ if(isset($_GET['action'])){
 		 	echo json_encode($toJSON);
 		break;
 		case 'search-barang-dari-penjualan':
-			$sql = 'select i.kode_brg, i.id_kategori, i.nama_brg, j.jumlah, j.harga, i.satuan from tb_barang i left join tb_detail_penjualan j on i.kode_brg = j.id_barang where i.kode_brg = "'.$_POST['kode_brg'].'" AND j.id_penjualan = '.$_POST['id_penjualan'].'';
+			$sql = 'select i.kode_brg, i.id_kategori, i.nama_brg, j.jumlah, j.harga, i.satuan from tb_barang i left join tb_detail_penjualan j on i.kode_brg = j.kode_brg where i.kode_brg = "'.$_POST['kode_brg'].'" AND j.id_penjualan = '.$_POST['id_penjualan'].'';
 		 	$gg = $db->query($sql);
 	 		$barang = array();
 		 	if($gg->num_rows > 0){
@@ -265,7 +265,7 @@ if(isset($_GET['action'])){
 			$sql = "UPDATE tb_retur_penjualan set total = '".$_POST['total'] ."', status='1' WHERE id= '".$_POST['id']."'";
 		 	if ($db->query($sql) === TRUE) {
 		    	// select kembali detail transaksi pembeliannya
-		    	$sql = "select * from tb_detail_retur_penjualan i left join tb_barang j on i.id_barang = j.kode_brg  where  i.id_retur = '".$_POST['id']."'";
+		    	$sql = "select * from tb_detail_retur_penjualan i left join tb_barang j on i.kode_brg = j.kode_brg  where  i.id_retur = '".$_POST['id']."'";
 			 	$gg = $db->query($sql);
 			 	if($gg->num_rows > 0){
 			 		$toJSON = [
@@ -318,7 +318,7 @@ if(isset($_GET['action'])){
 		return;
 		case 'save':
 			/*
-			$checkNoEMptyStock = "SELECT jumlah from tb_detail_pembelian i left join tb_retur_penjualan j on i.id_pembelian = j.no_pembelian where i.id_barang = '".$_POST['id_barang']."' AND  id_retur = ".$_POST['id_retur']."";
+			$checkNoEMptyStock = "SELECT jumlah from tb_detail_pembelian i left join tb_retur_penjualan j on i.id_pembelian = j.no_pembelian where i.kode_brg = '".$_POST['kode_brg']."' AND  id_retur = ".$_POST['id_retur']."";
 			$checkNoEMptyStock = $db->query($checkNoEMptyStock);
 	    	if($checkNoEMptyStock == TRUE){
 	    		$row = mysqli_fetch_array($checkNoEMptyStock);
@@ -333,15 +333,15 @@ if(isset($_GET['action'])){
 		    		return;
 		    	}
 	    	}*/
-			$sql = 'select * from tb_detail_retur_penjualan i left join tb_barang j on i.id_barang = j.kode_brg  where i.id_barang = "'.$_POST['id_barang'].'" AND  id_retur = "'.$_POST['id_retur'].'"';
+			$sql = 'select * from tb_detail_retur_penjualan i left join tb_barang j on i.kode_brg = j.kode_brg  where i.kode_brg = "'.$_POST['kode_brg'].'" AND  id_retur = "'.$_POST['id_retur'].'"';
 			$gg = $db->query($sql);
  			if($gg->num_rows > 0){
  				 try{
-				    $sql = "UPDATE tb_detail_retur_penjualan set jumlah = ".$_POST['jumlah'].", total=".$_POST['jumlah']*$_POST['harga']." where id_barang = '".$_POST['id_barang']."' AND id_retur = '".$_POST['id_retur']."'";
+				    $sql = "UPDATE tb_detail_retur_penjualan set jumlah = ".$_POST['jumlah'].", total=".$_POST['jumlah']*$_POST['harga']." where kode_brg = '".$_POST['kode_brg']."' AND id_retur = '".$_POST['id_retur']."'";
 					$updated = mysqli_query($db,$sql);
 					echo $db->error;
 					if ($updated) {
-						$sql = 'select i.id_retur, i.id, i.id_barang, j.nama_brg,i.jumlah,i.harga,i.total from tb_detail_retur_penjualan i left join tb_barang j on i.id_barang = j.kode_brg  where  id_retur = "'.$_POST['id_retur'].'"';
+						$sql = 'select i.id_retur, i.id, i.kode_brg, j.nama_brg,i.jumlah,i.harga,i.total from tb_detail_retur_penjualan i left join tb_barang j on i.kode_brg = j.kode_brg  where  id_retur = "'.$_POST['id_retur'].'"';
 					 	$gg = $db->query($sql);
 				 		$detail = array();
 					 	if($gg->num_rows > 0){
@@ -349,7 +349,7 @@ if(isset($_GET['action'])){
 					 			$detail[] = [
 				 					'id_retur' => $row['id_retur'],
 				 					'id' => $row['id'],
-				 					'id_barang' => $row['id_barang'],
+				 					'kode_brg' => $row['kode_brg'],
 				 					'nama_brg' => $row['nama_brg'],
 				 					'jumlah' => $row['jumlah'],
 				 					'harga' => $row['harga'],
@@ -371,9 +371,9 @@ if(isset($_GET['action'])){
 				 }
 
  			}else{
- 				$sql = "INSERT INTO  tb_detail_retur_penjualan (id_retur,id_barang,jumlah,harga,total) VALUES ('".$_POST['id_retur']."','".$_POST['id_barang']."',".$_POST['jumlah'].",".$_POST['harga'].",".$_POST['jumlah']*$_POST['harga'].")";
+ 				$sql = "INSERT INTO  tb_detail_retur_penjualan (id_retur,kode_brg,jumlah,harga,total) VALUES ('".$_POST['id_retur']."','".$_POST['kode_brg']."',".$_POST['jumlah'].",".$_POST['harga'].",".$_POST['jumlah']*$_POST['harga'].")";
 				if ($db->query($sql) === TRUE) {
-					$sql = 'select i.id_retur,i.id,i.id_barang,j.nama_brg,i.jumlah,i.harga,i.total from tb_detail_retur_penjualan i left join tb_barang j on i.id_barang = j.kode_brg  where  id_retur = "'.$_POST['id_retur'].'"';
+					$sql = 'select i.id_retur,i.id,i.kode_brg,j.nama_brg,i.jumlah,i.harga,i.total from tb_detail_retur_penjualan i left join tb_barang j on i.kode_brg = j.kode_brg  where  id_retur = "'.$_POST['id_retur'].'"';
 				 	$gg = $db->query($sql);
 			 		$detail = array();
 				 	if($gg->num_rows > 0){
@@ -381,7 +381,7 @@ if(isset($_GET['action'])){
 				 			$detail[] = [
 			 					'id_retur' => $row['id_retur'],
 			 					'id' => $row['id'],
-			 					'id_barang' => $row['id_barang'],
+			 					'kode_brg' => $row['kode_brg'],
 			 					'nama_brg' => $row['nama_brg'],
 			 					'jumlah' => $row['jumlah'],
 			 					'harga' => $row['harga'],
@@ -399,10 +399,10 @@ if(isset($_GET['action'])){
  			}
 		break;
 		case 'delete':
-			$sql = "DELETE from tb_detail_retur_penjualan where id_barang = '".$_POST['kode_brg']."' AND id = '".$_POST['id']."'";
+			$sql = "DELETE from tb_detail_retur_penjualan where kode_brg = '".$_POST['kode_brg']."' AND id = '".$_POST['id']."'";
 			$updated = mysqli_query($db,$sql);
 			if ($updated) {
-				$sql = 'select i.id_retur,i.id,i.id_barang,j.nama_brg,i.jumlah,i.harga,i.total from tb_detail_retur_penjualan i left join tb_barang j on i.id_barang = j.kode_brg  where  id_retur = "'.$_POST['id_retur'].'"';
+				$sql = 'select i.id_retur,i.id,i.kode_brg,j.nama_brg,i.jumlah,i.harga,i.total from tb_detail_retur_penjualan i left join tb_barang j on i.kode_brg = j.kode_brg  where  id_retur = "'.$_POST['id_retur'].'"';
 			 	$gg = $db->query($sql);
 		 		$detail = array();
 			 	if($gg->num_rows > 0){
@@ -410,7 +410,7 @@ if(isset($_GET['action'])){
 			 			$detail[] = [
 		 					'id_retur' => $row['id_retur'],
 		 					'id' => $row['id'],
-		 					'id_barang' => $row['id_barang'],
+		 					'kode_brg' => $row['kode_brg'],
 		 					'nama_brg' => $row['nama_brg'],
 		 					'jumlah' => $row['jumlah'],
 		 					'harga' => $row['harga'],
@@ -431,6 +431,22 @@ if(isset($_GET['action'])){
 		case 'save':
 
 		break;
-
+		case 'delete-transaksi':
+			$sql = "UPDATE tb_retur_penjualan SET tgl = '' where id = '".$_POST['id_retur']."'";
+			$updated = mysqli_query($db,$sql);
+			if ($updated) {
+				$sql = 'DELETE from tb_detail_retur_penjualan  where  id_retur = "'.$_POST['id_retur'].'"';
+			 	$gg = $db->query($sql);
+			 	echo $db->error;
+			 	$toJSON = [
+			 		'status' => 'success',
+			 		'message' => 'tb_detail_retur_penjualan sudah di delete!'
+			 	];
+			 	header('Content-Type: application/json');
+			 	echo json_encode($toJSON);
+			}else{
+				echo 'enggak ada';
+			}
+		break;
 	}
 }
