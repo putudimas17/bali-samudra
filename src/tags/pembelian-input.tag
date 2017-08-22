@@ -4,37 +4,44 @@
 	</div>
 	<div class="form" >
 		<div>
-			<form class="row">
+			<div class="row">
 				<div class="col-md-12">
 					<div class="row">
 						<div class="form-group">
 							<label class="control-label control-label-left col-sm-3" for="field1">No Pembelian</label>
 							<div class="controls col-sm-9">
-								<input id="field1" type="text" class="form-control k-textbox" value="{tb_pembelian.INV}" data-role="text" data-parsley-errors-container="#errId1" readonly>
+								<input type="text" class="form-control k-textbox" value="{tb_pembelian.INV}" data-role="text" data-parsley-errors-container="#errId1" readonly>
 								<span id="errId1" class="error"></span>
 							</div>
 						</div>
 						<div class="form-group">
 							<label class="control-label control-label-left col-sm-3" for="field1">Tanggal</label>
 							<div class="controls col-sm-9">
-								<input id="field1" type="text" class="form-control k-textbox" value="{translateToDate(tb_pembelian.tgl)}" data-role="text" data-parsley-errors-container="#errId1" readonly>
+								<input  type="text" class="form-control k-textbox" value="{translateToDate(tb_pembelian.tgl)}" data-role="text" data-parsley-errors-container="#errId1" readonly>
 								<span id="errId1" class="error"></span>
 							</div>
 						</div>
 						<div class="form-group">
 							<label class="control-label control-label-left col-sm-3" for="field2">Supplier</label>
 							<div class="controls col-sm-9">
-								<select id="field2" class="form-control" ref='id_supel' data-role="select" data-parsley-errors-container="#errId2">
+								<select  class="form-control" ref='id_supel' data-role="select" data-parsley-errors-container="#errId2">
 									<option value=""></option>
 									<option value="{item.id}" each="{item,index in tb_supplier}">{item.Nama}</option>
 								</select>
 								<span id="errId2" class="error"></span>
 							</div>
+						</div>	
+						<div class="form-group">
+							<label class="control-label control-label-left col-sm-3" for="field2">No Referensi</label>
+							<div class="controls col-sm-9">
+								<input type="text" ref="no_referensi" class="form-control k-textbox" value="{tb_pembelian.no_referensi}" data-role="text" data-parsley-errors-container="#errId1">
+								<span id="errId1" class="error"></span>
+							</div>
 						</div>						
 					</div>
 				</div>
-			</form><br>
-			<form  id="form2345">
+			</div><br>
+			<div  id="form2345">
 				<div class="row">
 					<div class="col-md-2">
 						<div class="form-group">
@@ -123,21 +130,22 @@
 						</div>
 					</div>
 				</div>
-			</form>
+			</div>
 			<div style="display: none">
 				<div id="print-box">
 					<div class="section">
-						<h2 class="left">PT GANTI SENDIRI</h2>
-						<h5 class="left">
-							Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+						<h2 class="">PT GANTI SENDIRI</h2>
+						<h5 class="">
+							INVOICE PEMBELIAN
 						</h5>
-						<div class="row">
-							<div class="col-md-6">
+						<div class="s-row">
+							<div class="s-col c-6">
 								<h5 class="left">SUPPLIER : {printSupplier}</h5>
 								<h5 class="left">TGL : {translateToDate(tb_pembelian.tgl)}</h5>
+								<h5 class="left">NO Ref : {tb_pembelian.no_referensi}</h5>
 							</div>
-							<div class="col-md-6">
-								<h5 class="left">INVOICE : {tb_pembelian.INV}</h5>
+							<div class="s-col c-6">
+								<h5 class="right">INVOICE : {tb_pembelian.INV}</h5>
 							</div>
 						</div>
 					</div>
@@ -145,18 +153,22 @@
 						<table>
 							
 							<tr>
-								<th>QTY</th>
-								<th>IN</th>
-								<th></th>
+								<th>KODE</th>
+								<th>NAMA</th>
+								<th>HARGA</th>
+								<th>JUMLAH</th>
+								<th>SUBTOTAL</th>
 							</tr>
 							<tr>
-								<td colspan="3">
+								<td colspan="5">
 									<div class="divider"></div>
 								</td>
 							</tr>
 							<tr each="{item, index in tb_detail_pembelian}">
+								<td>{item.kode_brg}</td>
 								<td>{item.jumlah}</td>
 								<td>{item.nama_brg}</td>
+								<td>{item.jumlah}</td>
 								<td>{toMoneyCurrency(item.total)}</td>
 							</tr>
 							<!--tr>
@@ -172,12 +184,12 @@
 								<td>27,272</td>
 							</tr-->
 							<tr>
-								<td colspan="3">
+								<td colspan="5">
 									<div class="divider"></div>
 								</td>
 							</tr>
 							<tr>
-								<td colspan="2">
+								<td colspan="4">
 									TOTAL
 								</td>
 								<td>{toMoneyCurrency(printTotal)}</td>
@@ -241,6 +253,7 @@
 			}
 			formData.append('id_pembelian',vm.tb_pembelian.id_pembelian);
 			formData.append('total',$('[ref=text-total]').val());
+			formData.append('no_referensi',$('[ref=no_referensi]').val());
 			formData.append('id_supel',vm.total.id_supel);
 			getRestApiService(formData,pembelianRequest.saveTotal,function(data){
 				data = JSON.parse(data);
@@ -372,6 +385,11 @@
 			e.preventUpdate = true;
 			reqDelete(vm.tb_detail_pembelian[index],function(data){
 				vm.tb_detail_pembelian = data.tb_detail_pembelian;
+				var kk = 0;
+				for(var a=0;a<vm.tb_detail_pembelian.length;a++){
+					kk += parseInt(vm.tb_detail_pembelian[a].total);
+				}
+				$('[ref=text-total]').val(kk);
 				vm.setState(function(){
 					vm.inputBarang = new newInputBarang();
 					$('[ref=kode_brg]').focus();
@@ -382,12 +400,13 @@
 		this.total = new newTotal();
 		this.inputBarang = new newInputBarang();
 		this.translateToDate = function(value){
-			return momentjs(value,'yyyy-mm-dd').format('LLL')
+			return momentjs(value,'yyyy-mm-dd').format('YYYY-MM-DD')
 		}
 		this.handleSaveItem = function(e){
 			e.preventUpdate = true;
 			reqSaveDetail(function(data){
 				vm.tb_detail_pembelian = data.tb_detail_pembelian;
+				
 				var kk = 0;
 				for(var a=0;a<vm.tb_detail_pembelian.length;a++){
 					kk += parseInt(vm.tb_detail_pembelian[a].total);
@@ -454,16 +473,22 @@
 		this.tb_pembelian = [];
 		this.tb_detail_pembelian = [];
 		this.on('mount',function(){
+			$('[ref=no_referensi]').on('keyup',function(e){
+				console.log(e.target.value);
+				vm.tb_pembelian.no_referensi = e.target.value;
+				vm.setState(function(){})
+			})
 			$('[ref=id_supel]').on('change',function(e){
 				vm.handleChange($(this).attr('ref'),e);
 				vm.printSupplier = $("[ref=id_supel] option:selected").text();
 				vm.setState(function(){})
 			})
-			$('#form2345').on('submit',function(e){
-				e.preventDefault();
-			})
 			$('[ref=jumlah]').on('keypress',function(e){
 				if(e.which == 13) {
+					if($('[ref=harga]').val() <= 0 || $('[ref=harga]').val() == ''){
+						alert('Harga beli tidak boleh 0');
+						return;
+					}
 					vm.handleSaveItem(e);
 				}
 			})
@@ -473,7 +498,13 @@
 				if($('[ref=nama_brg]').val() != ''){
 					vm.handleSaveItem(e);
 				}
-				
+			})
+			$('[ref=harga]').on('keypress',function(e){
+				if(e.which == 13){
+					if(e.target.value <= 0 || e.target.value == ''){
+						alert('Harga beli tidak boleh 0');
+					}
+				}
 			})
 			$('[ref=jumlah]').on('change keydown',function(e){
 				vm.handleChange($(this).attr('ref'),e);

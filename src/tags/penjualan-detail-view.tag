@@ -14,27 +14,7 @@
 								<span id="errId1" class="error"></span>
 							</div>
 						</div>
-						<div class="form-group">
-							<label class="control-label control-label-left col-sm-3" for="field1">TOTAL</label>
-							<div class="controls col-sm-9">
-								<input id="field1" type="text" class="form-control k-textbox" value="{tb_penjualan.total}" data-role="text" data-parsley-errors-container="#errId1" readonly>
-								<span id="errId1" class="error"></span>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="control-label control-label-left col-sm-3" for="field1">Bayar</label>
-							<div class="controls col-sm-9">
-								<input id="field1" type="text" class="form-control k-textbox" value="{tb_penjualan.bayar}" data-role="text" data-parsley-errors-container="#errId1" readonly>
-								<span id="errId1" class="error"></span>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="control-label control-label-left col-sm-3" for="field1">Kembali</label>
-							<div class="controls col-sm-9">
-								<input id="field1" type="text" class="form-control k-textbox" value="{tb_penjualan.kembali}" data-role="text" data-parsley-errors-container="#errId1" readonly>
-								<span id="errId1" class="error"></span>
-							</div>
-						</div>
+						
 						<div class="form-group">
 							<label class="control-label control-label-left col-sm-3" for="field1">Tanggal</label>
 							<div class="controls col-sm-9">
@@ -93,6 +73,89 @@
 					</div>
 				</div>
 			</form>
+			<div style="display: none">
+				<div id="print-box">
+					<div class="section">
+						<h2>PT GANTI SENDIRI</h2>
+						<h5>
+							STRUK PEMBAYARAN
+						</h5>
+					</div>
+					<div class="section">
+						<table>
+							<tr>
+								<th>Item</th>
+								<th class="w-auto right">Sub Total</th>
+							</tr>
+							<tr>
+								<td colspan="2" class="no-padding">
+									<div class="divider"></div>
+								</td>
+							</tr>
+							<tr each="{item, index in tb_detail_penjualan}">
+								<td>
+									<div class="s-row">
+										<div class="s-col c-12">
+											{item.nama_brg}
+										</div>
+										<div class="s-col c-12">
+											{item.jumlah} Qty x {toMoneyCurrency(item.subtotal)}
+										</div>
+									</div>
+								</td>
+								<td>{toMoneyCurrency(item.subtotal)}</td>
+							</tr>
+							<!--tr>
+								<td colspan="2">
+									Sub Total
+								</td>
+								<td>{item.subtotal}</td>
+							</tr>
+							<tr>
+								<td colspan="2">
+									Tax
+								</td>
+								<td>27,272</td>
+							</tr-->
+							<tr>
+								<td colspan="2" class="no-padding">
+									<div class="divider"></div>
+								</td>
+							</tr>
+							<tr>
+								<td class="right">
+									TOTAL
+								</td>
+								<td>{toMoneyCurrency(tb_penjualan.total)}</td>
+							</tr>
+							<tr>
+								<td class="right">
+									CASH
+								</td>
+								<td>{toMoneyCurrency(tb_penjualan.bayar)}</td>
+							</tr>
+							<tr>
+								<td colspan="2" class="no-padding">
+									<div class="divider"></div>
+								</td>
+							</tr>
+							<tr>
+								<td class="right">
+									Kembali
+								</td>
+								<td >{toMoneyCurrency(tb_penjualan.kembali)}</td>
+							</tr>
+						</table>
+					</div>
+					<div class="section">
+						<h4>Terima Kasih</h4>
+						<h5>
+							Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+						</h5>
+					</div>
+				</div>
+			</div>
+
 			<form>
 				<div class="row">
 					<div class="col-md-8"></div>
@@ -103,7 +166,19 @@
 								<div class="controls col-sm-8">
 									<input id="txtGrandTotal" ref="text-total" type="text" value="{tb_penjualan.total}" class="form-control k-textbox text-right" readonly>
 								</div>
-							</div>								
+							</div>
+							<div class="form-group">
+								<label class="control-label control-label-left col-sm-4">Bayar</label>
+								<div class="controls col-sm-8">
+									<input id="txtGrandTotal" ref="text-total" type="text" value="{tb_penjualan.bayar}" class="form-control k-textbox text-right" readonly>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label control-label-left col-sm-4">Kembali</label>
+								<div class="controls col-sm-8">
+									<input id="txtGrandTotal" ref="text-total" type="text" value="{tb_penjualan.kembali}" class="form-control k-textbox text-right" readonly>
+								</div>
+							</div>						
 						</div>				
 					</div>
 				</div>
@@ -111,6 +186,7 @@
 			<form>
 				<div class="row">
 					<div class="col-md-6 text-left">
+						<a href="#" id="print" class="btn btn-primary" onclick="{handlePrint.bind(this)}"><i class="fa fa-floppy-o"></i> Print</a>
 						<a href="#" class="btn btn-success" onclick="{back.bind(this)}"><i class="fa fa-reply"></i> Kembali</a>
 					</div>	
 					<div class="col-md-6 text-right">
@@ -146,6 +222,9 @@
 			vm.opts.changePage({
 				action : 'open-table'
 			})
+		}
+		this.handlePrint = function(e){
+			$('#print-box').print();
 		}
 		this.tb_penjualan = [];
 		this.tb_detail_penjualan = [];

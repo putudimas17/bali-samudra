@@ -1,0 +1,319 @@
+
+/*
+ * rolless sass v0.1 alpha
+ * on development
+ * everything is component
+ */
+
+//reset tool for ul li
+@mixin reset-ul-li() {
+  background: none repeat scroll 0 0 transparent;
+  border: 0 none;
+  font-size: 100%;
+  margin: 0;
+  outline: 0 none;
+  padding: 0;
+  vertical-align: baseline;
+  list-style-type: none;
+}
+
+@mixin roll-max-screen($width){
+    @media screen and (max-width: $width) {
+        @content;
+    }
+}
+@mixin roll-row(){
+    display: table-row;
+}
+@mixin roll-column(){
+    display: table-cell;
+}
+
+@mixin roll-table($mode){
+    width: 100%;
+    height: auto;
+    display: table;
+    >*{
+        // child 
+        display: table-#{$mode};
+        @content;
+    }
+}
+@mixin roll-t-align($x,$y){
+    @if $x == 'center' and $y == 'center'{
+        vertical-align: middle;
+        text-align: center;
+    }
+    @else if $x == 'center' and $y == 'left'{
+        vertical-align: middle;
+        text-align: left;
+    }
+    @else if $x == 'center' and $y == 'right'{
+        vertical-align: middle;
+        text-align: right;
+    }
+    @else if $x == 'top' and $y == 'left'{
+        vertical-align: top;
+        text-align: left;
+    }
+    @else if $x == 'top' and $y == 'center'{
+        vertical-align: top;
+        text-align: center;
+    }
+    @else if $x == 'top' and $y == 'right'{
+        vertical-align: top;
+        text-align: right;
+    }
+    @else if $x == 'bottom' and $y == 'left'{
+        vertical-align: bottom;
+        text-align: left;
+    }
+    @else if $x == 'bottom' and $y == 'center'{
+        vertical-align: bottom;
+        text-align: center;
+    }
+    @else if $x == 'bottom' and $y == 'right'{
+        vertical-align: bottom;
+        text-align: right;
+    }
+    
+}
+
+@mixin roll-b-list(){
+    display: block;
+    width: 100%;
+    height: auto;
+    &:after{
+        content : ' ';
+        display: block;
+        clear: both;
+    }
+    > * {
+        @content;
+    }
+}
+
+@mixin roll-b-align($x){
+    @if $x == 'center' {
+        margin: 0 auto;
+    }
+    @else if $x == 'right'{
+        margin-left: auto;
+        margin-right: 0;
+    }
+    @else if $x == 'left'{
+        margin-left: 0;
+        margin-right: auto;
+    }
+}
+
+@mixin roll-b-item(){
+    display: block;
+    width: 100px;
+    height: auto;
+    
+}
+@mixin roll-ib-item(){
+    display: inline-block;
+    width: 100px;
+    height: auto;
+}
+
+@mixin roll-img(){
+    display: block;
+    box-sizing: border-box;
+    width: 50px;
+    height: 50px;
+    border-radius: 3px;
+    // cursor: pointer;
+    position: relative;
+    > *{
+        @content;
+    }
+}
+
+@mixin roll-img-item(){
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    margin: auto;
+    background-repeat: no-repeat;
+    background-size: 50%;
+    background-position: center;
+}
+
+//NEW VERSION OBJECT ASPECT RATIO
+//BUTUH REQUIREMENT CHILDREN ABSOLUTE LAYOUT
+@mixin aspect-ratio(){
+    display: inline-block;
+    position: relative;
+    &:after{
+        @content;
+    }
+}
+@mixin aspect-ratio-item(){
+    display: block;
+    content: '';
+    padding-top: 50%; //sample
+    @content;
+}
+
+
+.section{
+	display: block;
+	height: auto;
+}
+
+.overflow{
+	position: absolute;
+	top: auto;
+	left: auto;
+	right: auto;
+	bottom: auto;
+	&.top{
+		bottom:100%;
+	}
+	&.bottom{
+		top:100%;
+	}
+	&.left{
+		right:100%;
+	}
+	&.right{
+		left:100%;
+	}
+}
+
+.overflow-zero{
+    position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	&.top{
+		bottom:100%;
+		top:auto;
+	}
+	&.bottom{
+		top:100%;
+		bottom:auto;
+	}
+	&.left{
+		right:100%;
+		left:auto;
+	}
+	&.right{
+		left:100%;
+		right:auto;
+	}
+}
+
+.s-row{
+	display: block;
+	height: auto;
+	*zoom:1;
+	&.w-auto{
+		width:auto;
+	}
+	&:before,&:after{
+		content: "";
+    	display: table;
+	}
+	&:after{
+		clear: both;
+	}
+	.full-height{
+		height: 100%;
+		>div{
+			height: 100%;
+		}
+	}
+}
+
+.s-col{
+	display: block;
+	float: left;
+	height: auto;
+	&.c-1{
+		width: (100%/12);
+	}
+	&.c-2{
+		width: ((100%/12)*2);
+	}
+	&.c-3{
+		width: (100%/12)*3;
+	}
+	&.c-4{
+		width: (100%/12)*4;
+	}
+	&.c-5{
+		width: (100%/12)*5;
+	}
+	&.c-6{
+		width: (100%/12)*6;
+	}
+	&.c-7{
+		width: (100%/12)*7;
+	}
+	&.c-8{
+		width: (100%/12)*8;
+	}
+	&.c-9{
+		width: (100%/12)*9;
+	}
+	&.c-10{
+		width: (100%/12)*10;
+	}
+	&.c-11{
+		width: ((100%/12)*11);
+	}
+	&.c-12{
+		width: 100%;
+	}
+}
+
+.s-col-9{
+    $totalCount : 9;
+	display: block;
+	float: left;
+	height: auto;
+	&.c-1{
+		width: (100%/$totalCount);
+	}
+	&.c-2{
+		width: ((100%/$totalCount)*2);
+	}
+	&.c-3{
+		width: (100%/$totalCount)*3;
+	}
+	&.c-4{
+		width: (100%/$totalCount)*4;
+	}
+	&.c-5{
+		width: (100%/$totalCount)*5;
+	}
+	&.c-6{
+		width: (100%/$totalCount)*6;
+	}
+	&.c-7{
+		width: (100%/$totalCount)*7;
+	}
+	&.c-8{
+		width: (100%/$totalCount)*8;
+	}
+	&.c-9{
+		width: (100%/$totalCount)*9;
+	}
+}
+
+.s-table{
+	@include roll-table(cell){
+		@include roll-t-align('center','center');
+	}
+	width: auto;
+	height: auto;
+}

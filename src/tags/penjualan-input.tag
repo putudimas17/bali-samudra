@@ -38,7 +38,7 @@
 						<div class="form-group">
 							<label class="control-label" for="field1">Nama Barang</label>
 							<div class="controls">
-								<input id="field1" ref="nama_brg" value="{inputBarang.nama_brg}"type="text" class="form-control k-textbox" data-role="text" data-parsley-errors-container="#errId1"><span id="errId1" class="error"></span>
+								<input id="field1" ref="nama_brg" value="{inputBarang.nama_brg}"type="text" class="form-control k-textbox" data-role="text" data-parsley-errors-container="#errId1" readonly=""><span id="errId1" class="error"></span>
 							</div>
 						</div>
 					</div>
@@ -46,7 +46,7 @@
 						<div class="form-group">
 							<label class="control-label" for="field1">Harga</label>
 							<div class="controls">
-								<input id="harga" ref="harga" value="{inputBarang.harga}" type="text" class="form-control k-textbox" data-role="text" data-parsley-errors-container="#errId1"><span id="errId1" class="error"></span>
+								<input id="harga" ref="harga" value="{inputBarang.harga}" type="text" class="form-control k-textbox" data-role="text" data-parsley-errors-container="#errId1" readonly=""><span id="errId1" class="error"></span>
 							</div>
 						</div>
 					</div>
@@ -119,24 +119,31 @@
 					<div class="section">
 						<h2>PT GANTI SENDIRI</h2>
 						<h5>
-							Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+							STRUK PEMBAYARAN
 						</h5>
 					</div>
 					<div class="section">
 						<table>
 							<tr>
-								<th>QTY</th>
-								<th>IN</th>
-								<th></th>
+								<th>Item</th>
+								<th class="w-auto right">Sub Total</th>
 							</tr>
 							<tr>
-								<td colspan="3">
+								<td colspan="2" class="no-padding">
 									<div class="divider"></div>
 								</td>
 							</tr>
 							<tr each="{item, index in tb_detail_penjualan}">
-								<td>{item.jumlah}</td>
-								<td>{item.nama_brg}</td>
+								<td>
+									<div class="s-row">
+										<div class="s-col c-12">
+											{item.nama_brg}
+										</div>
+										<div class="s-col c-12">
+											{item.jumlah} Qty x {toMoneyCurrency(item.subtotal)}
+										</div>
+									</div>
+								</td>
 								<td>{toMoneyCurrency(item.subtotal)}</td>
 							</tr>
 							<!--tr>
@@ -152,32 +159,32 @@
 								<td>27,272</td>
 							</tr-->
 							<tr>
-								<td colspan="3">
+								<td colspan="2" class="no-padding">
 									<div class="divider"></div>
 								</td>
 							</tr>
 							<tr>
-								<td colspan="2">
+								<td class="right">
 									TOTAL
 								</td>
 								<td>{toMoneyCurrency(printTotal)}</td>
 							</tr>
 							<tr>
-								<td colspan="2">
+								<td class="right">
 									CASH
 								</td>
 								<td>{toMoneyCurrency(printCash)}</td>
 							</tr>
 							<tr>
-								<td colspan="3">
+								<td colspan="2" class="no-padding">
 									<div class="divider"></div>
 								</td>
 							</tr>
 							<tr>
-								<td colspan="2">
+								<td class="right">
 									Kembali
 								</td>
-								<td>{toMoneyCurrency(printKembali)}</td>
+								<td >{toMoneyCurrency(printKembali)}</td>
 							</tr>
 						</table>
 					</div>
@@ -436,6 +443,12 @@
 			e.preventUpdate = true;
 			req_deleteItem(vm.tb_detail_penjualan[index],function(data){
 				vm.tb_detail_penjualan = data.tb_detail_penjualan;
+				var kk = 0;
+				for(var a=0;a<vm.tb_detail_penjualan.length;a++){
+					kk += parseInt(vm.tb_detail_penjualan[a].subtotal);
+				}
+				vm.total.subtotal = kk;
+				$('[ref=text-total]').val(kk);
 				vm.setState(function(){
 					vm.inputBarang = new newInputBarang();
 					$('[ref=kode_brg]').focus();

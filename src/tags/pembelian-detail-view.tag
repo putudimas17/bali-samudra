@@ -77,6 +77,79 @@
 					</div>
 				</div>
 			</form>
+			<div style="display: none">
+				<div id="print-box">
+					<div class="section">
+						<h2 class="">PT GANTI SENDIRI</h2>
+						<h5 class="">
+							INVOICE PEMBELIAN
+						</h5>
+						<div class="s-row">
+							<div class="s-col c-6">
+								<h5 class="left">SUPPLIER : {tb_pembelian.nama_suplier}</h5>
+								<h5 class="left">TGL : {translateToDate(tb_pembelian.tgl)}</h5>
+								<h5 class="left">NO Ref : {tb_pembelian.no_referensi}</h5>
+							</div>
+							<div class="s-col c-6">
+								<h5 class="right">INVOICE : {tb_pembelian.INV}</h5>
+							</div>
+						</div>
+					</div>
+					<div class="section">
+						<table>
+							
+							<tr>
+								<th>KODE</th>
+								<th>NAMA</th>
+								<th>HARGA</th>
+								<th>JUMLAH</th>
+								<th>SUBTOTAL</th>
+							</tr>
+							<tr>
+								<td colspan="5">
+									<div class="divider"></div>
+								</td>
+							</tr>
+							<tr each="{item, index in tb_detail_pembelian}">
+								<td>{item.kode_brg}</td>
+								<td>{item.jumlah}</td>
+								<td>{item.nama_brg}</td>
+								<td>{item.jumlah}</td>
+								<td>{toMoneyCurrency(item.total)}</td>
+							</tr>
+							<!--tr>
+								<td colspan="2">
+									Sub Total
+								</td>
+								<td>{item.subtotal}</td>
+							</tr>
+							<tr>
+								<td colspan="2">
+									Tax
+								</td>
+								<td>27,272</td>
+							</tr-->
+							<tr>
+								<td colspan="5">
+									<div class="divider"></div>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="4">
+									TOTAL
+								</td>
+								<td>{toMoneyCurrency(tb_pembelian.total)}</td>
+							</tr>
+						</table>
+					</div>
+					<div class="section">
+						<h4>Terima Kasih</h4>
+						<h5>
+							Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+						</h5>
+					</div>
+				</div>
+			</div>
 			<form>
 				<div class="row">
 					<div class="col-md-8"></div>
@@ -95,6 +168,7 @@
 			<form>
 				<div class="row">
 					<div class="col-md-6 text-left">
+						<a href="#" id="print" class="btn btn-primary" onclick="{handlePrint.bind(this)}"><i class="fa fa-floppy-o"></i> Print</a>
 						<a href="#" class="btn btn-success" onclick="{back.bind(this)}"><i class="fa fa-reply"></i> Kembali</a>
 					</div>	
 					<div class="col-md-6 text-right">
@@ -107,6 +181,7 @@
 		// u can require at this 
 		let debounce = require('lodash/debounce.js');
 		require('../scss/pembelian.scss');	
+		require('../js/jqueryPrint.js');
 		let momentjs = require('moment');
 		let {
 			pembelianRequest,
@@ -124,13 +199,32 @@
 			})
 		}
 		this.translateToDate = function(value){
-			return momentjs(value,'yyyy-mm-dd').format('LLL')
+			return momentjs(value,'yyyy-mm-dd').format('YYYY-MM-DD')
 		}
 		this.back = function(e){
 			console.log(vm.opts);
 			vm.opts.changePage({
 				action : 'open-table'
 			})
+		}
+		this.handlePrint = function(e){
+			vm.printSupplier = $("[ref=id_supel] option:selected").text();
+			console.log($("[ref=id_supel] option:selected").text());
+			vm.setState(function(){})
+			$('#print-box').print({
+				globalStyles: true,
+	        	mediaPrint: false,
+	        	stylesheet: 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css',
+	        	noPrintSelector: ".no-print",
+	        	iframe: false,
+	        	append: null,
+	        	prepend: null,
+	        	manuallyCopyFormValues: true,
+	        	deferred: $.Deferred(),
+	        	timeout: 750,
+	        	title: null,
+	        	doctype: '<!doctype html>'
+			});
 		}
 		this.tb_pembelian = [];
 		this.tb_detail_pembelian = [];

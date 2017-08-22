@@ -157,6 +157,7 @@
 		// u can require at this 
 		let debounce = require('lodash/debounce.js');
 		require('../scss/pembelian.scss');	
+		require('../js/jqueryPrint.js');
 		let momentjs = require('moment');
 		let {
 			penjualanRequest,
