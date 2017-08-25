@@ -101,6 +101,8 @@ if(isset($_GET['action'])){
 		 	$gg = mysqli_query($db,$sql);
 		    $row = mysqli_fetch_row($gg);
 		    if(isset($row[0])==true){
+		    	$sql = "UPDATE tb_penjualan set tgl = '".date("Y-m-d H:i:s")."' where id_user = ".$_SESSION['karyawan']." AND status=0 ";
+				$gg = mysqli_query($db,$sql);
 		    	if($row[0] == 0){
 		    		readyInput($db);
 		    	}

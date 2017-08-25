@@ -420,7 +420,7 @@
 			})
 		}
 		this.translateToDate = function(value){
-			return momentjs(value,'yyyy-mm-dd').format('LLL')
+			return momentjs(value,'yyyy-mm-dd H:i:s').format('LLL')
 		}
 		this.handleFinishOrder = function(e){
 			e.preventUpdate = true;
