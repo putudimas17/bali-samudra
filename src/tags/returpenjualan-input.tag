@@ -34,7 +34,7 @@
 					</div>
 				</div>
 			</form><br>
-			<form  id="form2345">
+			<div  id="form2345">
 				<div class="row">
 					<div class="col-md-2">
 						<div class="form-group">
@@ -51,7 +51,7 @@
 						<div class="form-group">
 							<label class="control-label" for="field1">Nama Barang</label>
 							<div class="controls">
-								<input id="field1" ref="nama_brg" value="{inputBarang.nama_brg}"type="text" class="form-control k-textbox" data-role="text" data-parsley-errors-container="#errId1"><span id="errId1" class="error"></span>
+								<input id="field1" ref="nama_brg" value="{inputBarang.nama_brg}"type="text" class="form-control k-textbox" data-role="text" data-parsley-errors-container="#errId1" readonly="readonly"><span id="errId1" class="error"></span>
 							</div>
 						</div>
 					</div>
@@ -59,7 +59,7 @@
 						<div class="form-group">
 							<label class="control-label" for="field1">Harga</label>
 							<div class="controls">
-								<input id="field1" ref="harga" value="{inputBarang.harga}" type="text" class="form-control k-textbox" data-role="text" data-parsley-errors-container="#errId1"><span id="errId1" class="error"></span>
+								<input id="field1" ref="harga" value="{inputBarang.harga}" type="text" class="form-control k-textbox" data-role="text" data-parsley-errors-container="#errId1" readonly="readonly"><span id="errId1" class="error"></span>
 							</div>
 						</div>
 					</div>
@@ -126,7 +126,7 @@
 						</div>
 					</div>
 				</div>
-			</form>
+			</div>
 			<form>
 				<div class="row">
 					<div class="col-md-8"></div>
@@ -184,7 +184,47 @@
 				callback(data);
 			});
 		}
-
+		let reqCheckStok = function(callback){
+			var formData = new FormData();
+			formData.append('id_retur_penjualan',vm.tb_retur_penjualan.id);
+			formData.append('id_penjualan',$('[ref=id_penjualan]').val());
+			formData.append('kode_brg',vm.inputBarang.kode_brg);
+			formData.append('jumlah',vm.inputBarang.jumlah);
+			formData.append('inv_penjualan',$('[ref=id_penjualan] option:selected').text());
+			getRestApiService(formData,returPenjualanRequest.checkStok,function(data){
+				data = JSON.parse(data);
+				switch(data.status){
+					case 'success':
+						callback()
+					break;
+					case 'rejected':
+					case 'empty':
+						alert(data.message);
+					break;
+				}
+			})
+		}
+		let reqSaveDetail = function(callback){
+			var formData = new FormData();
+			formData.append('id_retur',vm.tb_retur_penjualan.id);
+			formData.append('kode_brg',vm.inputBarang.kode_brg);
+			formData.append('jumlah',vm.inputBarang.jumlah);
+			formData.append('harga',vm.inputBarang.harga);
+			formData.append('total',vm.inputBarang.harga * vm.inputBarang.jumlah);
+			formData.append('id_penjualan',$('[ref=id_penjualan]').val());
+			getRestApiService(formData,returPenjualanRequest.saveItem,function(data){
+				data = JSON.parse(data);
+				console.log(data);
+				switch(data.status){
+					case 'success':
+						callback(data);
+					break;
+					case 'rejected':
+						alert(data.message);
+					break;
+				}
+			})
+		}
 		let reqresetKetikaGantiPenjual = function(id,callback){
 			var formData = new FormData();
 			formData.append('id',id);
@@ -229,26 +269,6 @@
 					case 'rejected':
 					case 'empty':
 						alert(data.tb_barang);
-					break;
-				}
-			})
-		}
-		let reqSaveDetail = function(callback){
-			var formData = new FormData();
-			formData.append('id_retur',vm.tb_retur_penjualan.id);
-			formData.append('kode_brg',vm.inputBarang.kode_brg);
-			formData.append('jumlah',vm.inputBarang.jumlah);
-			formData.append('harga',vm.inputBarang.harga);
-			formData.append('total',vm.inputBarang.harga * vm.inputBarang.jumlah);
-			getRestApiService(formData,returPenjualanRequest.saveItem,function(data){
-				data = JSON.parse(data);
-				console.log(data);
-				switch(data.status){
-					case 'success':
-						callback(data);
-					break;
-					case 'rejected':
-						alert(data.message);
 					break;
 				}
 			})
@@ -349,6 +369,11 @@
 			e.preventUpdate = true;
 			reqDelete(vm.tb_detail_retur_penjualan[index],function(data){
 				vm.tb_detail_retur_penjualan = data.tb_detail_retur_penjualan;
+				var kk = 0;
+				for(var a=0;a<vm.tb_detail_retur_penjualan.length;a++){
+					kk += parseInt(vm.tb_detail_retur_penjualan[a].total);
+				}
+				$('[ref=text-total]').val(kk);
 				vm.setState(function(){
 					vm.inputBarang = new newInputBarang();
 					$('[ref=kode_brg]').focus();
@@ -363,23 +388,26 @@
 		}
 		this.handleSaveItem = function(e){
 			e.preventUpdate = true;
-			reqSaveDetail(function(data){
-				vm.tb_detail_retur_penjualan = data.tb_detail_retur_penjualan;
-				var kk = 0;
-				for(var a=0;a<vm.tb_detail_retur_penjualan.length;a++){
-					kk += parseInt(vm.tb_detail_retur_penjualan[a].total);
-				}
-				vm.total.total = kk;
-				$('[ref=text-total]').val(kk);
-				vm.setState(function(){
-					vm.inputBarang = new newInputBarang();
-					$('[ref=kode_brg]').focus();
+			reqCheckStok(function(data){
+				reqSaveDetail(function(data){
+					vm.tb_detail_retur_penjualan = data.tb_detail_retur_penjualan;
+					var kk = 0;
+					for(var a=0;a<vm.tb_detail_retur_penjualan.length;a++){
+						kk += parseInt(vm.tb_detail_retur_penjualan[a].total);
+					}
+					vm.total.total = kk;
+					$('[ref=text-total]').val(kk);
 					vm.setState(function(){
+						vm.inputBarang = new newInputBarang();
+						$('[ref=kode_brg]').focus();
+						vm.setState(function(){
+						})
 					})
 				})
+				$('[ref=kode_brg]').val('---');
+				$('[ref=kode_brg]').focus();
 			})
-			$('[ref=kode_brg]').val('---');
-			$('[ref=kode_brg]').focus();
+			
 		}
 		this.back = function(e){
 			console.log(vm.opts);

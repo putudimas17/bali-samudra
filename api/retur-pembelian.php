@@ -460,6 +460,9 @@ if(isset($_GET['action'])){
 		 	header('Content-Type: application/json');
 		 	echo json_encode($toJSON);
 		return;
+		case 'checking-stok':
+
+		break;
 		case 'save':
 
 		break;

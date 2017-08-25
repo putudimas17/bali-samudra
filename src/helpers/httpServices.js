@@ -184,6 +184,11 @@ export const returPenjualanRequest = {
         method : 'POST',
         param : ''
     },
+    checkStok:{
+        url : '/retur-penjualan.php?action=check-stok',
+        method : 'POST',
+        param : ''
+    },
     newOrder : {
         url : '/retur-penjualan.php?action=new',
         method : 'POST',
