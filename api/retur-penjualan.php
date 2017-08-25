@@ -325,15 +325,27 @@ if(isset($_GET['action'])){
 			$sql = "UPDATE tb_retur_penjualan set total = '".$_POST['total'] ."', status='1' WHERE id= '".$_POST['id']."'";
 		 	if ($db->query($sql) === TRUE) {
 		    	// select kembali detail transaksi pembeliannya
-		    	$sql = "select * from tb_detail_retur_penjualan i left join tb_barang j on i.kode_brg = j.kode_brg  where  i.id_retur = '".$_POST['id']."'";
+		    	$sql = 'select i.id_retur, i.id, i.kode_brg, j.nama_brg,i.jumlah,i.harga,i.total from tb_detail_retur_penjualan i left join tb_barang j on i.kode_brg = j.kode_brg  where  id_retur = "'.$_POST['id'].'"';
 			 	$gg = $db->query($sql);
+		 		$detail = array();
 			 	if($gg->num_rows > 0){
-			 		$toJSON = [
+			 		while($row = mysqli_fetch_assoc($gg)) {
+			 			$updateStokBarang = "UPDATE tb_barang set stok = (stok + ".$row['jumlah'].") where kode_brg = '".$row['kode_brg']."'";
+	 					$updateStokBarang = mysqli_query($db,$updateStokBarang);
+				 		// masukan juga out stok nya
+						$outstok = "INSERT INTO in_stok (no_transaksi,tanggal,kode_brg,qty,harga) VALUES ('".$_POST['id']."','".date("Y-m-d H:i:s")."','".$row['kode_brg']."',".$row['jumlah'].",".$row['harga'].")";
+		    			if($db->query($outstok) == true){
+		    				
+		    			}else{
+		    				echo 'B -> '.$db->error;
+		    			}
+					}
+					$toJSON = [
 				 		'status' => 'success',
 				 		'message' => 'Data telah tersimpan'
 				 	];
 				 	header('Content-Type: application/json');
-				 	echo json_encode($toJSON);
+				 	echo json_encode($toJSON); 	
 			 	}
 		    }else{
 		    	$toJSON = [
@@ -350,6 +362,8 @@ if(isset($_GET['action'])){
 		 	$gg = mysqli_query($db,$sql);
 		    $row = mysqli_fetch_row($gg);
 		    if(isset($row[0])==true){
+		    	$sql = "UPDATE tb_retur_penjualan set tgl= '".date("Y-m-d H:i:s")."' where  id_user = ".$_SESSION['karyawan']." AND status=0";
+				$gg = mysqli_query($db,$sql);
 		    	if($row[0] == 0){
 		    		readyInput($db);
 		    	}
@@ -427,6 +441,7 @@ if(isset($_GET['action'])){
 				 		$detail = array();
 					 	if($gg->num_rows > 0){
 					 		while($row = mysqli_fetch_assoc($gg)) {
+					 			
 					 			$detail[] = [
 				 					'id_retur' => $row['id_retur'],
 				 					'id' => $row['id'],

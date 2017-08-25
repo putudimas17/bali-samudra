@@ -303,68 +303,15 @@ if(isset($_GET['action'])){
 			 	if($gg->num_rows > 0){
 			 		// delete dulu stok di tb_barang
 			 		while ($row = mysqli_fetch_assoc($gg)){
+			 			$outstok = "INSERT into out_stok (no_transaksi,tanggal,kode_brg,qty,harga) values (".$_POST['id_penjualan'].",'".date("Y-m-d H:i:s")."','".$row['kode_brg']."',".$row['jumlah'].",".$row['harga'].")";
+			 			if($db->query($outstok) == true){
+
+		    			}else{
+		    				echo 'A -> '.$db->error;
+		    			}
 			 			$delStokBarang = "UPDATE tb_barang set stok = (stok - ".$row['jumlah'].") where kode_brg = '".$row['kode_brg']."'";
 			 			$delStokBarang = mysqli_query($db,$delStokBarang);
-						if ($delStokBarang) {
-							$selInstok = "SELECT qty from in_stok where kode_brg = '".$row['kode_brg']."' and qty > 0 order by tanggal asc limit 1";
-				 			$selInstok = mysqli_query($db,$selInstok);
-						    $selInstok = mysqli_fetch_row($selInstok);
-						    if(isset($selInstok[0])==true){
-						    	while($row['jumlah'] > 0){
-						    		if($selInstok[0] > $row['jumlah']){
-						    			// check dulu harga di in_stok
-						    			$checkHargaInStok = "SELECT harga from in_stok where kode_brg = '".$row['kode_brg']."' and qty > 0 order by tanggal asc limit 1";
-							 			$checkHargaInStok = mysqli_query($db,$checkHargaInStok);
-						    			$checkHargaInStok = mysqli_fetch_row($checkHargaInStok);
-						    			// baru lakukan update in_stok
-							    		$qqq = $selInstok[0] - $row['jumlah'];
-						    			$stokforOutStok = $row['jumlah'];
-							    		$updateInStok = "UPDATE in_stok SET qty = ".$qqq." where kode_brg = '".$row['kode_brg']."' and qty > 0 order by tanggal asc limit 1";
-							    		if ($db->query($updateInStok) === TRUE) {
-							    			$selInstok[0] = $qqq;
-							    			$row['jumlah'] = 0;
-							    			
-							    			// masukan juga out stok nya
-			 								$outstok = "INSERT into out_stok (no_transaksi,tanggal,kode_brg,qty,harga) values (".$_POST['id_penjualan'].",'".date("Y-m-d H:i:s")."','".$row['kode_brg']."',".$stokforOutStok.",".$checkHargaInStok[0].")";
-							    			if($db->query($outstok) == true){
-
-							    			}else{
-							    				echo 'A -> '.$db->error;
-							    			}
-							    		}else{
-							    			// kalo enggak ada
-							    		}
-							    	}else{
-							    		// check dulu harga di in_stok
-						    			$checkHargaInStok = "SELECT harga from in_stok where kode_brg = '".$row['kode_brg']."' and qty > 0 order by tanggal asc limit 1";
-							 			$checkHargaInStok = mysqli_query($db,$checkHargaInStok);
-						    			$checkHargaInStok = mysqli_fetch_row($checkHargaInStok);
-
-							 			// baru lakukan update in_stok
-							    		$qqq = $row['jumlah'] - $selInstok[0];
-							    		$updateInStok = "UPDATE in_stok SET qty = 0 where kode_brg = '".$row['kode_brg']."' and qty > 0 order by tanggal asc limit 1";
-							    		if ($db->query($updateInStok) === TRUE) {
-							    			$stokforOutStok = $selInstok[0];
-							    			$selInstok[0] = 0;
-							    			$row['jumlah'] = $qqq;
-
-							    			// masukan juga out stok nya
-			 								$outstok = "INSERT INTO out_stok (no_transaksi,tanggal,kode_brg,qty,harga) VALUES ('".$_POST['id_penjualan']."','".date("Y-m-d H:i:s")."','".$row['kode_brg']."',".$stokforOutStok.",".$checkHargaInStok[0].")";
-							    			if($db->query($outstok) == true){
-							    				
-							    			}else{
-							    				echo 'B -> '.$db->error;
-							    			}
-							    		}else{
-							    			// kalo enggak ada
-							    		}
-							    		
-							    	}
-						    	}
-						    }
-						}else{
-							echo $db->error;
-						}
+						
 			 		}
 			 		$toJSON = [
 				 		'status' => 'success',
