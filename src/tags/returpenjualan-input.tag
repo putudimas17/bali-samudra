@@ -384,7 +384,7 @@
 		this.total = new newTotal();
 		this.inputBarang = new newInputBarang();
 		this.translateToDate = function(value){
-			return momentjs(value,'yyyy-mm-dd').format('LLL')
+			return momentjs(value,'YYYY-MM-DD H:m:s').format('MMMM Do YYYY, h:mm:ss a')
 		}
 		this.handleSaveItem = function(e){
 			e.preventUpdate = true;
