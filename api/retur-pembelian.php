@@ -96,6 +96,63 @@ if(isset($_GET['action'])){
 			 	echo json_encode($toJSON);
 		 	}
 		break;
+
+		case 'check-stok':
+			$totalQty = "select i.jumlah from tb_detail_pembelian i where i.id_pembelian = ".$_POST['id_pembelian']." AND kode_brg = '".$_POST['kode_brg']."'";
+			$totalQty = $db->query($totalQty);
+			$totalQty = $totalQty->fetch_row();
+			if($totalQty[0] != ''){
+				$cekReadyRetur = "select sum(i.jumlah) as jumlah from tb_detail_retur_pembelian i left join tb_retur_pembelian j on i.id_retur = j.id where j.no_pembelian = ".$_POST['id_pembelian']." AND i.kode_brg = '".$_POST['kode_brg']."' AND i.jumlah is not null";
+				$cekReadyRetur = $db->query($cekReadyRetur);
+				$cekReadyRetur = $cekReadyRetur->fetch_row();
+				if($cekReadyRetur[0] != ''){
+					if($cekReadyRetur[0] < $totalQty[0]){
+						$toJSON = [
+		    				'status' => 'success',
+					 		'message' => 'Sudah pernah beberapa di retur'
+					 	];
+					 	header('Content-Type: application/json');
+					 	echo json_encode($toJSON);
+					 	return;
+					 }else{
+					 	$toJSON = [
+		    				'status' => 'rejected',
+					 		'message' => 'Semua kode_brg dari id penjualan ini '.$_POST['inv_pembelian'].' udah di retur'
+					 	];
+					 	header('Content-Type: application/json');
+					 	echo json_encode($toJSON);
+					 	return;
+					 }
+				}else{
+					// belum pernah
+					if($_POST['jumlah'] > $totalQty[0] || $_POST['jumlah'] <= 0){
+						$toJSON = [
+							'status' => 'rejected',
+							'message' => 'Jumlah yang di input lebih besar atau kosong dari stok'
+						];
+						header('Content-Type: application/json');
+						echo json_encode($toJSON);
+						return;
+					}else{
+						$toJSON = [
+		    				'status' => 'success',
+					 		'message' => 'Belum pernah di retur'
+					 	];
+					 	header('Content-Type: application/json');
+					 	echo json_encode($toJSON);
+					 	return;
+					}
+				}
+			}else{
+				$toJSON = [
+    				'status' => 'rejected',
+			 		'message' => 'Tidak ada produk ini'
+			 	];
+			 	header('Content-Type: application/json');
+			 	echo json_encode($toJSON);
+		 		return;
+			}
+		break;
 		case 'fetch-barang-dari-pembelian':
 			$sql = 'select i.kode_brg, i.id_kategori, i.nama_brg, i.stok, i.harga, i.satuan from tb_barang i left join tb_detail_pembelian j on i.kode_brg = j.kode_brg where j.id_pembelian = '.$_POST['id_pembelian'].'';
 		 	$gg = $db->query($sql);
@@ -337,7 +394,28 @@ if(isset($_GET['action'])){
 			$gg = $db->query($sql);
  			if($gg->num_rows > 0){
  				 try{
-				    $sql = "UPDATE tb_detail_retur_pembelian set jumlah = ".$_POST['jumlah'].", total=".$_POST['jumlah']*$_POST['harga']." where kode_brg = '".$_POST['kode_brg']."' AND id_retur = '".$_POST['id_retur']."'";
+ 				 	// cek jumlah yang di input sebelumnya
+ 				 	$cekJumlahYangSudahDiInput = "select jumlah from tb_detail_retur_pembelian where kode_brg = '".$_POST['kode_brg']."' AND id_retur = '".$_POST['id_retur']."'";
+				    $cekJumlahYangSudahDiInput = $db->query($cekJumlahYangSudahDiInput);
+				    $cekJumlahYangSudahDiInput = $cekJumlahYangSudahDiInput->fetch_row();
+				    $cekJumlahYangSudahDiInput = $cekJumlahYangSudahDiInput[0];
+				    $jadiJumlahQtnya = ($_POST['jumlah']+$cekJumlahYangSudahDiInput);
+				    // cek jumlah yang di tb_detail_pembelian
+				    $cekJumlahPembelian = "select jumlah from tb_detail_pembelian where id_pembelian = ".$_POST['id_pembelian']." AND kode_brg = '".$_POST['kode_brg']."'";
+				    $cekJumlahPembelian = $db->query($cekJumlahPembelian);
+				    echo $db->error;
+				    $cekJumlahPembelian = $cekJumlahPembelian->fetch_row();
+				    $cekJumlahPembelian = $cekJumlahPembelian[0];
+				    if($jadiJumlahQtnya > $cekJumlahPembelian){
+				    	$toJSON = [
+					 		'status' => 'rejected',
+					 		'message' => 'Jumlah yang di input lebih besar dari jumlah penjualan'
+					 	];
+					 	header('Content-Type: application/json');
+					 	echo json_encode($toJSON);
+					 	return;
+				    }
+				    $sql = "UPDATE tb_detail_retur_pembelian set jumlah = ".$jadiJumlahQtnya.", total=".($jadiJumlahQtnya*$_POST['harga'])." where kode_brg = '".$_POST['kode_brg']."' AND id_retur = '".$_POST['id_retur']."'";
 					$updated = mysqli_query($db,$sql);
 					echo $db->error;
 					if ($updated) {
@@ -460,12 +538,6 @@ if(isset($_GET['action'])){
 		 	header('Content-Type: application/json');
 		 	echo json_encode($toJSON);
 		return;
-		case 'checking-stok':
-
-		break;
-		case 'save':
-
-		break;
 		case 'delete-transaksi':
 			$sql = "UPDATE tb_retur_pembelian SET tgl = '' where id = '".$_POST['id_retur']."'";
 			$updated = mysqli_query($db,$sql);

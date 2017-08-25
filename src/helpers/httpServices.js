@@ -132,6 +132,11 @@ export const returPembelianRequest = {
         method : 'POST',
         param : ''
     },
+    checkStok:{
+        url : '/retur-pembelian.php?action=check-stok',
+        method : 'POST',
+        param : ''
+    },
     saveItem:{
         url: '/retur-pembelian.php?action=save',
         method: 'POST',
