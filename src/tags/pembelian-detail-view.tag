@@ -112,23 +112,12 @@
 							</tr>
 							<tr each="{item, index in tb_detail_pembelian}">
 								<td>{item.kode_brg}</td>
-								<td>{item.jumlah}</td>
 								<td>{item.nama_brg}</td>
+								<td>{item.harga}</td>
 								<td>{item.jumlah}</td>
 								<td>{toMoneyCurrency(item.total)}</td>
 							</tr>
-							<!--tr>
-								<td colspan="2">
-									Sub Total
-								</td>
-								<td>{item.subtotal}</td>
-							</tr>
-							<tr>
-								<td colspan="2">
-									Tax
-								</td>
-								<td>27,272</td>
-							</tr-->
+							
 							<tr>
 								<td colspan="5">
 									<div class="divider"></div>
@@ -145,7 +134,7 @@
 					<div class="section">
 						<h4>Terima Kasih</h4>
 						<h5>
-							Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+							
 						</h5>
 					</div>
 				</div>

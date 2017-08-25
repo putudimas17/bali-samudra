@@ -150,7 +150,7 @@
 					<div class="section">
 						<h4>Terima Kasih</h4>
 						<h5>
-							Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+				
 						</h5>
 					</div>
 				</div>
