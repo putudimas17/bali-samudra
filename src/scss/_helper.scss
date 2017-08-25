@@ -235,25 +235,44 @@
 }
 
 .s-col{
-	$totalCount : 12;
 	display: block;
 	float: left;
 	height: auto;
-	@for $i from 1 through $totalCount {
-		&.c-#{$i}{
-			width: ((100%/$totalCount) * $i);
-		}
+	&.c-1{
+		width: (100%/12);
 	}
-}
-.s-col-21{
-    $totalCount : 21;
-	display: block;
-	float: left;
-	height: auto;
-	@for $i from 1 through $totalCount {
-		&.c-#{$i}{
-			width: ((100%/$totalCount) * $i);
-		}
+	&.c-2{
+		width: ((100%/12)*2);
+	}
+	&.c-3{
+		width: (100%/12)*3;
+	}
+	&.c-4{
+		width: (100%/12)*4;
+	}
+	&.c-5{
+		width: (100%/12)*5;
+	}
+	&.c-6{
+		width: (100%/12)*6;
+	}
+	&.c-7{
+		width: (100%/12)*7;
+	}
+	&.c-8{
+		width: (100%/12)*8;
+	}
+	&.c-9{
+		width: (100%/12)*9;
+	}
+	&.c-10{
+		width: (100%/12)*10;
+	}
+	&.c-11{
+		width: ((100%/12)*11);
+	}
+	&.c-12{
+		width: 100%;
 	}
 }
 
@@ -262,10 +281,32 @@
 	display: block;
 	float: left;
 	height: auto;
-	@for $i from 1 through $totalCount {
-		&.c-#{$i}{
-			width: ((100%/$totalCount) * $i);
-		}
+	&.c-1{
+		width: (100%/$totalCount);
+	}
+	&.c-2{
+		width: ((100%/$totalCount)*2);
+	}
+	&.c-3{
+		width: (100%/$totalCount)*3;
+	}
+	&.c-4{
+		width: (100%/$totalCount)*4;
+	}
+	&.c-5{
+		width: (100%/$totalCount)*5;
+	}
+	&.c-6{
+		width: (100%/$totalCount)*6;
+	}
+	&.c-7{
+		width: (100%/$totalCount)*7;
+	}
+	&.c-8{
+		width: (100%/$totalCount)*8;
+	}
+	&.c-9{
+		width: (100%/$totalCount)*9;
 	}
 }
 
