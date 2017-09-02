@@ -159,6 +159,7 @@
 		require('../scss/pembelian.scss');	
 		require('../js/jqueryPrint.js');
 		let momentjs = require('moment');
+		require("datatables.net-bs");
 		let {
 			penjualanRequest,
 			barangRequest,
@@ -190,6 +191,7 @@
 			})
 		}
 		this.on('mount',function(){
+			$('#zctb').dataTable();
 			req_tbPenjualan(function(data){
 				vm.tb_penjualan = data;
 				console.log(vm.tb_penjualan);

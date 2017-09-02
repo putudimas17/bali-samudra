@@ -154,6 +154,8 @@
 		let debounce = require('lodash/debounce.js');
 		require('../scss/pembelian.scss');	
 		let momentjs = require('moment');
+		
+		require("datatables.net-bs");
 		let {
 			pembelianRequest,
 			barangRequest,
@@ -184,6 +186,7 @@
 			})
 		}
 		this.on('mount',function(){
+			$('#zctb').dataTable();
 			req_tbPembelian(function(data){
 				vm.tb_pembelian = data;
 				console.log(vm.tb_pembelian);

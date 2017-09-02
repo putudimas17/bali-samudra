@@ -154,6 +154,7 @@
 		let debounce = require('lodash/debounce.js');
 		require('../scss/pembelian.scss');	
 		let momentjs = require('moment');
+		require("datatables.net-bs");
 		let {
 			returPenjualanRequest,
 			barangRequest,
@@ -183,6 +184,7 @@
 			})
 		}
 		this.on('mount',function(){
+			$('#zctb').dataTable();
 			req_rListPenjualan(function(data){
 				vm.tb_retur_penjualan = data;
 				console.log(vm.tb_retur_penjualan);

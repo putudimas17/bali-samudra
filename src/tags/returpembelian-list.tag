@@ -153,6 +153,7 @@
 		// u can require at this 
 		let debounce = require('lodash/debounce.js');
 		require('../scss/pembelian.scss');	
+		require("datatables.net-bs");
 		let momentjs = require('moment');
 		let {
 			returPembelianRequest,
@@ -183,6 +184,7 @@
 			})
 		}
 		this.on('mount',function(){
+			$('#zctb').dataTable();
 			req_rListPembelian(function(data){
 				vm.tb_retur_pembelian = data;
 				console.log(vm.tb_retur_pembelian);
