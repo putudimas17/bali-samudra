@@ -32,7 +32,7 @@ if ( !isset( $_SESSION ) ) {
 										</tr>
 									</thead>
 									<tbody>
-									<?php 
+<?php 
   //menampilkan data mysqli
 
  $no=1;
@@ -40,35 +40,20 @@ if ( !isset( $_SESSION ) ) {
   while($r=mysqli_fetch_assoc($modal)){
   
 ?>
-									
-										<tr>
-											
-								<td>
-									<?php echo  $no++; ?>
-								</td>
-								<td>
-									<?php echo  $r['Nama']; ?>
-								</td>
-								<td>
-									<?php echo  $r['Username']; ?>
-								</td>
-								<td>
-									<?php echo  $r['Password']; ?>
-								</td>
-								<td>
-									<?php echo  $r['Level']; ?>
-								</td>
-								<td align="center">
-									<a href="user/user_edit.php?id=<?php echo $r['id']; ?>" data-target="#EditDataUser" data-toggle="modal" data-backdrop="static" class="fa fa-edit"-></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-									<a href="#" class="hapus_modal fa fa-trash-o" onclick="confirm_modal('user/user_hapus.php?&id=<?php echo  $r['id']; ?>');"></a>
-								</td>
-							
-										</tr>
-										<?php } ?>
+	<tr>
+		<td><?php echo  $no++; ?></td>
+		<td><?php echo  $r['Nama']; ?></td>
+		<td><?php echo  $r['Username']; ?></td>
+		<td><?php echo  $r['Password']; ?></td>
+		<td><?php echo  $r['Level']; ?></td>
+		<td align="center">
+			<a href="user/user_edit.php?id=<?php echo $r['id']; ?>" data-target="#EditDataUser" data-toggle="modal" data-backdrop="static" class="fa fa-edit"-></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<a href="#" class="hapus_modal fa fa-trash-o" onclick="confirm_modal('user/user_hapus.php?&id=<?php echo  $r['id']; ?>');"></a>
+		</td>
+	</tr>
+	<?php } ?>
 									</tbody>
-									
 								</table>
-
 							</div>
 						</div>
 
@@ -89,7 +74,7 @@ if ( !isset( $_SESSION ) ) {
 						<div class="panel panel-default">
 							<div class="panel-heading" align="center">Tambah Data User</div>
 							<div class="panel-body">
-
+								<!-- form -->
 										
 								<form method="POST" >
 									<div class="form-group">
@@ -119,7 +104,7 @@ if ( !isset( $_SESSION ) ) {
 									  </div>
 									
 								</form>
-
+								<!-- end form -->
 								<?php
 								if ( isset( $_POST[ 'simpan' ] ) ) {
 
@@ -127,18 +112,25 @@ if ( !isset( $_SESSION ) ) {
 									$username = $_POST[ 'username' ];
 									$password = $_POST[ 'password' ];
 									$level = $_POST[ 'level' ];
+									
+									$sql=mysqli_query($db,"select * from tb_user where Username='$username' and Level='$level'");
 
-
-									$query = mysqli_query( $db, "SELECT * FROM tb_user WHERE id='$id' " );
-									$cek = mysqli_num_rows( $query );
-									if ( $cek >= 1 ) {
-										echo "<script> alert('Data sudah pernah diinput, Coba Periksa Lagi!');window.location='index.php?page=datauser';</script>";
-
-									} else {
-										mysqli_query( $db, "INSERT INTO tb_user VALUES ('','$nama', '$username', '$password', '$level')" )or die( $db->error );
-										echo "<script>window.location='index.php?page=datauser';</script>";
-
+									$cek=mysqli_num_rows($sql);
+									if($cek>0)
+									{
+										echo "<script>alert('Username sudah pernah diinputkan, Periksa Kembali');</script>";	
 									}
+									else if($level=='owner')
+									{
+										echo "<script>alert('Level owner Sudah tersedia, Periksa Kembali');</script>";	
+										echo "<script>window.location='index.php?page=datauser';</script>";
+										}
+									else
+									{
+										mysqli_query( $db, "INSERT INTO tb_user VALUES ('','$nama', '$username', '$password', '$level')" );
+									echo "<script>window.location='index.php?page=datauser';</script>";
+										}
+
 								}
 								?>
 

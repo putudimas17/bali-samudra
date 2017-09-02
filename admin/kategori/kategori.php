@@ -75,7 +75,7 @@ if ( !isset( $_SESSION ) ) {
 								<form method="post" >
 									<div class="form-group" >
 										<label for="nama_kategori">Nama Kategori</label>
-											<input type="text" id="nama_kategori" class="form-control" placeholder="Masukkan Username" name="nama_kategori" required oninvalid="this.setCustomValidity('nama kategori tidak boleh kosong')" oninput="setCustomValidity('')">	
+											<input type="text" id="nama_kategori" class="form-control" placeholder="Masukkan Nama Kategori" name="nama_kategori" required oninvalid="this.setCustomValidity('nama kategori tidak boleh kosong')" oninput="setCustomValidity('')">	
 									</div>
 									<div class="modal-footer">
 									   <input type="submit" class="btn btn-success" value="Simpan" name="simpan">
@@ -91,14 +91,14 @@ if ( !isset( $_SESSION ) ) {
 									
 
 
-									$query = mysqli_query( $db, "SELECT * FROM tb_kategori WHERE id_kategori='$id_kategori' " );
+									$query = mysqli_query( $db, "SELECT * FROM tb_kategori WHERE nama_kategori='$nama_kategori'" );
 									$cek = mysqli_num_rows( $query );
 									if ( $cek >= 1 ) {
-										echo "<script> alert('Data sudah pernah diinput, Coba Periksa Lagi!');window.location='index.php?page=kategori';</script>";
+										echo "<script> alert('Data sudah pernah diinput, Coba Periksa Lagi!');window.location='../index.php?page=kategori';</script>";
 
 									} else {
 										mysqli_query( $db, "INSERT INTO tb_kategori VALUES ('','$nama_kategori')" )or die( $db->error );
-										echo "<script>window.location='index.php?page=kategori';</script>";
+										echo "<script>window.location='../index.php?page=kategori';</script>";
 
 									}
 								}

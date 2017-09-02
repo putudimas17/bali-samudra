@@ -184,12 +184,12 @@
 			})
 		}
 		this.on('mount',function(){
-			$('#zctb').dataTable();
 			req_rListPembelian(function(data){
 				vm.tb_retur_pembelian = data;
 				console.log(vm.tb_retur_pembelian);
 				vm.setState(function(){
 
+					$('#zctb').dataTable();
 				})
 			})
 		})

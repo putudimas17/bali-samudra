@@ -16,20 +16,20 @@ include "../../koneksi.php";
 									<input type="text" id="id" class="form-control" placeholder="" name="id" value="<?php echo $r['id']; ?>">
 							</div>
 							<div class="form-group">
-								<label for="nama">Nama</label>
-									<input type="text" id="nama" class="form-control" placeholder="Masukkan Nama" name="nama" value="<?php echo $r['Nama']; ?>" required oninvalid="this.setCustomValidity('data tidak boleh kosong')" oninput="setCustomValidity('')">	
+								<label for="Nama">Nama</label>
+									<input type="text" id="Nama" class="form-control" placeholder="Masukkan Nama" name="Nama" value="<?php echo $r['Nama']; ?>" required oninvalid="this.setCustomValidity('data tidak boleh kosong')" oninput="setCustomValidity('')">	
 							</div>
 							<div class="form-group" >
-										<label for="username">Username</label>
-											<input type="text" id="username" class="form-control" placeholder="Masukkan Username" name="username" value="<?php echo $r['Username']; ?>"required oninvalid="this.setCustomValidity('username tidak boleh kosong')" oninput="setCustomValidity('')">	
+										<label for="Username">Username</label>
+											<input type="text" id="Username" class="form-control" placeholder="Masukkan Username" name="Username" value="<?php echo $r['Username']; ?>"required oninvalid="this.setCustomValidity('username tidak boleh kosong')" oninput="setCustomValidity('')">	
 									</div>
 									<div class="form-group">
-										<label for="password">Password</label>
-											<input type="password" id="password" class="form-control" placeholder="Masukkan Password" name="password" alue="<?php echo $r['Password']; ?>"required oninvalid="this.setCustomValidity('password tidak boleh kosong')" oninput="setCustomValidity('')">	
+										<label for="Password">Password</label>
+											<input type="Password" id="Password" class="form-control" placeholder="Masukkan Password" name="Password" value="<?php echo $r['Password']; ?>"required oninvalid="this.setCustomValidity('password tidak boleh kosong')" oninput="setCustomValidity('')">	
 									</div>
 									<div class="form-group">
-										<label for="level">Level</label>
-											<select name="level" id="level" class="form-control" required oninvalid="this.setCustomValidity('Pilih Level Anda!')" oninput="setCustomValidity('')">
+										<label for="Level">Level</label>
+											<select name="Level" id="level" class="form-control" required oninvalid="this.setCustomValidity('Pilih Level Anda!')" oninput="setCustomValidity('')">
 												<option value="admin" <?php if($r['Level'] == "admin") {echo "selected";}?> >Admin</option>
 									<option value="karyawan" <?php if($r['Level'] == "karyawan") {echo "selected";}?> >Karyawan</option>
 									<option value="owner" <?php if($r['Level'] == "owner") {echo "selected";}?> >Owner</option>
@@ -47,18 +47,39 @@ include "../../koneksi.php";
 	if(isset($_POST['simpan'])){
 	$id			=$_POST['id'];
 	$nama		=$_POST['Nama'];
-
 	$username	=$_POST['Username'];
 	$password	=$_POST['Password'];
 	$level		=$_POST['Level'];
 		
-		$save=mysqli_query($db, "UPDATE tb_user SET Nama='$nama',  Username='$username', Password='$password', Level='$level' WHERE id='$id'");	
+$sql=mysqli_query($db,"select * from tb_user where id=$id");
+$sql2=mysqli_query($db,"select * from tb_user where Username='$username' and Level='$level'");
 		
-		if($save){
-					echo '<div class="alert alert-success alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>Data User Berhasil Di Simpan.</div>'; header('location:../index.php?page=datauser');
-				}else{
-						echo '<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>Ups, Data User Gagal Di simpan !</div>';
-					}
+$cek=mysqli_num_rows($sql2);
+while($rowcek=mysqli_fetch_array($sql))
+{
+	$rowlevel=$rowcek['Level'];
+	$rowuser=$rowcek['Username'];
+if($username==$r && $level==$r)
+{
+	mysqli_query($db, "UPDATE tb_user SET Nama='$nama', Username='$username', Password='$password', Level = '$level' WHERE id='$id' ") or die ($db->error);	
+echo "<script>window.location='../index.php?page=datauser';</script>";
+}
+else if($cek>0)
+{
+	echo "<script>alert('Username sudah pernah diinputkan, Periksa Kembali');</script>";	
+		echo "<script>window.location='../index.php?page=datauser';</script>";
+}
+else if($level=='owner')
+{
+	echo "<script>alert('Level Kadis Sudah tersedia, Periksa Kembali');</script>";	
+	echo "<script>window.location='../index.php?page=datauser';</script>";
+	}
+else
+{
+mysqli_query($db, "UPDATE tb_user SET Nama='$nama', Username='$username', Password='$password', Level = '$level' WHERE id='$id' ") or die ($db->error);	
+echo "<script>window.location='../index.php?page=datauser';</script>";
+	}
+}
 	}
 										 
 ?>

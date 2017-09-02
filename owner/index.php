@@ -52,7 +52,7 @@ include "../koneksi.php";
 			$user_login=mysqli_query($db,"SELECT * FROM tb_user WHERE id='$user_id'") or die (mysqli_error());
 			$data_user=mysqli_fetch_array($user_login);
 			?>
-		<a href="index.php" class="logo"><img class="img-responsive" alt=""></a>
+		<a href="index.php"class="logo"> <img src="../img/LOGO.png" class="img-responsive" alt=""></a>
 		<span class="menu-btn"><i class="fa fa-bars"></i></span>
 		<ul class="ts-profile-nav">
 			
@@ -71,12 +71,24 @@ include "../koneksi.php";
 			<ul class="ts-sidebar-menu">
 				<li class="ts-label">Menu</li>
 				 	<li><a href="index.php"><i class="fa fa-home"></i> Home</a></li>
-					<li><a href="#"><i class="fa fa-files-o"></i> Grafik</a>
+					<li><a href="#"><i class="fa fa-bar-chart-o"></i> Grafik</a>
 					<ul>
-						<li><a href="?page=grafik_jenis_barang"><i class="fa fa-line-chart"></i>Grafik Jenis Barang</a></li>
-						<li><a href="?page=grafik_stok_barang"><i class="fa fa-line-chart"></i>Grafik Stok Barang</a></li>
-						<li><a href="?page=grafik_penjualan"><i class="fa fa-line-chart"></i>Grafik Penjualan</a></li>
-						<li><a href="?page=grafik_pembelian"><i class="fa fa-line-chart"></i>Grafik Pembelian</a></li>
+						
+						<li><a href="?page=grafik_penjualan"><i class="fa fa-bar-chart-o"></i>Grafik Penjualan</a></li>
+						<li><a href="?page=grafik_pembelian"><i class="fa fa-bar-chart-o"></i>Grafik Pembelian</a></li>
+            <li><a href="?page=grafik_kategori"><i class="fa fa-bar-chart-o"></i>Grafik per Kategori</a></li>
+						
+					</ul>
+				</li>
+        	<li><a href="#"><i class="fa fa-files-o"></i> Laporan</a>
+					<ul>
+						
+			<li><a href="?page=laporan_penjualan"><i class="fa fa-files-o"></i>Laporan Penjualan</a></li>
+			<li><a href="?page=laporan_pembelian"><i class="fa fa-files-o"></i>Laporan Pembelian</a></li>
+            <li><a href="?page=laporan_stok"><i class="fa fa-files-o"></i>Laporan Stok</a></li>
+            <li><a href="?page=laporan_supplier"><i class="fa fa-files-o"></i>Laporan Supplier</a></li>
+            <li><a href="?page=laporan_keuntungan_kotor"><i class="fa fa-files-o"></i>Laporan Keuntungan Kotor</a></li>
+						
 					</ul>
 				</li>
 
@@ -106,11 +118,7 @@ include "../koneksi.php";
 	{
 		include "jenis_barang/grafik_jenis_barang.php";
 		
-	} else if($page == "grafik_stok_barang")
-	{
-		include "stok_barang/grafik_stok_barang.php";
-		
-	} else if($page == "grafik_penjualan")
+	}  else if($page == "grafik_penjualan")
 	{
 		include "grafik_penjualan/grafik_penjualan.php";
 		
@@ -118,7 +126,42 @@ include "../koneksi.php";
 	{
 		include "grafik_pembelian/grafik_pembelian.php";
 		
-	} else {
+	}
+	else if($page == "grafik_kategori")
+	{
+		include "grafik_per_kategori/grafik_per_kategori.php";
+		
+	}
+	else if($page == "laporan_penjualan")
+	{
+		include "laporan_penjualan/laporan_penjualan.php";
+		
+	} else if($page == "laporan_pembelian")
+	{
+		include "laporan_pembelian/laporan_pembelian.php";
+		
+	}
+	 else if($page == "laporan_stok")
+	{
+		include "stok_barang/laporan_stok_barang.php";
+		
+	}
+	else if($page == "laporan_keuntungan_kotor")
+	{
+		include "laporan_keuntungan_kotor/laporan_keuntungan_kotor.php";
+		
+	}
+	else if($page == "laporan_supplier")
+	{
+		include "laporan_supplier/laporan_supplier.php";
+		
+	}
+	else if($page == "grafik_keuntungan")
+	{
+		include "grafik_keuntungan/grafik_keuntungan.php";
+		
+	} 
+	else {
 		
 	?>	
 			<div class="container-fluid">
@@ -127,6 +170,15 @@ include "../koneksi.php";
 						<h2 class="page-title">Home</h2>
 					</div>
 				</div>
+				<div class="row clearfix">
+            </div>
+       <div align="center" style="margin:0 auto;">
+         
+         <p style="font-family:Arial; font-size:20px; font-weight:600"> Selamat Datang   <span style="color:#190A9F"><?php echo $data_user['Nama']; ?></span> di Sistem Informasi Eksekutif</p>
+         <p style="font-family:Arial; font-size:20px; font-weight:600"> UD ADITYA </p>
+         <img src="../img/cara-meningkatkan-penjualan.jpg" height="400">
+         
+         </div>
 
 
 			</div>

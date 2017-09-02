@@ -64,7 +64,7 @@ $(function () {
             }
         },
         series: [{
-            name: 'Pembelian',
+            name: 'Penjualan',
             data: [
 			
 			]
@@ -104,7 +104,7 @@ $(function () {
                 borderWidth: 0,
                 dataLabels: {
                     enabled: true,
-                    format: 'Rp {point.y:,.0f}'
+                    format: '{point.y:.0f}'
                 }
             }
         },
@@ -164,7 +164,7 @@ $(function () {
 				
 $tampung_data = mysqli_query($db,"select tb_kategori.nama_kategori, sum(tb_detail_pembelian.total) as harga from tb_detail_pembelian
 join tb_pembelian on tb_pembelian.id_pembelian=tb_detail_pembelian.id_pembelian
-join tb_barang on tb_barang.kode_brg=tb_detail_pembelian.kode_brg
+join tb_barang on tb_barang.kode_brg=tb_detail_pembelian.id_barang
 join tb_kategori on tb_kategori.id_kategori=tb_barang.id_kategori
 where monthname(tb_pembelian.tgl)='$bulan' and year(tb_pembelian.tgl)=$inputan_tahun
 group by tb_kategori.id_kategori");
@@ -207,7 +207,7 @@ group by tb_kategori.id_kategori");
 	<div class="row">
 		<!--col-->
 		<div class="col-md-12">
-			<h2 class="page-title">Grafik Pembelian</h2>
+			<h2 class="page-title">Grafik Penjualan</h2>
 				<!--form-->
 				<form action="" method="post">
       <div class="row clearfix">

@@ -33,14 +33,18 @@ include "../../koneksi.php";
 	if(isset($_POST['simpan'])){
 	$id_kategori			=$_POST['id_kategori'];
 	$nama_kategori		=$_POST['nama_kategori'];
+
+		$query = mysqli_query( $db, "SELECT * FROM tb_kategori WHERE nama_kategori='$nama_kategori'" );
+									$cek = mysqli_num_rows( $query );
+									if ( $cek > 0 ) {
+										echo "<script> alert('Data sudah pernah diinput, Coba Periksa Lagi!');window.location='../index.php?page=kategori';</script>";
+
+									} else {
+										mysqli_query( $db, "UPDATE tb_kategori SET nama_kategori='$nama_kategori' WHERE id_kategori='$id_kategori'" )or die( $db->error );
+										echo "<script>window.location='../index.php?page=kategori';</script>";
+
+									}
 		
-		$save=mysqli_query($db, "UPDATE tb_kategori SET nama_kategori='$nama_kategori' WHERE id_kategori='$id_kategori'");	
-		
-		if($save){
-					echo '<div class="alert alert-success alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>Data Kategori Berhasil Di Simpan.</div>'; header('location:../index.php?page=kategori');
-				}else{
-						echo '<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>Ups, Data Kategori Gagal Di simpan !</div>';
-					}
 	}
 										 
 ?>

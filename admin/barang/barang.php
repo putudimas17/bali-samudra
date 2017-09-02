@@ -25,7 +25,8 @@ if ( !isset( $_SESSION ) ) {
 											<th>Kategori</th>
 											<th>Nama Barang</th>
 											<th>Stok</th>
-											<th>Harga</th>
+											<th>Harga Jual</th>
+											<th>Harga Beli</th>
 											<th>Satuan</th>
 											<th>Action</th>
 										</tr>
@@ -34,10 +35,11 @@ if ( !isset( $_SESSION ) ) {
 <?php 
 //menampilkan data mysqli
 $no = 1;
-$modal=mysqli_query($db,"SELECT * FROM tb_barang");
+$modal=mysqli_query($db,"SELECT * FROM tb_barang order by id_kategori");
 while($r=mysqli_fetch_assoc($modal)) {
 $kategori=mysqli_fetch_array(mysqli_query($db,"SELECT * FROM tb_kategori WHERE id_kategori='$r[id_kategori]'"));
-
+$hargabarangbeli = number_format($r['harga_beli'],0,",",".");
+$hargabarangjual = number_format($r['harga'],0,",",".");
 ?>
 	<tr>
 			<td><?php echo  $no++ ?></td>
@@ -45,7 +47,8 @@ $kategori=mysqli_fetch_array(mysqli_query($db,"SELECT * FROM tb_kategori WHERE i
 			<td><?php echo  $kategori['nama_kategori']; ?></td>
 			<td><?php echo  $r['nama_brg']; ?></td>
 			<td><?php echo  $r['stok']; ?></td>
-			<td><?php echo  $r['harga'] ?></td>
+			<td><?php echo 'Rp '.$hargabarangjual ?></td>
+			<td><?php echo 'Rp '.$hargabarangbeli ?></td>
 			<td><?php echo  $r['satuan'];?></td>
 			<td align="center">
 			<a href="barang/barang_edit.php?kode_brg=<?php echo $r['kode_brg']; ?>" data-target="#EditDataBarang" data-toggle="modal" data-backdrop="static" class="fa fa-edit"-> </a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;                                        
@@ -99,8 +102,12 @@ $kategori=mysqli_fetch_array(mysqli_query($db,"SELECT * FROM tb_kategori WHERE i
 										<input type="number" id="stok" placeholder="Stok" class="form-control" name="stok" required oninvalid="this.setCustomValidity('stok tidak boleh kosong')" oninput="setCustomValidity('')">
 									</div>
 									<div class="form-group">
-										<label for="harga">Harga</label>
-											<input type="number" id="harga" placeholder="Harga" class="form-control" name="harga" required oninvalid="this.setCustomValidity('harga tidak boleh kosong')" oninput="setCustomValidity('')" >
+										<label for="harga">Harga Jual</label>
+											<input type="number" id="harga" placeholder="Harga Jual" class="form-control" name="harga" required oninvalid="this.setCustomValidity('harga jual tidak boleh kosong')" oninput="setCustomValidity('')" >
+										</div>
+									<div class="form-group">
+										<label for="harga_beli">Harga Beli</label>
+											<input type="number" id="harga_beli" placeholder="Harga Beli" class="form-control" name="harga_beli" required oninvalid="this.setCustomValidity('harga beli tidak boleh kosong')" oninput="setCustomValidity('')" >
 										</div>
 									<div class="form-group">
 										<label for="satuan">Satuan</label>
@@ -119,10 +126,11 @@ if(isset($_POST['simpan'])){
 	$nama_brg			=$_POST['nama_brg'];
 	$stok				=$_POST['stok'];
 	$harga				=$_POST['harga'];
+	$harga_beli			=$_POST['harga_beli'];
 	$satuan				=$_POST['satuan'];
 
 
-$query=mysqli_query($db, "SELECT * FROM tb_barang WHERE kode_brg='B000$no' ");
+$query=mysqli_query($db, "SELECT * FROM tb_barang WHERE id_kategori='$id_kategori' and nama_brg='$nama_brg' ");
 $cek=mysqli_num_rows($query);
 		if($cek>=1)
 		{
@@ -131,7 +139,7 @@ $cek=mysqli_num_rows($query);
 		}
 		else 
 		{
-			mysqli_query($db, "INSERT INTO tb_barang VALUES ('B000$no', '$id_kategori', '$nama_brg', '$stok', '$harga', '$satuan')") or 	die (mysqli_error());	
+			mysqli_query($db, "INSERT INTO tb_barang VALUES ('B$no', '$id_kategori', '$nama_brg', '$stok', '$harga', '$harga_beli', '$satuan')") or 	die (mysqli_error());	
 			echo "<script>window.location='index.php?page=databarang';</script>";
 			
 		}

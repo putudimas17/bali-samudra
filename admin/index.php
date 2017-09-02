@@ -72,27 +72,16 @@ include "../koneksi.php";
 				<li><a href="?page=datauser"><i class="fa fa-user-plus"></i> Data User</a></li>
 				<li><a href="?page=kategori"><i class="fa fa-table"></i> Data Kategori</a></li>
 				<li><a href="?page=databarang"><i class="fa fa-file-text-o"></i> Data Barang</a></li>
-				<li><a href="?page=datasupel"><i class="fa fa-users"></i> Data Suppelier</a></li>
-				<li><a href="#"class="menu-btn"><i class="fa fa-files-o"></i> Laporan</a>
+				<li><a href="?page=datasupel"><i class="fa fa-users"></i> Data Supplier</a></li>
+				<li><a href="#"class="menu-btn"><i class="fa fa-files-o"></i> Informasi</a>
 					<ul>
-						<li><a href="../blank.html">Blank page</a></li>
-						<li><a href="../login.html">Login page</a></li>
+						<li><a href="?page=penjualan"><i class="fa fa-files-o"></i>Penjualan </a></li>
+						<li><a href="?page=pembelian"><i class="fa fa-files-o"></i>Pembelian </a></li>
+						<li><a href="?page=stok"><i class="fa fa-files-o"></i>Stok </a></li>				
 					</ul>
 				</li>
 
-				<!-- Account from above -->
-				<ul class="ts-profile-nav">
-					<li><a href="#">Help</a></li>
-					<li><a href="#">Settings</a></li>
-					<li class="ts-account">
-						<a href="#"><img src="../img/ts-avatar.jpg" class="ts-avatar hidden-side" alt=""> Account <i class="fa fa-angle-down hidden-side"></i></a>
-						<ul>
-							<li><a href="#">My Account</a></li>
-							<li><a href="#">Edit Account</a></li>
-							<li><a href="logout.php">Logout</a></li>
-						</ul>
-					</li>
-				</ul>
+				
 
 			</ul>
 		</nav>
@@ -118,7 +107,25 @@ include "../koneksi.php";
 	{
 		include "supel/supel.php";
 		
-	} else {
+	} 
+	else if($page == "pembelian")
+	{
+		include "laporan_pembelian/laporan_pembelian.php";
+		
+	} 
+	else if($page == "penjualan")
+	{
+		include "laporan_penjualan/laporan_penjualan.php";
+		
+	} 
+	else if($page == "stok")
+	{
+		include "stok_barang/laporan_stok_barang.php";
+		
+	} 
+	
+	
+	else {
 		
 	?>	
 			<div class="container-fluid">

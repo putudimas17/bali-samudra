@@ -102,7 +102,7 @@ if ( !isset( $_SESSION ) ) {
 									$No_tlp = $_POST[ 'No_tlp' ];
 									
 
-									$query = mysqli_query( $db, "SELECT * FROM tb_supel WHERE id='$id' " );
+									$query = mysqli_query( $db, "SELECT * FROM tb_supel WHERE Nama='$Nama' " );
 									$cek = mysqli_num_rows( $query );
 									if ( $cek >= 1 ) {
 										echo "<script> alert('Data sudah pernah diinput, Coba Periksa Lagi!');window.location='index.php?page=datasupel';</script>";

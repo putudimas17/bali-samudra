@@ -35,9 +35,13 @@ include "../../koneksi.php";
 								<label for="stok">Stok</label>
 									<input type="number" id="stok" placeholder="Stok" name ="stok" class="form-control" value="<?php echo $r['stok']; ?>" required oninvalid="this.setCustomValidity('stok tidak boleh kosong')" oninput="setCustomValidity('')">
 							</div>
-								<div class="form-group" >
-								<label for="harga">Harga</label>
-									<input type="number" id="harga" placeholder="Harga" name ="harga" class="form-control" value="<?php echo $r['harga']; ?>" required oninvalid="this.setCustomValidity('harga tidak boleh kosong')" oninput="setCustomValidity('')">
+							<div class="form-group" >
+								<label for="harga">Harga Jual</label>
+									<input type="number" id="harga" placeholder="Harga Jual" name ="harga" class="form-control" value="<?php echo $r['harga']; ?>" required oninvalid="this.setCustomValidity('harga jual tidak boleh kosong')" oninput="setCustomValidity('')">
+							</div>
+							<div class="form-group" >
+								<label for="harga_beli">Harga Beli</label>
+									<input type="number" id="harga_beli" placeholder="Harga Beli" name ="harga_beli" class="form-control" value="<?php echo $r['harga_beli']; ?>" required oninvalid="this.setCustomValidity('harga beli tidak boleh kosong')" oninput="setCustomValidity('')">
 							</div>
 							<div class="form-group" >
 								<label for="satuan">Satuan</label>
@@ -58,15 +62,19 @@ include "../../koneksi.php";
 	$nama_brg			=$_POST['nama_brg'];
 	$stok				=$_POST['stok'];
 	$harga				=$_POST['harga'];
-	$satuan			=$_POST['satuan'];
+	$harga_beli			=$_POST['harga_beli'];
+	$satuan				=$_POST['satuan'];
 		
-		$save=mysqli_query($db, "UPDATE tb_barang SET id_kategori='$id_kategori', nama_brg='$nama_brg', stok='$stok' , harga='$harga' , satuan='$satuan' WHERE kode_brg='$kode_brg'");	
+		$query=mysqli_query($db, "SELECT * FROM tb_barang WHERE id_kategori='$id_kategori' and nama_brg='$nama_brg' ");
+			$cek = mysqli_num_rows( $query );
+				if ( $cek > 0 ) {
+					echo "<script> alert('Data sudah pernah diinput, Coba Periksa Lagi!');window.location='../index.php?page=databarang';</script>";
+
+				} else {
+					mysqli_query( $db, "UPDATE tb_barang SET id_kategori='$id_kategori', nama_brg='$nama_brg', stok='$stok' , harga='$harga', harga_beli='$harga_beli', satuan='$satuan' WHERE kode_brg='$kode_brg'" )or die( $db->error );
+					echo "<script>window.location='../index.php?page=databarang';</script>";
+				}
 		
-		if($save){
-					echo '<div class="alert alert-success alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>Data Barang Berhasil Di Simpan.</div>'; header('location:../index.php?page=databarang');
-				}else{
-						echo '<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>Ups, Data Barang Gagal Di simpan !</div>';
-					}
 	}
 										 
 ?>

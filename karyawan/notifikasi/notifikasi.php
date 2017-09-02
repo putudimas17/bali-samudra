@@ -10,23 +10,8 @@ if ( !isset( $_SESSION ) ) {
 	<div class="row">
 		<!--col-->
 		<div class="col-md-12">
-			<h2 class="page-title">Laporan Stok Barang per Tanggal <?php echo date("d-m-Y"); ?></h2>
-    				<form method="post" class="form-horizontal" action="stok_barang/cetak_stok_barang.php">
-							
-              <div class="form-group">
-										
-										<div class="col-sm-10">
-                    
-                   
-                      
-											<button class="btn btn-primary" type="submit">Cetak</button>
-                     
-										</div>
-                  </div>  
-                    
-								
-											
-								 </form>
+			<h2 class="page-title">Sisa Stok Barang dibawah atau 6 per Tanggal <?php echo date("d-m-Y"); ?></h2>
+    			
                 <div class="panel panel-default">
 					<div class="panel-body">
 						<table id="zctb" class="table table-striped table-bordered table-hover" >
@@ -36,7 +21,7 @@ if ( !isset( $_SESSION ) ) {
 								<th>No</th>											
 								<th>Kategori </th>
 										<th>Nama Barang </th>
-											<th>Stok</th>
+											<th>Sisa Stok</th>
 											<th>Satuan</th>
 										</tr>
 									</thead>
@@ -54,10 +39,9 @@ function TanggalIndo($date){
 	$result = $tgl . " " . $BulanIndo[(int)$bulan-1] . " ". $tahun;		
 	return($result);
 }
-$modal=mysqli_query($db,"SELECT tb_kategori.nama_kategori, tb_barang.nama_brg, tb_barang.stok, tb_barang.satuan
-from tb_barang 
-join tb_kategori on tb_kategori.id_kategori=tb_barang.id_kategori 
-order by tb_kategori.nama_kategori");
+$modal=mysqli_query($db,"SELECT tb_kategori.nama_kategori, nama_brg, stok, satuan from tb_barang
+join tb_kategori on tb_kategori.id_kategori=tb_barang.id_kategori
+where stok <=6 order by stok  ");
 while($r=mysqli_fetch_assoc($modal)) {
 $kategori=$r['nama_kategori'];
 $barang=$r['nama_brg'];

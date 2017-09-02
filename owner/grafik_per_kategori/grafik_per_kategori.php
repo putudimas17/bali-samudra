@@ -1,18 +1,37 @@
 <?php 
 $inputan_tahun=@$_POST['tahun'];
+$inputan_bulan=@$_POST['bulan'];
 $cari=@$_POST['cari'];
 if($cari)
 {
-$tampung_bulan= mysqli_query($db,"SELECT sum(tb_detail_pembelian.total) as pembelian, monthname(tb_pembelian.tgl) as bulan
-from tb_detail_pembelian
-join tb_pembelian on tb_pembelian.id_pembelian=tb_detail_pembelian.id_pembelian
-where year(tb_pembelian.tgl)=$inputan_tahun
-group by month(tb_pembelian.tgl)");
-$tampung_drilldown= mysqli_query($db,"SELECT sum(tb_detail_pembelian.total) as pembelian, monthname(tb_pembelian.tgl) as bulan
-from tb_detail_pembelian
-join tb_pembelian on tb_pembelian.id_pembelian=tb_detail_pembelian.id_pembelian
-where year(tb_pembelian.tgl)=$inputan_tahun
-group by month(tb_pembelian.tgl)");
+	$bln=$_POST['bulan'];
+if($bln==1) {$nama_bulan='Januari';}
+else if($bln==2) {$nama_bulan='Februari';}
+else if($bln==3) {$nama_bulan='Maret';}
+else if($bln==4) {$nama_bulan='April';}
+else if($bln==5) {$nama_bulan='Mei';}
+else if($bln==6) {$nama_bulan='Juni';}
+else if($bln==7) {$nama_bulan='Juli';}
+else if($bln==8) {$nama_bulan='Agustus';}
+else if($bln==9) {$nama_bulan='September';}
+else if($bln==10) {$nama_bulan='Oktober';}
+else if($bln==11) {$nama_bulan='November';}
+else if($bln==12) {$nama_bulan='Desember';}
+
+$tampung_kategori= mysqli_query($db,"select tb_kategori.nama_kategori, tb_penjualan.tgl, sum(tb_detail_penjualan.jumlah) as jumlah from tb_detail_penjualan
+join tb_barang on tb_barang.kode_brg=tb_detail_penjualan.kode_brg
+join tb_kategori on tb_kategori.id_kategori=tb_barang.id_kategori
+join tb_penjualan on tb_penjualan.id_penjualan=tb_detail_penjualan.id_penjualan
+where month(tb_penjualan.tgl)=$inputan_bulan and year(tb_penjualan.tgl)=$inputan_tahun
+group by tb_kategori.nama_kategori
+order by sum(tb_detail_penjualan.jumlah) desc");
+$tampung_drilldown= mysqli_query($db,"select tb_kategori.nama_kategori, tb_penjualan.tgl, sum(tb_detail_penjualan.jumlah) as jumlah from tb_detail_penjualan
+join tb_barang on tb_barang.kode_brg=tb_detail_penjualan.kode_brg
+join tb_kategori on tb_kategori.id_kategori=tb_barang.id_kategori
+join tb_penjualan on tb_penjualan.id_penjualan=tb_detail_penjualan.id_penjualan
+where month(tb_penjualan.tgl)=$inputan_bulan and year(tb_penjualan.tgl)=$inputan_tahun
+group by tb_kategori.nama_kategori
+order by sum(tb_detail_penjualan.jumlah) desc");
 	
 }
 
@@ -32,10 +51,10 @@ ${demo.css}
 $(function () {
     Highcharts.chart('container', {
         chart: {
-            type: 'column'
+            type: 'pie'
         },
         title: {
-            text: 'Grafik Pembelian  UD Aditya Tahun '
+            text: 'Grafik per Kategori UD Aditya Tahun '
         },
        
         xAxis: {
@@ -46,7 +65,7 @@ $(function () {
         yAxis: {
             min: 0,
             title: {
-                text: 'rupiah'
+                text: 'jumlah barang'
             }
         },
         tooltip: {
@@ -64,7 +83,7 @@ $(function () {
             }
         },
         series: [{
-            name: 'Pembelian',
+            name: 'Kategori',
             data: [
 			
 			]
@@ -78,13 +97,13 @@ $(function () {
     // Create the chart
     Highcharts.chart('container', {
         chart: {
-            type: 'column'
+            type: 'pie'
         },
         title: {
-            text: '<?php echo "Grafik Pembelian UD Aditya Tahun $inputan_tahun" ?> '
+            text: '<?php echo "Grafik Pembelian UD Aditya Bulan $nama_bulan Tahun $inputan_tahun" ?> '
         },
 				 subtitle: {
-            text: 'Klik bulan untuk per kategori'
+            text: 'Klik nama kategori untuk per barang'
         },
       
         xAxis: {
@@ -92,7 +111,7 @@ $(function () {
         },
         yAxis: {
             title: {
-                text: 'jumlah'
+                text: 'jumlah barang'
             }
 
         },
@@ -104,7 +123,7 @@ $(function () {
                 borderWidth: 0,
                 dataLabels: {
                     enabled: true,
-                    format: 'Rp {point.y:,.0f}'
+                    format: '{point.y:.0f}'
                 }
             }
         },
@@ -115,22 +134,22 @@ $(function () {
         },
 
         series: [{
-            name: 'pembelian',
+            name: 'Kategori',
             colorByPoint: true,
             data: [
 			<?php
-			while($row=mysqli_fetch_array($tampung_bulan))
+			while($row=mysqli_fetch_array($tampung_kategori))
 			{
 				
-				$drilldown=$row['bulan'];
-				$pembelian=$row['pembelian'];
+				$drilldown=$row['nama_kategori'];
+				$jumlah=$row['jumlah'];
 			
 				
 				?>	
 						
 			{
-                name: '<?php echo $row['bulan']; ?>',
-                y: <?php echo $pembelian; ?>,
+                name: '<?php echo $row['nama_kategori']; ?>',
+                y: <?php echo $jumlah; ?>,
 				drilldown : '<?php echo $drilldown ?>'
 						               
       },
@@ -146,35 +165,35 @@ $(function () {
 			
             series: 
 			[
-			
 			// mulai drill down
 			<?php
 			while ($rowdrill=mysqli_fetch_array($tampung_drilldown))
 			{
-			$bulan=$rowdrill['bulan'];
+			$namakategori=$rowdrill['nama_kategori'];
 			?>
 			{
 				
-                name: '<?php echo $bulan ?>',
-                id: '<?php echo $bulan ?>',
+                name: '<?php echo $namakategori ?>',
+                id: '<?php echo $namakategori ?>',
                 data:
 				
 				[
 				<?php
 				
-$tampung_data = mysqli_query($db,"select tb_kategori.nama_kategori, sum(tb_detail_pembelian.total) as harga from tb_detail_pembelian
-join tb_pembelian on tb_pembelian.id_pembelian=tb_detail_pembelian.id_pembelian
-join tb_barang on tb_barang.kode_brg=tb_detail_pembelian.kode_brg
+$tampung_data = mysqli_query($db,"select tb_barang.nama_brg, tb_penjualan.tgl, sum(tb_detail_penjualan.jumlah) as jumlah from tb_detail_penjualan
+join tb_barang on tb_barang.kode_brg=tb_detail_penjualan.kode_brg
 join tb_kategori on tb_kategori.id_kategori=tb_barang.id_kategori
-where monthname(tb_pembelian.tgl)='$bulan' and year(tb_pembelian.tgl)=$inputan_tahun
-group by tb_kategori.id_kategori");
+join tb_penjualan on tb_penjualan.id_penjualan=tb_detail_penjualan.id_penjualan
+where month(tb_penjualan.tgl)=$inputan_bulan and year(tb_penjualan.tgl)=$inputan_tahun and tb_kategori.nama_kategori='$namakategori'
+group by tb_barang.nama_brg
+order by sum(tb_detail_penjualan.jumlah) desc");
 				
 				while($datadrilldown=mysqli_fetch_array($tampung_data))
 				{
 				?>
 					[
-					'<?php echo $datadrilldown['nama_kategori']; ?>',
-					<?php echo $datadrilldown['harga']; ?>
+					'<?php echo $datadrilldown['nama_brg']; ?>',
+					<?php echo $datadrilldown['jumlah']; ?>
 					],
 				 	
 				
@@ -189,6 +208,7 @@ group by tb_kategori.id_kategori");
 			};
 						?>
 						// selesai series
+			
 						] 
 			
 			
@@ -207,16 +227,37 @@ group by tb_kategori.id_kategori");
 	<div class="row">
 		<!--col-->
 		<div class="col-md-12">
-			<h2 class="page-title">Grafik Pembelian</h2>
+			<h2 class="page-title">Grafik per Kategori</h2>
 				<!--form-->
 				<form action="" method="post">
       <div class="row clearfix">
+       <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6">
+        <div class="form-group">
+          <select name="bulan" id="bulan" class="form-control" required>
+          <option value="">-- Pilih Bulan --</option>
+												<option value="1">Januari</option>
+                        <option value="2">Februari</option>
+                        <option value="3">Maret</option>
+                        <option value="4">April</option>
+                        <option value="5">Mei</option>
+                        <option value="6">Juni</option>
+                        <option value="7">Juli</option>
+                        <option value="8">Agustus</option>
+                        <option value="9">September</option>
+                        <option value="10">Oktober</option>
+                        <option value="11">November</option>
+                        <option value="12">Desember</option>
+         </select>
+         </div>
+       
+       </div>
+       
       <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6">
         <div class="form-group">
           <select name="tahun" id="tahun" class="form-control" required>
           <option value="">-- pilih tahun --</option>
           <?php 
-					$tahun=mysqli_query($db, "SELECT DISTINCT year(tgl) as tahun from tb_pembelian");
+					$tahun=mysqli_query($db, "SELECT DISTINCT year(tgl) as tahun from tb_penjualan");
 					while($rowtahun=mysqli_fetch_array($tahun))
 					{
 					$datatahun=$rowtahun['tahun'];

@@ -646,8 +646,11 @@ li {
   margin-bottom: 20px;
   border-bottom: 2px solid #040796;
 }
-.brand {
-  background: #05076F;
+.brand {/*header*/
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-image: url(../img/support-search-background.png);
   position: relative;
   z-index: 3;
   position: fixed;
@@ -683,7 +686,7 @@ li {
 .brand .ts-profile-nav li a {
   display: block;
   padding: 20px;
-  color: #fcfcfc;
+  color: #fcfcfc;/*menggubah warna tulisan profil*/
 }
 .brand .ts-profile-nav li ul {
   visibility: hidden;
@@ -697,14 +700,15 @@ li {
 }
 .brand .ts-profile-nav li ul li a {
   padding: 10px 20px;
-  background: #05076F;
+  background:#1B3B4F;/*menggubah warna logout*/
+  color: #F5EEEE;
 }
 .brand .ts-profile-nav .ts-account .fa-angle-down {
   float: right;
 }
 .brand .ts-profile-nav .ts-account > a {
-  width: 180px;
-  background: #05076F;
+  width: 180px;/* panjang nama profil*/
+  /*background: #000000;menggubah warna background profil*/
 }
 .brand .ts-profile-nav .ts-account .ts-avatar {
   border-radius: 50%;
@@ -717,9 +721,11 @@ li {
   opacity: 1;
 }
 .ts-sidebar {
-  background: url(../img/Ilustrasi-Grafik-Naik-960x640.jpg) bottom no-repeat;
-  background-color: #f5f0f0;
-  background-size: contain;
+  background: url(../img/support-search-background.png);/*mengganti background menu*/
+	background-position: center;
+  background-repeat: no-repeat;
+   background-color: #f5f0f0;
+  background-size:cover;
   max-height: 0;
   transition: max-height 0.3s;
   overflow: hidden;
@@ -752,7 +758,7 @@ li {
 }
 .ts-sidebar-menu .ts-label {
   color: #f0f8ff;
-  background: #202287;
+  background: #262580;/*mengganti  warna main menu*/
   font-weight: bold;
   padding: 8px 15px;
   text-transform: uppercase;
@@ -764,14 +770,14 @@ li {
   display: block;
   text-decoration: none;
   padding: 15px 15px;
-  color: #000000;
-  font-size: 17px;
+  color: #F4E6E7;/*mengganti warna tulisan pada menu*/
+  font-size: 18px;
 }
 .ts-sidebar-menu li {
   position: relative;
 }
 .ts-sidebar-menu li i {
-  color: #000000;
+  color: #FCF9F9; /*mengganti warna icon*/
   margin-right: 10px;
   font-weight: lighter;
 }

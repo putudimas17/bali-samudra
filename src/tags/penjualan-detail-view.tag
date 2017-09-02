@@ -99,7 +99,7 @@
 											{item.nama_brg}
 										</div>
 										<div class="s-col c-12">
-											{item.jumlah} Qty x {toMoneyCurrency(item.subtotal)}
+											{item.jumlah} x {toMoneyCurrency(item.subtotal)}
 										</div>
 									</div>
 								</td>

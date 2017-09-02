@@ -191,12 +191,11 @@
 			})
 		}
 		this.on('mount',function(){
-			$('#zctb').dataTable();
 			req_tbPenjualan(function(data){
 				vm.tb_penjualan = data;
 				console.log(vm.tb_penjualan);
 				vm.setState(function(){
-
+					$('#zctb').dataTable();
 				})
 			})
 		})

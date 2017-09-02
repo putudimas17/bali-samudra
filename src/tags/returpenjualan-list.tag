@@ -184,12 +184,12 @@
 			})
 		}
 		this.on('mount',function(){
-			$('#zctb').dataTable();
 			req_rListPenjualan(function(data){
 				vm.tb_retur_penjualan = data;
 				console.log(vm.tb_retur_penjualan);
 				vm.setState(function(){
 
+					$('#zctb').dataTable();
 				})
 			})
 		})

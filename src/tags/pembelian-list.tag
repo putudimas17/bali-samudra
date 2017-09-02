@@ -186,12 +186,11 @@
 			})
 		}
 		this.on('mount',function(){
-			$('#zctb').dataTable();
 			req_tbPembelian(function(data){
 				vm.tb_pembelian = data;
 				console.log(vm.tb_pembelian);
 				vm.setState(function(){
-
+					$('#zctb').dataTable();
 				})
 			})
 		})
