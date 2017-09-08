@@ -117,7 +117,7 @@
 			<div style="display: none">
 				<div id="print-box">
 					<div class="section">
-						<h2>PT GANTI SENDIRI</h2>
+						<h2>UD ADITYA</h2>
 						<h5>
 							STRUK PEMBAYARAN
 						</h5>

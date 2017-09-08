@@ -80,7 +80,7 @@
 			<div style="display: none">
 				<div id="print-box">
 					<div class="section">
-						<h2 class="">PT GANTI SENDIRI</h2>
+						<h2 class="">UD ADITYA</h2>
 						<h5 class="">
 							INVOICE PEMBELIAN
 						</h5>
