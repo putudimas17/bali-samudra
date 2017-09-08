@@ -26,7 +26,7 @@ function readyInput($db){
  			];
  		}
  		// get detail 
-	    $sql = "select * from tb_detail_retur_pembelian i left join tb_barang j on i.kode_brg = j.kode_brg where i.id = '".$head[0]['id']."'";
+	    $sql = "select * from tb_detail_retur_pembelian i left join tb_barang j on i.kode_brg = j.kode_brg where i.id_retur = '".$head[0]['id']."'";
 	 	$gg = $db->query($sql);
  		$detail = array();
  		echo $db->error;
@@ -107,6 +107,15 @@ if(isset($_GET['action'])){
 				$cekReadyRetur = $db->query($cekReadyRetur);
 				$cekReadyRetur = $cekReadyRetur->fetch_row();
 				if($cekReadyRetur[0] != ''){
+					if($_POST['jumlah'] > $totalQty[0] || $_POST['jumlah'] <= 0){
+						$toJSON = [
+							'status' => 'rejected',
+							'message' => 'Jumlah yang di input lebih besar atau kosong dari stok'
+						];
+						header('Content-Type: application/json');
+						echo json_encode($toJSON);
+						return;
+					}
 					if($cekReadyRetur[0] < $totalQty[0]){
 						$toJSON = [
 		    				'status' => 'success',
@@ -361,6 +370,8 @@ if(isset($_GET['action'])){
 		 	$gg = mysqli_query($db,$sql);
 		    $row = mysqli_fetch_row($gg);
 		    if(isset($row[0])==true){
+		    	$sql = "UPDATE tb_retur_pembelian set tgl= '".date("Y-m-d H:i:s")."' where  id_user = ".$_SESSION['karyawan']." AND status=0";
+				$gg = mysqli_query($db,$sql);
 		    	if($row[0] == 0){
 		    		readyInput($db);
 		    	}
