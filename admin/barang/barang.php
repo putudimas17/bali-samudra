@@ -1,7 +1,6 @@
 <?php
 if ( !isset( $_SESSION ) ) {
 	session_start();
-
 }
 ?>
 <!-- container -->
@@ -19,38 +18,38 @@ if ( !isset( $_SESSION ) ) {
 					<div class="panel-body">
 						<table id="zctb" class="table table-striped table-bordered table-hover" >
 							<thead>
-										<tr>
-											<th> No</th>
-											<th>Kode tiket </th>
-											<th>Kategori</th>
-											<th>Nama tiket</th>
-											<th>Harga Jual</th>
-											<th>Harga Beli</th>
-											<th>Satuan</th>
-											<th>Action</th>
-										</tr>
-									</thead>
-								<tbody>
+								<tr>
+									<th> No</th>
+									<th>Kode tiket </th>
+									<th>Kategori</th>
+									<th>Nama tiket</th>
+									<th>Harga Jual</th>
+									<th>Harga Beli</th>
+									<th>Satuan</th>
+									<th>Action</th>
+								</tr>
+							</thead>
+						<tbody>
 <?php 
 //menampilkan data mysqli
 $no = 1;
-$modal=mysqli_query($db,"SELECT * FROM tb_barang order by id_kategori");
+$modal=mysqli_query($db,"SELECT * FROM tb_tiket order by id_kategori");
 while($r=mysqli_fetch_assoc($modal)) {
 $kategori=mysqli_fetch_array(mysqli_query($db,"SELECT * FROM tb_kategori WHERE id_kategori='$r[id_kategori]'"));
-$hargabarangbeli = number_format($r['harga_beli'],0,",",".");
-$hargabarangjual = number_format($r['harga'],0,",",".");
+$hargabarangbeli = number_format($r['Harga_beli'],0,",",".");
+$hargabarangjual = number_format($r['Harga_beli'],0,",",".");
 ?>
 	<tr>
 			<td><?php echo  $no++ ?></td>
-			<td><?php echo  $r['kode_tiket']; ?></td>
+			<td><?php echo  $r['Kode_tiket']; ?></td>
 			<td><?php echo  $kategori['nama_kategori']; ?></td>
-			<td><?php echo  $r['nama_tiket']; ?></td>
+			<td><?php echo  $r['Nama_tiket']; ?></td>
 			<td><?php echo 'Rp '.$hargabarangjual ?></td>
 			<td><?php echo 'Rp '.$hargabarangbeli ?></td>
-			<td><?php echo  $r['satuan'];?></td>
+			<td><?php echo  $r['Satuan'];?></td>
 			<td align="center">
-			<a href="barang/barang_edit.php?kode_brg=<?php echo $r['kode_tiket']; ?>" data-target="#EditDataBarang" data-toggle="modal" data-backdrop="static" class="fa fa-edit"-> </a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;                                        
-            <a href="#" class="hapus_modal fa fa-trash-o"  onclick="confirm_modal('barang/barang_hapus.php?&kode_brg=<?php echo  $r['kode_tiket']; ?>');" ></a>
+			<a href="barang/barang_edit.php?Kode_tiket=<?php echo $r['Kode_tiket']; ?>" data-target="#EditDataBarang" data-toggle="modal" data-backdrop="static" class="fa fa-edit"-> </a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;                                        
+            <a href="#" class="hapus_modal fa fa-trash-o"  onclick="confirm_modal('barang/barang_hapus.php?&Kode_tiket=<?php echo  $r['Kode_tiket']; ?>');" ></a>
             </td>
 	</tr>
 		<?php 
@@ -86,10 +85,10 @@ $hargabarangjual = number_format($r['harga'],0,",",".");
 												 <?php
 													$bkategori=mysqli_query($db,"SELECT * FROM tb_kategori");
 													while($n=mysqli_fetch_array($bkategori)){
-													?>
-												 <option value="<?php echo $n['id_kategori']; ?>"><?php echo $n['nama_kategori']; ?></option>
-												 <?php } ?>
-					 					 		 </select>
+												?>
+													<option value="<?php echo $n['id_kategori']; ?>"><?php echo $n['nama_kategori']; ?></option>
+												<?php } ?>
+					 					 	</select>
 									</div>
 									<div class="form-group">
 										<label for="nama_brg">Kode tiket</label>
@@ -115,29 +114,31 @@ $hargabarangjual = number_format($r['harga'],0,",",".");
 								</form>
 								<!-- end form add data -->
 
-  <?php
-if(isset($_POST['simpan'])){
-	$id_kategori		=$_POST['bkategori'];
-	$nama_brg			=$_POST['nama_brg'];
-	$harga				=$_POST['harga'];
-	$harga_beli			=$_POST['harga_beli'];
-	$satuan				=$_POST['satuan'];
+<?php
+	if(isset($_POST['simpan'])){
+		$id_kategori		=$_POST['bkategori'];
+		$nama_brg			=$_POST['nama_brg'];
+		$harga				=$_POST['harga'];
+		$harga_beli			=$_POST['harga_beli'];
+		$satuan				=$_POST['satuan'];
 
 
-$query=mysqli_query($db, "SELECT * FROM tb_barang WHERE id_kategori='$id_kategori' and nama_brg='$nama_brg' ");
-$cek=mysqli_num_rows($query);
-		if($cek>=1)
+		$query = mysqli_query($db, "SELECT * FROM tb_tiket WHERE id_kategori='$id_kategori' and Nama_tiket='$nama_brg' ");
+		$cek = mysqli_num_rows($query);
+		var_dump($cek);
+		if($cek >= 1)
 		{
 			echo "<script> alert('Data sudah pernah diinput, Coba Periksa Lagi!');window.location='index.php?page=databarang';</script>";
 			
 		}
 		else 
 		{
-			mysqli_query($db, "INSERT INTO tb_barang VALUES ('B$no', '$id_kategori', '$nama_brg', '$harga', '$harga_beli', '$satuan')") or 	die (mysqli_error());	
+			$no = rand();
+			mysqli_query($db, "INSERT INTO tb_tiket VALUES ('T$no', '$id_kategori', '$nama_brg', '$harga', '$harga_beli', '$satuan')") or 	die (mysqli_error());	
 			echo "<script>window.location='index.php?page=databarang';</script>";
 			
 		}
-}
+	}
 ?>
 							</div>
 						</div>

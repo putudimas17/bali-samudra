@@ -49,9 +49,9 @@ include "../koneksi.php";
 			{
 				$user_id= $_SESSION['admin'];
 				}
-			$user_login=mysqli_query($db,"SELECT * FROM tb_user WHERE id_user='$user_id'") or die (mysqli_error());
-			$data_user=mysqli_fetch_array($user_login);
-			?>
+			$user_login = mysqli_query($db,"SELECT * FROM tb_user WHERE id_user='$user_id'") or die (mysqli_error());
+			$data_user = mysqli_fetch_array($user_login);
+		?>
 		<a href="index.php"class="logo"> <img src="../img/LOGO.png" class="img-responsive" alt=""></a>
 		<span class="menu-btn"><i class="fa fa-bars"></i></span>
 		<ul class="ts-profile-nav">
