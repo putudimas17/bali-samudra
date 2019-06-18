@@ -55,7 +55,7 @@ if(isset($_GET['action'])){
 		 	if($gg->num_rows > 0){
 		 		while($row = mysqli_fetch_assoc($gg)) {
 		 			$supel[] = [
-	 					'id' => $row['id'],
+	 					'id' => $row['id_supel'],
 	 					'Nama' => $row['Nama'],
 	 					'Alamat' => $row['Alamat'],
 	 					'No_tlp' => $row['No_tlp']

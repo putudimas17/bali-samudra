@@ -14,6 +14,7 @@ if ( !isset( $_SESSION ) ) {
 				<div class="panel-heading">
 					<p><a href="#" class="btn btn-primary" data-target="#ModalAdd" data-toggle="modal">Tambah Data</a>
 					</p>
+					
 				</div>
 				
 
@@ -47,8 +48,8 @@ if ( !isset( $_SESSION ) ) {
 		<td><?php echo  $r['Password']; ?></td>
 		<td><?php echo  $r['Level']; ?></td>
 		<td align="center">
-			<a href="user/user_edit.php?id=<?php echo $r['id']; ?>" data-target="#EditDataUser" data-toggle="modal" data-backdrop="static" class="fa fa-edit"-></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			<a href="#" class="hapus_modal fa fa-trash-o" onclick="confirm_modal('user/user_hapus.php?&id=<?php echo  $r['id']; ?>');"></a>
+			<a href="user/user_edit.php?id=<?php echo $r['id_user']; ?>" data-target="#EditDataUser" data-toggle="modal" data-backdrop="static" class="fa fa-edit"-></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<a href="#" class="hapus_modal fa fa-trash-o" onclick="confirm_modal('user/user_hapus.php?&id=<?php echo  $r['id_user']; ?>');"></a>
 		</td>
 	</tr>
 	<?php } ?>
@@ -73,6 +74,7 @@ if ( !isset( $_SESSION ) ) {
 					<div class="col-md-12 col-sm-12 col-lg-12 col-xs-12">
 						<div class="panel panel-default">
 							<div class="panel-heading" align="center">Tambah Data User</div>
+							
 							<div class="panel-body">
 								<!-- form -->
 										

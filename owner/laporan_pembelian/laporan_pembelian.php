@@ -67,8 +67,8 @@ if ( !isset( $_SESSION ) ) {
 							<thead>
 										<tr>
 											<th> No</th>
-											<th>Tanggal Penjualan </th>
-											<th>Total Penjualan</th>
+											<th>Tanggal Pembelian </th>
+											<th>Total Pembelian</th>
 											
 										</tr>
 									</thead>

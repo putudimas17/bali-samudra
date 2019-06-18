@@ -1,6 +1,6 @@
 <retur-pembelian-view class="container-fluid transaksi">
 	<div class="header">
-		<h3>Transaksi Pembelian</h3>
+		<h3>Transaksi Retur Pembelian</h3>
 	</div>
 	<div class="form" >
 		<div>

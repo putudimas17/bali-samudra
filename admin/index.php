@@ -16,7 +16,7 @@ include "../koneksi.php";
 	<meta name="author" content="">
 	<meta name="theme-color" content="#3e454c">
 	
-	<title>SIE UD ADITYA</title>
+	<title>SIE PT BALI SAMUDRA</title>
 
 	<!-- Font awesome -->
 	<link rel="stylesheet" href="../css/font-awesome.min.css">
@@ -49,7 +49,7 @@ include "../koneksi.php";
 			{
 				$user_id= $_SESSION['admin'];
 				}
-			$user_login=mysqli_query($db,"SELECT * FROM tb_user WHERE id='$user_id'") or die (mysqli_error());
+			$user_login=mysqli_query($db,"SELECT * FROM tb_user WHERE id_user='$user_id'") or die (mysqli_error());
 			$data_user=mysqli_fetch_array($user_login);
 			?>
 		<a href="index.php"class="logo"> <img src="../img/LOGO.png" class="img-responsive" alt=""></a>
@@ -71,13 +71,12 @@ include "../koneksi.php";
 				<li><a href="index.php"><i class="fa fa-home"></i> Home</a></li>
 				<li><a href="?page=datauser"><i class="fa fa-user-plus"></i> Data User</a></li>
 				<li><a href="?page=kategori"><i class="fa fa-table"></i> Data Kategori</a></li>
-				<li><a href="?page=databarang"><i class="fa fa-file-text-o"></i> Data Barang</a></li>
-				<li><a href="?page=datasupel"><i class="fa fa-users"></i> Data Supplier</a></li>
+				<li><a href="?page=databarang"><i class="fa fa-file-text-o"></i> Data Tiket Tempat wisata</a></li>
+				<li><a href="?page=datasupel"><i class="fa fa-users"></i> Data rekanan</a></li>
 				<li><a href="#"class="menu-btn"><i class="fa fa-files-o"></i> Informasi</a>
 					<ul>
 						<li><a href="?page=penjualan"><i class="fa fa-files-o"></i>Penjualan </a></li>
-						<li><a href="?page=pembelian"><i class="fa fa-files-o"></i>Pembelian </a></li>
-						<li><a href="?page=stok"><i class="fa fa-files-o"></i>Stok </a></li>				
+						<li><a href="?page=pembelian"><i class="fa fa-files-o"></i>Pembelian </a></li>			
 					</ul>
 				</li>
 
@@ -132,6 +131,9 @@ include "../koneksi.php";
 				<div class="row">
 					<div class="col-md-12">
 						<h2 class="page-title">Home</h2>
+					
+						
+					
 					</div>
 				</div>
 				<div class="row clearfix">
@@ -139,7 +141,7 @@ include "../koneksi.php";
        <div align="center" style="margin:0 auto;">
          
          <p style="font-family:Arial; font-size:20px; font-weight:600"> Selamat Datang   <span style="color:#190A9F"><?php echo $data_user['Nama']; ?></span> di Sistem Informasi Eksekutif</p>
-         <p style="font-family:Arial; font-size:20px; font-weight:600"> UD ADITYA </p>
+         <p style="font-family:Arial; font-size:20px; font-weight:600">PT BALI SAMUDRA </p>
          <img src="../img/cara-meningkatkan-penjualan.jpg" height="400">
          
          </div>

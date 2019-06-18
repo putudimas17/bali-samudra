@@ -58,6 +58,7 @@ a:hover {
   text-decoration: none;
   color: #5db9d1;
 }
+
 .btn {
   font-family: 'Oswald', sans-serif;
   text-transform: none;
@@ -650,23 +651,32 @@ li {
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  background-image: url(../img/support-search-background.png);
+  background-color: #1c2d2d;
+  /*background-image: url(../img/support-search-background.png);*/
   position: relative;
   z-index: 3;
   position: fixed;
   width: 100%;
   top: 0;
 }
+/**.bkg-depan{
+  background-image: url(../img/support-search-background.png);**/
+
 .brand .logo {
   box-sizing: border-box;
-  padding: 20px;
+  padding: 10px;
   float: left;
   display: block;
   width: 200px;
 }
+
+
+
 .brand .logo img {
-  height: 15px;
+  width:200px;
 }
+
+/*END OF UBAH LOGO*/
 .brand .menu-btn {
   float: right;
   background: #232d3b;
@@ -707,7 +717,7 @@ li {
   float: right;
 }
 .brand .ts-profile-nav .ts-account > a {
-  width: 180px;/* panjang nama profil*/
+  width: 220px;/* panjang nama profil*/
   /*background: #000000;menggubah warna background profil*/
 }
 .brand .ts-profile-nav .ts-account .ts-avatar {

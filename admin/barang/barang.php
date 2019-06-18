@@ -10,7 +10,7 @@ if ( !isset( $_SESSION ) ) {
 	<div class="row">
 		<!--col-->
 		<div class="col-md-12">
-			<h2 class="page-title">Data Barang</h2>
+			<h2 class="page-title">Data Tiket</h2>
 				<div class="panel-heading">
 					<p><a href="#" class="btn btn-primary" data-target="#ModalAdd" data-toggle="modal">Tambah Data</a>
 					</p>
@@ -21,10 +21,9 @@ if ( !isset( $_SESSION ) ) {
 							<thead>
 										<tr>
 											<th> No</th>
-											<th>Kode Barang </th>
+											<th>Kode tiket </th>
 											<th>Kategori</th>
-											<th>Nama Barang</th>
-											<th>Stok</th>
+											<th>Nama tiket</th>
 											<th>Harga Jual</th>
 											<th>Harga Beli</th>
 											<th>Satuan</th>
@@ -43,16 +42,15 @@ $hargabarangjual = number_format($r['harga'],0,",",".");
 ?>
 	<tr>
 			<td><?php echo  $no++ ?></td>
-			<td><?php echo  $r['kode_brg']; ?></td>
+			<td><?php echo  $r['kode_tiket']; ?></td>
 			<td><?php echo  $kategori['nama_kategori']; ?></td>
-			<td><?php echo  $r['nama_brg']; ?></td>
-			<td><?php echo  $r['stok']; ?></td>
+			<td><?php echo  $r['nama_tiket']; ?></td>
 			<td><?php echo 'Rp '.$hargabarangjual ?></td>
 			<td><?php echo 'Rp '.$hargabarangbeli ?></td>
 			<td><?php echo  $r['satuan'];?></td>
 			<td align="center">
-			<a href="barang/barang_edit.php?kode_brg=<?php echo $r['kode_brg']; ?>" data-target="#EditDataBarang" data-toggle="modal" data-backdrop="static" class="fa fa-edit"-> </a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;                                        
-            <a href="#" class="hapus_modal fa fa-trash-o"  onclick="confirm_modal('barang/barang_hapus.php?&kode_brg=<?php echo  $r['kode_brg']; ?>');" ></a>
+			<a href="barang/barang_edit.php?kode_brg=<?php echo $r['kode_tiket']; ?>" data-target="#EditDataBarang" data-toggle="modal" data-backdrop="static" class="fa fa-edit"-> </a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;                                        
+            <a href="#" class="hapus_modal fa fa-trash-o"  onclick="confirm_modal('barang/barang_hapus.php?&kode_brg=<?php echo  $r['kode_tiket']; ?>');" ></a>
             </td>
 	</tr>
 		<?php 
@@ -94,13 +92,10 @@ $hargabarangjual = number_format($r['harga'],0,",",".");
 					 					 		 </select>
 									</div>
 									<div class="form-group">
-										<label for="nama_brg">Nama Barang</label>
+										<label for="nama_brg">Kode tiket</label>
 											<input type="text" id="nama_brg" placeholder="Nama Barang" class="form-control" name="nama_brg" required oninvalid="this.setCustomValidity('nama barang tidak boleh kosong')" oninput="setCustomValidity('')">
 									</div>
-									<div class="form-group">
-										<label for="stok">Stok</label>
-										<input type="number" id="stok" placeholder="Stok" class="form-control" name="stok" required oninvalid="this.setCustomValidity('stok tidak boleh kosong')" oninput="setCustomValidity('')">
-									</div>
+									
 									<div class="form-group">
 										<label for="harga">Harga Jual</label>
 											<input type="number" id="harga" placeholder="Harga Jual" class="form-control" name="harga" required oninvalid="this.setCustomValidity('harga jual tidak boleh kosong')" oninput="setCustomValidity('')" >
@@ -124,7 +119,6 @@ $hargabarangjual = number_format($r['harga'],0,",",".");
 if(isset($_POST['simpan'])){
 	$id_kategori		=$_POST['bkategori'];
 	$nama_brg			=$_POST['nama_brg'];
-	$stok				=$_POST['stok'];
 	$harga				=$_POST['harga'];
 	$harga_beli			=$_POST['harga_beli'];
 	$satuan				=$_POST['satuan'];
@@ -139,7 +133,7 @@ $cek=mysqli_num_rows($query);
 		}
 		else 
 		{
-			mysqli_query($db, "INSERT INTO tb_barang VALUES ('B$no', '$id_kategori', '$nama_brg', '$stok', '$harga', '$harga_beli', '$satuan')") or 	die (mysqli_error());	
+			mysqli_query($db, "INSERT INTO tb_barang VALUES ('B$no', '$id_kategori', '$nama_brg', '$harga', '$harga_beli', '$satuan')") or 	die (mysqli_error());	
 			echo "<script>window.location='index.php?page=databarang';</script>";
 			
 		}

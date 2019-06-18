@@ -51,7 +51,7 @@ ${demo.css}
 $(function () {
     Highcharts.chart('container', {
         chart: {
-            type: 'pie'
+            type: 'column'
         },
         title: {
             text: 'Grafik per Kategori UD Aditya Tahun '
@@ -97,7 +97,7 @@ $(function () {
     // Create the chart
     Highcharts.chart('container', {
         chart: {
-            type: 'pie'
+            type: 'column'
         },
         title: {
             text: '<?php echo "Grafik Pembelian UD Aditya Bulan $nama_bulan Tahun $inputan_tahun" ?> '

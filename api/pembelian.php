@@ -19,7 +19,7 @@ function readyInput($db){
  				'id_pembelian' => $row['id_pembelian'],
  				'INV' => $row['INV'],
  				'id_supel' => $row['id_supel'],
- 				'harga' => $row['harga'],
+ 				'harga' => 0,
  				'tgl' => $row['tgl'],
  				'total' => $row['total'],
  				'id_user' => $row['id_user'],
@@ -55,7 +55,7 @@ function readyInput($db){
 if(isset($_GET['action'])){
 	switch($_GET['action']){
 		case 'view':
-			$sql = "select i.id_pembelian, i.tgl, i.total, i.INV, k.Nama as pegawai, j.Nama as nama_suplier from tb_pembelian i left join tb_supel j on i.id_supel = j.id left join tb_user k on i.id_user = k.id where i.id_pembelian = '".$_POST['id_pembelian']."' order by i.id_pembelian desc";
+			$sql = "select i.id_pembelian, i.tgl, i.total, i.INV, k.Nama as pegawai, j.Nama as nama_suplier from tb_pembelian i left join tb_supel j on i.id_supel = j.id_supel left join tb_user k on i.id_user = k.id_user where i.id_pembelian = '".$_POST['id_pembelian']."' order by i.id_pembelian desc";
 		 	$gg = $db->query($sql);
 		 	if($gg->num_rows > 0){
 		 		$uuu = [];
@@ -96,7 +96,7 @@ if(isset($_GET['action'])){
 		 	}
 		break;
 		case 'fetch':
-			$sql = "select i.id_pembelian, i.tgl, i.total, i.INV, k.Nama as pegawai, j.Nama as nama_suplier from tb_pembelian i left join tb_supel j on i.id_supel = j.id left join tb_user k on i.id_user = k.id where i.status = 1 order by i.id_pembelian desc";
+			$sql = "select i.id_pembelian, i.tgl, i.total, i.INV, k.Nama as pegawai, j.Nama as nama_suplier from tb_pembelian i left join tb_supel j on i.id_supel = j.id_supel left join tb_user k on i.id_user = k.id_user where i.status = 1 order by i.id_pembelian desc";
 		 	$gg = $db->query($sql);
 		 	echo $db->error;
 		 	if($gg->num_rows > 0){
@@ -164,7 +164,7 @@ if(isset($_GET['action'])){
 		    		readyInput($db);
 		    	}
 		    }else{
-		    	$sql = "INSERT INTO  tb_pembelian (id_supel,tgl,harga,total,id_user) VALUES (0, '".date("Y-m-d")."', 0,0, ".$_SESSION['karyawan'].")";
+		    	$sql = "INSERT INTO  tb_pembelian (id_supel,tgl,total,id_user) VALUES (0, '".date("Y-m-d")."', 0, ".$_SESSION['karyawan'].")";
 				if ($db->query($sql) === TRUE) {
 					$sql = 'select id_pembelian from tb_pembelian where id_user = '.$_SESSION['karyawan'].' and status = 0';
 					$gg = mysqli_query($db,$sql);

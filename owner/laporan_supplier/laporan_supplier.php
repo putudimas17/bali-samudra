@@ -92,7 +92,7 @@ $modal=mysqli_query($db,"SELECT tb_pembelian.tgl, tb_supel.Nama, tb_barang.nama_
 from tb_detail_pembelian
 join tb_barang on tb_barang.kode_brg=tb_detail_pembelian.kode_brg
 join tb_pembelian on tb_pembelian.id_pembelian=tb_detail_pembelian.id_pembelian
-join tb_supel on tb_pembelian.id_supel=tb_supel.id
+join tb_supel on tb_pembelian.id_supel=tb_supel.id_supel
 order by  tb_pembelian.tgl desc");
 while($r=mysqli_fetch_assoc($modal)) {
 $tgl=$r['tgl'];

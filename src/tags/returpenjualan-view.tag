@@ -125,7 +125,8 @@
 			})
 		}
 		this.translateToDate = function(value){
-			return momentjs(value,'yyyy-mm-dd').format('LLL')
+			return value;
+			//return momentjs(value,'yyyy-mm-dd').format('LLL')
 		}
 		this.back = function(e){
 			console.log(vm.opts);

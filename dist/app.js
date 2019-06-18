@@ -1,15 +1,45 @@
-webpackJsonp([2],[
+webpackJsonp([4],[
 /* 0 */,
 /* 1 */,
 /* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+var localStaticVariable = {
+	url_root: 'http://localhost/aditya',
+	url_restapi: 'http://localhost/aditya/api',
+	url_storage: 'http://localhost/aditya/api/images'
+};
+
+var lanStaticVariable = {
+	url_root: 'http://localhost/aditya',
+	url_restapi: 'http://localhost/aditya/api',
+	url_storage: 'http://localhost/aditya/api/images'
+};
+
+var onlineStaticVariable = {
+	url_root: 'http://localhost/aditya',
+	url_restapi: 'http://localhost/aditya/api',
+	url_storage: 'http://localhost/aditya/api/images'
+};
+
+var staticVariable = exports.staticVariable = localStaticVariable;
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
 var __WEBPACK_AMD_DEFINE_RESULT__;
 
 !(__WEBPACK_AMD_DEFINE_RESULT__ = function (require) {
-    var riot = __webpack_require__(0);
-    var configService = __webpack_require__(3);
+    var riot = __webpack_require__(1);
+    var configService = __webpack_require__(2);
     var temp_callback = null;
     var vm = {
         // predefine code
@@ -43,7 +73,7 @@ var __WEBPACK_AMD_DEFINE_RESULT__;
                     rev2 += '.';
                 }
             }
-            return 'Rp. ' + rev2.split('').reverse().join('') + ',00';
+            return '' + rev2.split('').reverse().join('') + ',00';
         },
         emailValid: function validateEmail(email) {
             var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -68,17 +98,16 @@ var __WEBPACK_AMD_DEFINE_RESULT__;
                 if (callback != null) {
                     var gg = new Promise(function (resolve, reject) {
                         if (callback != null) {
-                            temp_callback = callback;
                             setTimeout(function () {
-                                temp_callback();
+                                resolve();
                             }, 1);
                         } else {
                             reject();
                             return;
                         }
-                        resolve();
                     });
                     gg.then(function () {
+                        callback();
                         callback = null;
                         console.log('Change State is Done!');
                     }).catch(function () {
@@ -100,55 +129,25 @@ var __WEBPACK_AMD_DEFINE_RESULT__;
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 3 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-var localStaticVariable = {
-	url_root: 'http://localhost/aditya',
-	url_restapi: 'http://localhost/aditya/api',
-	url_storage: 'http://localhost/aditya/api/images'
-};
-
-var lanStaticVariable = {
-	url_root: 'http://localhost/aditya',
-	url_restapi: 'http://localhost/aditya/api',
-	url_storage: 'http://localhost/aditya/api/images'
-};
-
-var onlineStaticVariable = {
-	url_root: 'http://localhost/aditya',
-	url_restapi: 'http://localhost/aditya/api',
-	url_storage: 'http://localhost/aditya/api/images'
-};
-
-var staticVariable = exports.staticVariable = localStaticVariable;
-
-/***/ }),
 /* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function($) {
 
-var _riot = __webpack_require__(0);
+var _riot = __webpack_require__(1);
 
 var _riot2 = _interopRequireDefault(_riot);
 
 __webpack_require__(5);
 
-__webpack_require__(1);
+__webpack_require__(0);
 
 var _nanobar = __webpack_require__(6);
 
 var _nanobar2 = _interopRequireDefault(_nanobar);
 
-var _riotMixins = __webpack_require__(2);
+var _riotMixins = __webpack_require__(3);
 
 var _riotMixins2 = _interopRequireDefault(_riotMixins);
 
@@ -166,20 +165,32 @@ $(document).ready(function () {
 window.runningPage = function (route, data) {
     switch (route) {
         case 'penjualan':
-            __webpack_require__.e/* require.ensure */(1/* empty */).then((function () {
-                var pp = __webpack_require__(149);
+            __webpack_require__.e/* require.ensure */(2).then((function () {
+                var pp = __webpack_require__(7);
                 pp.init(data);
             }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
             break;
         case 'pembelian':
-            __webpack_require__.e/* require.ensure */(0).then((function () {
+            __webpack_require__.e/* require.ensure */(3).then((function () {
                 var pp = __webpack_require__(8);
+                pp.init(data);
+            }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
+            break;
+        case 'retur-pembelian':
+            __webpack_require__.e/* require.ensure */(1).then((function () {
+                var pp = __webpack_require__(9);
+                pp.init(data);
+            }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
+            break;
+        case 'retur-penjualan':
+            __webpack_require__.e/* require.ensure */(0).then((function () {
+                var pp = __webpack_require__(10);
                 pp.init(data);
             }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
             break;
     }
 };
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ })
 ],[4]);

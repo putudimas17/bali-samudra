@@ -1,7 +1,7 @@
 <?php 
 include "../../koneksi.php"; 
 	$id=@$_GET['id'];
-	$modal=mysqli_query($db,"SELECT * FROM tb_user WHERE id='$id'");
+	$modal=mysqli_query($db,"SELECT * FROM tb_user WHERE id_user='$id'");
 	while($r=mysqli_fetch_array($modal)){
 ?>
    <!--modal dialog -->
@@ -13,7 +13,7 @@ include "../../koneksi.php";
 						<form name="modal_popup" method="POST" action="user/user_edit.php">
 							<div class="form-group" hidden="">
 								<label for="id">id</label>
-									<input type="text" id="id" class="form-control" placeholder="" name="id" value="<?php echo $r['id']; ?>">
+									<input type="text" id="id" class="form-control" placeholder="" name="id" value="<?php echo $r['id_user']; ?>">
 							</div>
 							<div class="form-group">
 								<label for="Nama">Nama</label>
@@ -51,7 +51,7 @@ include "../../koneksi.php";
 	$password	=$_POST['Password'];
 	$level		=$_POST['Level'];
 		
-$sql=mysqli_query($db,"select * from tb_user where id=$id");
+$sql=mysqli_query($db,"select * from tb_user where id_user=$id");
 $sql2=mysqli_query($db,"select * from tb_user where Username='$username' and Level='$level'");
 		
 $cek=mysqli_num_rows($sql2);
@@ -59,9 +59,9 @@ while($rowcek=mysqli_fetch_array($sql))
 {
 	$rowlevel=$rowcek['Level'];
 	$rowuser=$rowcek['Username'];
-if($username==$r && $level==$r)
+if($username==$rowuser && $level==$rowlevel)
 {
-	mysqli_query($db, "UPDATE tb_user SET Nama='$nama', Username='$username', Password='$password', Level = '$level' WHERE id='$id' ") or die ($db->error);	
+	mysqli_query($db, "UPDATE tb_user SET Nama='$nama', Username='$username', Password='$password', Level = '$level' WHERE id_user='$id' ") or die ($db->error);	
 echo "<script>window.location='../index.php?page=datauser';</script>";
 }
 else if($cek>0)
@@ -76,7 +76,7 @@ else if($level=='owner')
 	}
 else
 {
-mysqli_query($db, "UPDATE tb_user SET Nama='$nama', Username='$username', Password='$password', Level = '$level' WHERE id='$id' ") or die ($db->error);	
+mysqli_query($db, "UPDATE tb_user SET Nama='$nama', Username='$username', Password='$password', Level = '$level' WHERE id_user='$id' ") or die ($db->error);	
 echo "<script>window.location='../index.php?page=datauser';</script>";
 	}
 }

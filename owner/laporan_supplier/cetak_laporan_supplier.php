@@ -101,7 +101,7 @@ else if($bln==12) {$nama_bulan='DESEMBER';}
 from tb_detail_pembelian
 join tb_barang on tb_barang.kode_brg=tb_detail_pembelian.kode_brg
 join tb_pembelian on tb_pembelian.id_pembelian=tb_detail_pembelian.id_pembelian
-join tb_supel on tb_pembelian.id_supel=tb_supel.id
+join tb_supel on tb_pembelian.id_supel=tb_supel.id_supel
 where month(tb_pembelian.tgl)=$bulan and year(tb_pembelian.tgl)=$tahun
 order by  tb_pembelian.tgl ");
 			$hitungtotal=mysqli_query($db,"SELECT sum(tb_detail_pembelian.total) as total

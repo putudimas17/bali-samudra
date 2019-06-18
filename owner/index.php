@@ -16,7 +16,7 @@ include "../koneksi.php";
 	<meta name="author" content="">
 	<meta name="theme-color" content="#3e454c">
 	
-	<title>SIE UD ADITYA</title>
+	<title>SIE PT BALI SAMUDRA</title>
 
 	<!-- Font awesome -->
 	<link rel="stylesheet" href="../css/font-awesome.min.css">
@@ -49,16 +49,17 @@ include "../koneksi.php";
 			{
 				$user_id= $_SESSION['owner'];
 				}
-			$user_login=mysqli_query($db,"SELECT * FROM tb_user WHERE id='$user_id'") or die (mysqli_error());
+			$user_login=mysqli_query($db,"SELECT * FROM tb_user WHERE id_user='$user_id'") or die (mysqli_error());
 			$data_user=mysqli_fetch_array($user_login);
 			?>
-		<a href="index.php"class="logo"> <img src="../img/LOGO.png" class="img-responsive" alt=""></a>
+		<a href="index.php"class="logo"> <img src="../img/baner.png" class="img-responsive" alt=""></a>
 		<span class="menu-btn"><i class="fa fa-bars"></i></span>
 		<ul class="ts-profile-nav">
 			
 			<li class="ts-account">
 				<a href="#"><?php echo $data_user['Nama'] ?><i class="fa fa-angle-down hidden-side"></i></a>
 				<ul>
+
 					
 					<li><a href="logout.php">Logout</a></li>
 				</ul>
@@ -92,19 +93,7 @@ include "../koneksi.php";
 					</ul>
 				</li>
 
-				<!-- Account from above -->
-				<ul class="ts-profile-nav">
-					<li><a href="#">Help</a></li>
-					<li><a href="#">Settings</a></li>
-					<li class="ts-account">
-						<a href="#"><img src="../img/ts-avatar.jpg" class="ts-avatar hidden-side" alt=""> Account <i class="fa fa-angle-down hidden-side"></i></a>
-						<ul>
-							<li><a href="#">My Account</a></li>
-							<li><a href="#">Edit Account</a></li>
-							<li><a href="logout.php">Logout</a></li>
-						</ul>
-					</li>
-				</ul>
+			
 
 			</ul>
 		</nav>
@@ -140,10 +129,6 @@ include "../koneksi.php";
 	{
 		include "laporan_pembelian/laporan_pembelian.php";
 		
-	}
-	 else if($page == "laporan_stok")
-	{
-		include "stok_barang/laporan_stok_barang.php";
 		
 	}
 	else if($page == "laporan_keuntungan_kotor")
@@ -168,15 +153,17 @@ include "../koneksi.php";
 				<div class="row">
 					<div class="col-md-12">
 						<h2 class="page-title">Home</h2>
+
 					</div>
 				</div>
 				<div class="row clearfix">
             </div>
-       <div align="center" style="margin:0 auto;">
+       <!-- <div class="bkg-depan" align="center" style="margin:0 auto;"> -->
+       	<div class="bkg-depan" align="center" style="margin:0 auto;">
          
-         <p style="font-family:Arial; font-size:20px; font-weight:600"> Selamat Datang   <span style="color:#190A9F"><?php echo $data_user['Nama']; ?></span> di Sistem Informasi Eksekutif</p>
-         <p style="font-family:Arial; font-size:20px; font-weight:600"> UD ADITYA </p>
-         <img src="../img/cara-meningkatkan-penjualan.jpg" height="400">
+         <p style="font-family:aileron; font-size:20px; font-weight:600"> Selamat Datang   <span style="color:#000000"><?php echo $data_user['Nama']; ?></span> di Sistem Informasi Eksekutif <span style="color: #000000"></span></p>
+         <p style="font-family:aileron; font-size:20px; font-weight:600"> BALI SAMUDRA </p>
+         <img src="../img/travell.jpg" height="600">
          
          </div>
 
