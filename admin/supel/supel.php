@@ -103,7 +103,6 @@ if ( !isset( $_SESSION ) ) {
 									$Alamat = $_POST[ 'Alamat' ];
 									$No_tlp = $_POST[ 'No_tlp' ];
 									
-
 									$query = mysqli_query( $db, "SELECT * FROM tb_supel WHERE Nama = '$Nama' " );
 									$cek = mysqli_num_rows( $query );
 									if ( $cek >= 1 ) {
