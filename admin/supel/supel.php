@@ -1,8 +1,10 @@
 <?php
+
 if ( !isset( $_SESSION ) ) {
 	session_start();
 
 }
+
 ?>
 <!-- container -->
 <div class="container-fluid">
@@ -33,9 +35,9 @@ if ( !isset( $_SESSION ) ) {
 <?php 
   //menampilkan data mysqli
 
- $no=1;
-  $modal=mysqli_query($db,"SELECT * FROM tb_supel");
-  while($r=mysqli_fetch_assoc($modal)){
+ $no = 1;
+  $modal = mysqli_query($db, "SELECT * FROM tb_supel");
+  while($r = mysqli_fetch_assoc($modal)){
   
 ?>
 									
@@ -102,13 +104,13 @@ if ( !isset( $_SESSION ) ) {
 									$No_tlp = $_POST[ 'No_tlp' ];
 									
 
-									$query = mysqli_query( $db, "SELECT * FROM tb_supel WHERE Nama='$Nama' " );
+									$query = mysqli_query( $db, "SELECT * FROM tb_supel WHERE Nama = '$Nama' " );
 									$cek = mysqli_num_rows( $query );
 									if ( $cek >= 1 ) {
 										echo "<script> alert('Data sudah pernah diinput, Coba Periksa Lagi!');window.location='index.php?page=datasupel';</script>";
 
 									} else {
-										mysqli_query( $db, "INSERT INTO tb_supel VALUES ('','$Nama', '$Alamat', '$No_tlp')" )or die( $db->error );
+										mysqli_query( $db, "INSERT INTO tb_supel (Nama, Alamat, No_tlp) VALUES ('$Nama', '$Alamat', '$No_tlp')" )or die( $db->error );
 										echo "<script>window.location='index.php?page=datasupel';</script>";
 
 									}
