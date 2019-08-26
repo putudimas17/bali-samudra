@@ -1,4 +1,4 @@
 
 <?php
-$db = mysqli_connect("localhost", "root", "root", "bali_samudra");
+$db = mysqli_connect("localhost", "root", "", "bali_samudra");
 ?>

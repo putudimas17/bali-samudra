@@ -82,11 +82,7 @@ include "../koneksi.php";
 						<li><a href="?page=pembelian"><i class="fa fa-shopping-cart"></i>Data Pembelian</a></li>
 					</ul>
 				</li>
-				<li><a href="#"><i class="fa fa-retweet"></i> Data Retur</a>
-					<ul>
-						<li><a href="?page=retur-penjualan"><i class="fa fa-database"></i>Data Retur Penjualan</a></li>
-						<li><a href="?page=retur-pembelian"><i class="fa fa-database"></i>Data Retur Pembelian</a></li>
-					</ul>
+				<li><a href="#"><i class="fa fa-retweet"></i> Data Retur</a>	
 				</li>
 				
 
