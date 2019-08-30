@@ -11,21 +11,21 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 var localStaticVariable = {
-	url_root: 'http://localhost/aditya',
-	url_restapi: 'http://localhost/aditya/api',
-	url_storage: 'http://localhost/aditya/api/images'
+	url_root: 'http://localhost/balisamudra',
+	url_restapi: 'http://localhost/balisamudra/api',
+	url_storage: 'http://localhost/balisamudra/api/images'
 };
 
 var lanStaticVariable = {
-	url_root: 'http://localhost/aditya',
-	url_restapi: 'http://localhost/aditya/api',
-	url_storage: 'http://localhost/aditya/api/images'
+	url_root: 'http://localhost/balisamudra',
+	url_restapi: 'http://localhost/balisamudra/api',
+	url_storage: 'http://localhost/balisamudra/api/images'
 };
 
 var onlineStaticVariable = {
-	url_root: 'http://localhost/aditya',
-	url_restapi: 'http://localhost/aditya/api',
-	url_storage: 'http://localhost/aditya/api/images'
+	url_root: 'http://localhost/balisamudra',
+	url_restapi: 'http://localhost/balisamudra/api',
+	url_storage: 'http://localhost/balisamudra/api/images'
 };
 
 var staticVariable = exports.staticVariable = localStaticVariable;
