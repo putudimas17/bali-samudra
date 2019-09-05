@@ -50,7 +50,7 @@ if(isset($_GET['action'])){
 
 		break;
 		case 'fetch':
-			$sql = 'select * from tb_barang';
+			$sql = 'select * from tb_tiket';
 		 	$gg = $db->query($sql);
 	 		$barang = array();
 		 	if($gg->num_rows > 0){
