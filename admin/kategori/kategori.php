@@ -17,7 +17,7 @@ if ( !isset( $_SESSION ) ) {
 				</div>
 
 				<div class="panel panel-default">
-							
+
 					<div class="panel-body">
 						<table id="zctb" class="display table table-striped table-bordered table-hover" >
 							<thead>
@@ -28,7 +28,7 @@ if ( !isset( $_SESSION ) ) {
 								</tr>
 							</thead>
 								<tbody>
-<?php 
+<?php
   //menampilkan data mysqli
 
   $no = 1;
@@ -36,7 +36,7 @@ if ( !isset( $_SESSION ) ) {
   while($r=mysqli_fetch_assoc($modal)){
 
 ?>
-									
+
 		<tr>
 			<td><?php echo  $no++; ?></td>
 			<td><?php echo  $r['nama_kategori']; ?></td>
@@ -47,7 +47,7 @@ if ( !isset( $_SESSION ) ) {
 		</tr>
 		<?php } ?>
 								</tbody>
-									
+
 						</table>
 
 					</div>
@@ -75,7 +75,7 @@ if ( !isset( $_SESSION ) ) {
 								<form method="post" >
 									<div class="form-group" >
 										<label for="nama_kategori">Nama Kategori</label>
-											<input type="text" id="nama_kategori" class="form-control" placeholder="Masukkan Nama Kategori" name="nama_kategori" required oninvalid="this.setCustomValidity('nama kategori tidak boleh kosong')" oninput="setCustomValidity('')">	
+											<input type="text" id="nama_kategori" class="form-control" placeholder="Masukkan Nama Kategori" name="nama_kategori" required oninvalid="this.setCustomValidity('nama kategori tidak boleh kosong')" oninput="setCustomValidity('')">
 									</div>
 									<div class="modal-footer">
 									   <input type="submit" class="btn btn-success" value="Simpan" name="simpan">
@@ -88,17 +88,17 @@ if ( !isset( $_SESSION ) ) {
 								if ( isset( $_POST[ 'simpan' ] ) ) {
 
 									$nama_kategori = $_POST[ 'nama_kategori' ];
-									
+
 
 
 									$query = mysqli_query( $db, "SELECT * FROM tb_kategori WHERE nama_kategori='$nama_kategori'" );
 									$cek = mysqli_num_rows( $query );
 									if ( $cek >= 1 ) {
-										echo "<script> alert('Data sudah pernah diinput, Coba Periksa Lagi!');window.location='../index.php?page=kategori';</script>";
+										echo "<script> alert('Data sudah pernah diinput, Coba Periksa Lagi!');window.location='index.php?page=kategori';</script>";
 
 									} else {
-										mysqli_query( $db, "INSERT INTO tb_kategori VALUES ('','$nama_kategori')" )or die( $db->error );
-										echo "<script>window.location='../index.php?page=kategori';</script>";
+										mysqli_query( $db, "INSERT INTO tb_kategori (nama_kategori) VALUES ('$nama_kategori')" )or die( $db->error );
+										echo "<script>window.location='index.php?page=kategori';</script>";
 
 									}
 								}
@@ -113,7 +113,7 @@ if ( !isset( $_SESSION ) ) {
 		<!-- /.box-body -->
 	</div>
 	<!-- end memasukkan data -->
-	
+
 	<!--edit data user -->
 	<div class="modal fade" id="EditDataKategori" role="dialog" aria-labelledby="myModalLabel2" aria-hidden="true">
           <div class="modal-dialog" role="document">
@@ -121,7 +121,7 @@ if ( !isset( $_SESSION ) ) {
           </div>
         </div>
 	<!--edit data user -->
-	
+
 	<!-- modal hapus -->
 	<div class="modal fade" id="modal_delete">
   <div class="modal-dialog">
@@ -130,7 +130,7 @@ if ( !isset( $_SESSION ) ) {
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
         <h4 class="modal-title" style="text-align:center;">Anda Yakin Untuk Menghapus Data?</h4>
       </div>
-                
+
       <div class="modal-footer" style="margin:0px; border-top:0px; text-align:center;">
         <a href="#" class="btn btn-danger" id="delete_link">Hapus</a>
         <button type="button" class="btn btn-success" data-dismiss="modal">Batal</button>
@@ -142,8 +142,8 @@ if ( !isset( $_SESSION ) ) {
 
 </div>
 <!-- /end container -->
-  
-          <!-- Javascript untuk popup modal Delete--> 
+
+          <!-- Javascript untuk popup modal Delete-->
 <script type="text/javascript">
     function confirm_modal(delete_url)
     {
