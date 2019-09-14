@@ -2,8 +2,10 @@
 session_start();
 ob_start();
 if(@$_SESSION['admin']) {
-include "../koneksi.php";
-?>
+	include "../koneksi.php";
+} else {
+	echo "<script> window.location = '..'; </script>";
+} ?>
 <!doctype html>
 <html lang="en" class="no-js">
 
@@ -188,6 +190,3 @@ include "../koneksi.php";
 </body>
 
 </html>
-<?php
-}
-?>
