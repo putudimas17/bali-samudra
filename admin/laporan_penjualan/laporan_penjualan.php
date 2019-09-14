@@ -12,11 +12,11 @@ if ( !isset( $_SESSION ) ) {
 		<div class="col-md-12">
 			<h2 class="page-title">Laporan Penjualan</h2>
     				<form method="post" class="form-horizontal" action="laporan_penjualan/cetak_laporan_penjualan.php">
-							
+
               <div class="form-group">
 										<label class="col-sm-2 control-label">Pilih:</label>
 										<div class="col-sm-10">
-                    
+
                     <select class="selectpicker" name="bulan" required>
 												<option value="">-- Pilih Bulan --</option>
 												<option value="1">Januari</option>
@@ -31,13 +31,13 @@ if ( !isset( $_SESSION ) ) {
                         <option value="10">Oktober</option>
                         <option value="11">November</option>
                         <option value="12">Desember</option>
-                        											
+
 											</select>
-                      
-                      
+
+
 											<select class="selectpicker" name="tahun" required>
 												<option value="">-- pilih tahun -- </option>
-                        <?php 
+                        <?php
 												$bln=mysqli_query($db,"select DISTINCT year(tgl) as tahun from tb_penjualan order by year(tgl) desc");
 												while($bulan=mysqli_fetch_array($bln))
 												{
@@ -46,18 +46,18 @@ if ( !isset( $_SESSION ) ) {
 												<?php
 												}
 												?>
-											
+
 											</select>
 
-											
-                      
+
+
                       <button class="btn btn-primary" type="submit">Cetak</button>
                       <div class="hr-dashed"></div>
 										</div>
-                    
-                    
-								
-											
+
+
+
+
 								 </form>
                 <div class="panel panel-default">
 					<div class="panel-body">
@@ -71,39 +71,37 @@ if ( !isset( $_SESSION ) ) {
 										</tr>
 									</thead>
 								<tbody>
-<?php 
+<?php
 //menampilkan data mysqli
 $no = 1;
 function TanggalIndo($date){
 	$BulanIndo = array("Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
- 
+
 	$tahun = substr($date, 0, 4);
 	$bulan = substr($date, 5, 2);
 	$tgl   = substr($date, 8, 2);
- 
-	$result = $tgl . " " . $BulanIndo[(int)$bulan-1] . " ". $tahun;		
+
+	$result = $tgl . " " . $BulanIndo[(int)$bulan-1] . " ". $tahun;
 	return($result);
 }
-$modal=mysqli_query($db,"SELECT *,sum(total) as total FROM tb_penjualan group by tgl order by tgl desc");
-while($r=mysqli_fetch_assoc($modal)) {
-$tgl=$r['tgl'];
-$total=$r['total'];
-$total_format = number_format($total,0,",",".");
-?>
-	<tr>
+$modal = mysqli_query($db,"SELECT *, sum(total) as total FROM tb_penjualan group by tgl order by tgl desc");
+if ($modal) {
+	while($r=mysqli_fetch_assoc($modal)) {
+		$tgl = $r['tgl'];
+		$total = $r['total'];
+		$total_format = number_format($total,0,",","."); ?>
+		<tr>
 			<td style="width:15px"><?php echo  $no++ ?></td>
 			<td><?php echo  TanggalIndo($tgl); ?></td>
 			<td><?php echo 'Rp '.$total_format; ?></td>
-
-	</tr>
-		<?php 
-	}
-		?>
+		</tr>
+	<?php }
+} ?>
 									</tbody>
 								</table>
 							</div>
 						</div>
-<!-- /Zero Configuration Table -->
+			<!-- /Zero Configuration Table -->
 		</div>
 		<!-- /col-->
 	</div>
@@ -112,5 +110,4 @@ $total_format = number_format($total,0,",",".");
 
 </div>
 <!-- /end container -->
-  
-       
+
