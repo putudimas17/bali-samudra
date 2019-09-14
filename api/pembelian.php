@@ -5,9 +5,9 @@ if ( !isset( $_SESSION ) ) {
 	session_start();
 
 }
-include "../koneksi.php"; 
-function throw_ex($er){  
-  throw new Exception($er);  
+include "../koneksi.php";
+function throw_ex($er){
+  throw new Exception($er);
 }
 function readyInput($db){
 	$sql = 'select * from tb_pembelian where id_user = '.$_SESSION['karyawan'].' and status=0';
@@ -26,7 +26,7 @@ function readyInput($db){
  				'status' => $row['status']
  			];
  		}
- 		// get detail 
+ 		// get detail
 	    $sql = "select i.id_detail_pem, i.id_pembelian, i.kode_brg, i.jumlah ,j.nama_brg ,i.harga,i.total from tb_detail_pembelian i left join tb_barang j on i.kode_brg = j.kode_brg where id_pembelian = '".$head[0]['id_pembelian']."'";
 	 	$gg = $db->query($sql);
  		$detail = array();
@@ -68,7 +68,7 @@ if(isset($_GET['action'])){
 		 				'nama' => $row['pegawai'],
 		 				'nama_suplier' => $row['nama_suplier']
 		 			];
-		 		}		 		
+		 		}
 			 	$detail = [];
 			 	$sql = "select i.id_detail_pem, i.id_pembelian, i.kode_brg, i.jumlah ,j.nama_brg ,i.harga,i.total from tb_detail_pembelian i left join tb_barang j on i.kode_brg = j.kode_brg where i.id_pembelian = '".$_POST['id_pembelian']."'";
 			 	$gg = $db->query($sql);
@@ -152,7 +152,7 @@ if(isset($_GET['action'])){
 			 	];
 			 	header('Content-Type: application/json');
 			 	echo json_encode($toJSON);
-		    }	
+		    }
 			return;
 		break;
 		case 'new':
@@ -181,9 +181,9 @@ if(isset($_GET['action'])){
 				} else {
 				    echo "Error: " . $sql . "<br>" . $db->error;
 				}
-		    }	
+		    }
 			return;
-			
+
 		return;
 		case 'save':
 			$checkNoEMptyStock = "SELECT stok from tb_barang where kode_brg = '".$_POST['kode_brg']."'";
@@ -201,7 +201,7 @@ if(isset($_GET['action'])){
 		    	}
 	    	}
 
-		 			
+
 			$sql = 'select * from tb_detail_pembelian i left join tb_barang j on i.kode_brg = j.kode_brg  where i.kode_brg = "'.$_POST['kode_brg'].'" AND  id_pembelian = "'.$_POST['id_pembelian'].'"';
 			$gg = $db->query($sql);
  			if($gg->num_rows > 0){

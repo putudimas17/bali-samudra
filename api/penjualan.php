@@ -5,9 +5,9 @@ if ( !isset( $_SESSION ) ) {
 	session_start();
 
 }
-include "../koneksi.php"; 
-function throw_ex($er){  
-  throw new Exception($er);  
+include "../koneksi.php";
+function throw_ex($er){
+  throw new Exception($er);
 }
 
 function readyInput($db){
@@ -25,7 +25,7 @@ function readyInput($db){
  				'status' => $row['status']
  			];
  		}
- 		// get detail 
+ 		// get detail
 	    $sql = "select i.id_detail_pen, i.id_penjualan, i.kode_brg, i.jumlah, i.harga, i.subtotal, j.nama_brg from tb_detail_penjualan i left join tb_barang j on i.kode_brg = j.kode_brg where id_penjualan = '".$head[0]['id_penjualan']."'";
 	 	$gg = $db->query($sql);
  		$detail = array();
@@ -70,7 +70,7 @@ if(isset($_GET['action'])){
 		 				'INV' => $row['INV'],
 		 				'nama' => $row['pegawai'],
 		 			];
-		 		}		 		
+		 		}
 			 	$detail = [];
 			 	$sql = "select * from tb_detail_penjualan i left join tb_barang j on i.kode_brg = j.kode_brg where i.id_penjualan = '".$_POST['id_penjualan']."'";
 			 	$gg = $db->query($sql);
@@ -125,7 +125,7 @@ if(isset($_GET['action'])){
 				} else {
 				    echo "Error: " . $sql . "<br>" . $db->error;
 				}
-		    }	
+		    }
 		return;
 		case 'delete':
 			$sql = "DELETE from tb_detail_penjualan where kode_brg = '".$_POST['kode_brg']."' AND id_penjualan = '".$_POST['id_penjualan']."'";
@@ -260,7 +260,7 @@ if(isset($_GET['action'])){
 		case 'fetch':
 			$sql = "select i.id_penjualan, i.tgl, i.total, i.bayar, i.kembali, i.INV, k.Nama as pegawai from tb_penjualan i left join tb_user k on i.id_user = k.id_user where i.status = 1 order by i.id_penjualan desc";
 		 	$gg = $db->query($sql);
-		 	
+
 		 	if($gg->num_rows > 0){
 		 		$uuu = [];
 		 		while($row = mysqli_fetch_assoc($gg)) {
@@ -311,7 +311,7 @@ if(isset($_GET['action'])){
 		    			}
 			 			$delStokBarang = "UPDATE tb_barang set stok = (stok - ".$row['jumlah'].") where kode_brg = '".$row['kode_brg']."'";
 			 			$delStokBarang = mysqli_query($db,$delStokBarang);
-						
+
 			 		}
 			 		$toJSON = [
 				 		'status' => 'success',
@@ -327,7 +327,7 @@ if(isset($_GET['action'])){
 			 	];
 			 	header('Content-Type: application/json');
 			 	echo json_encode($toJSON);
-		    }	
+		    }
 		break;
 		case 'delete-transaksi':
 			$sql = "UPDATE tb_penjualan SET tgl = '' where id_penjualan = '".$_POST['id_penjualan']."'";
