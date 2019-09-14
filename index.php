@@ -52,7 +52,7 @@ else
 </head>
 
 <body>
-	
+
 	<div class="login-page bk-img" style="background-image: url(img/bst.jpg);">
 		<div class="form-content">
 			<div class="container">
@@ -60,8 +60,8 @@ else
 					<div class="col-md-6 col-md-offset-3">
 						<h1 class="text-center text-bold text-light mt-4x" >Sign in</h1>
 						<div class="well row pt-2x pb-3x bk-light">
-							
-							<!-- form login --> 
+
+							<!-- form login -->
 								<form action="index.php" class="mt" method="post">
 
 									<label for="" class="text-uppercase text-sm">Username</label>
@@ -70,93 +70,117 @@ else
 									<label for="" class="text-uppercase text-sm">Password</label>
 									<input type="password" placeholder="Password" class="form-control mb" name="password">
 
-									<label for="" class="text-uppercase text-sm">Level</label>
+									<!-- <label for="" class="text-uppercase text-sm">Level</label>
 									<select name="level" class="form-control"required>
 										<option value=""> -- Pilih Sebagai --</option>
 										<option value="admin">ADMIN</option>
 										<option value="karyawan">KARYAWAN</option>
 										<option value="owner">OWNER</option>
-									</select>
-									
+									</select> -->
+
 
 									<label for="" class="text-uppercase text-sm"></label>
 										<input type="submit" class="btn btn-primary btn-block btn-flat" value="LOGIN" name="login">
-																			
+
 							</form>
 							<!-- end form -->
-								
+
 							</div>
 						</div>
 						<div class="text-center text-light">
-						
+
 						</div>
 													<!-- proses login username dan password dan level name harus sama -->
 								<?php
 
 								include "koneksi.php";
 
-if(isset($_POST['login']))
-{
-	$user= mysqli_real_escape_string($db,$_POST['username']);	
-	$pass= mysqli_real_escape_string($db,$_POST['password']);	
-	$level= mysqli_real_escape_string($db,$_POST['level']);	
-	if($level=='admin')
-	{
-		$sql=mysqli_query($db, "SELECT * FROM tb_user WHERE Username='$user' AND Password='$pass' AND Level='$level'");
-		$data=mysqli_fetch_array($sql);
-		$id=$data[0];
-		$cek=mysqli_num_rows($sql);
-			if($cek>0)
-			{
-			$_SESSION['admin']=$id;
-			echo "<script>window.location='admin';</script>";
-			} 
-			else
-			{
-			echo "<script >alert('Login Admin Gagal Silahkan periksa Username dan Password Anda');</script>";	
-			}
-	}
-	else if($level=='karyawan')
-	{
-		$sql=mysqli_query($db, "SELECT * FROM tb_user WHERE Username='$user' AND Password='$pass' AND Level='$level'");
-		$data=mysqli_fetch_array($sql);
-		$id=$data[0];
-		$cek=mysqli_num_rows($sql);
-			if($cek > 0)
-			{
-			$_SESSION['karyawan']=$id;
-			echo "<script>window.location='karyawan';</script>";
-			} 
-			else
-			{
-			echo "<script>alert('Login Karyawan Gagal Silahkan periksa Username dan Password Anda');</script>";	
-			}
-	}
-	else if($level=='owner')
-	{
-		$sql=mysqli_query($db, "SELECT * FROM tb_user WHERE Username='$user' AND Password='$pass' AND level='$level'");
-		$data=mysqli_fetch_array($sql);
-		$id=$data[0];
-		$cek=mysqli_num_rows($sql);
-			if($cek>0)
-			{
-			$_SESSION['owner']=$id;
-			echo "<script>window.location='owner';</script>";
-			} 
-			else
-			{
-			echo "<script>alert('Login Owner Gagal Silahkan periksa Username dan Password Anda');</script>";	
-			}
-	}
-}
+if(isset($_POST['login'])) {
+	$user = mysqli_real_escape_string($db,$_POST['username']);
+	$pass = mysqli_real_escape_string($db,$_POST['password']);
+	// $level = mysqli_real_escape_string($db,$_POST['level']);
 
-?>         
+	$sql = mysqli_query($db, "SELECT * FROM tb_user WHERE Username='$user' AND Password='$pass'");
+	$data = mysqli_fetch_array($sql);
+	$cek = mysqli_num_rows($sql);
+	if ($cek > 0) {
+
+		$id = $data['id_user'];
+		$level = $data['Level'];
+
+		if ($level == 'admin') {
+			$_SESSION['admin'] = $id;
+			echo "<script> window.location = 'admin'; </script>";
+		} else if ($level == 'owner') {
+			$_SESSION['owner'] = $id;
+			echo "<script> window.location = 'owner'; </script>";
+		} else {
+			$_SESSION['karyawan'] = $id;
+			echo "<script> window.location = 'karyawan'; </script>";
+		}
+
+	} else {
+		echo "<script >alert('Login Admin Gagal Silahkan periksa Username dan Password Anda');</script>";
+	}
+
+	// Dimatikan - Karena ketika login sudah dibuat logic untuk mengecek level user tersebut
+	//
+	// if($level=='admin')
+	// {
+	// 	$sql=mysqli_query($db, "SELECT * FROM tb_user WHERE Username='$user' AND Password='$pass' AND Level='$level'");
+	// 	$data=mysqli_fetch_array($sql);
+	// 	$id=$data[0];
+	// 	$cek=mysqli_num_rows($sql);
+	// 	if($cek>0)
+	// 	{
+	// 		$_SESSION['admin']=$id;
+	// 		echo "<script>window.location='admin';</script>";
+	// 	}
+	// 	else
+	// 	{
+	// 		echo "<script >alert('Login Admin Gagal Silahkan periksa Username dan Password Anda');</script>";
+	// 	}
+	// }
+	// else if($level=='karyawan')
+	// {
+	// 	$sql=mysqli_query($db, "SELECT * FROM tb_user WHERE Username='$user' AND Password='$pass' AND Level='$level'");
+	// 	$data=mysqli_fetch_array($sql);
+	// 	$id=$data[0];
+	// 	$cek=mysqli_num_rows($sql);
+	// 		if($cek > 0)
+	// 		{
+	// 		$_SESSION['karyawan']=$id;
+	// 		echo "<script>window.location='karyawan';</script>";
+	// 		}
+	// 		else
+	// 		{
+	// 		echo "<script>alert('Login Karyawan Gagal Silahkan periksa Username dan Password Anda');</script>";
+	// 		}
+	// }
+	// else if($level=='owner')
+	// {
+	// 	$sql=mysqli_query($db, "SELECT * FROM tb_user WHERE Username='$user' AND Password='$pass' AND level='$level'");
+	// 	$data=mysqli_fetch_array($sql);
+	// 	$id=$data[0];
+	// 	$cek=mysqli_num_rows($sql);
+	// 		if($cek>0)
+	// 		{
+	// 		$_SESSION['owner']=$id;
+	// 		echo "<script>window.location='owner';</script>";
+	// 		}
+	// 		else
+	// 		{
+	// 		echo "<script>alert('Login Owner Gagal Silahkan periksa Username dan Password Anda');</script>";
+	// 		}
+	// }
+}
+?>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-	
+
 	<!-- Loading Scripts -->
 	<script src="js/jquery.min.js"></script>
 	<script src="js/bootstrap-select.min.js"></script>
