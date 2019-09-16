@@ -1,20 +1,27 @@
 <?php
+
 date_default_timezone_set('Asia/Makassar');
 ini_set("display_errors", 1);
+
 if ( !isset( $_SESSION ) ) {
 	session_start();
+}
 
-}
 include "../koneksi.php";
+
 function throw_ex($er){
-  throw new Exception($er);
+	throw new Exception($er);
 }
+
 function readyInput($db){
-	$sql = 'select * from tb_pembelian where id_user = '.$_SESSION['karyawan'].' and status=0';
- 	$gg = $db->query($sql);
- 	if($gg->num_rows > 0){
+
+	$sql = 'SELECT * FROM tb_pembelian WHERE id_user = '.$_SESSION['karyawan'].' AND status = 0';
+
+	$gg = $db->query($sql);
+
+	if ($gg->num_rows > 0) {
  		$head = array();
- 		while($row = mysqli_fetch_assoc($gg)) {
+ 		while ($row = mysqli_fetch_assoc($gg)) {
  			$head[] = [
  				'id_pembelian' => $row['id_pembelian'],
  				'INV' => $row['INV'],
@@ -23,14 +30,16 @@ function readyInput($db){
  				'tgl' => $row['tgl'],
  				'total' => $row['total'],
  				'id_user' => $row['id_user'],
- 				'status' => $row['status']
+ 				'status' => $row['status'],
  			];
  		}
- 		// get detail
-	    $sql = "select i.id_detail_pem, i.id_pembelian, i.kode_brg, i.jumlah ,j.nama_brg ,i.harga,i.total from tb_detail_pembelian i left join tb_barang j on i.kode_brg = j.kode_brg where id_pembelian = '".$head[0]['id_pembelian']."'";
-	 	$gg = $db->query($sql);
- 		$detail = array();
-	 	if($gg->num_rows > 0){
+
+	    $sql = "SELECT tb_detail_pembelian.id_detail_pem, tb_detail_pembelian.id_pembelian, tb_detail_pembelian.kode_brg, tb_detail_pembelian.jumlah ,tb_barang.nama_brg ,tb_detail_pembelian.harga,tb_detail_pembelian.total FROM tb_detail_pembelian LEFT JOIN tb_barang ON tb_detail_pembelian.kode_brg = tb_barang.kode_brg WHERE id_pembelian = '".$head[0]['id_pembelian']."'";
+
+		$gg = $db->query($sql);
+
+		$detail = array();
+		if (isset($gg->num_rows) && $gg->num_rows > 0) {
 	 		while($row = mysqli_fetch_assoc($gg)) {
 	 			$detail[] = [
  					'id_detail_pem' => $row['id_detail_pem'],
@@ -53,13 +62,18 @@ function readyInput($db){
  	}
 }
 if(isset($_GET['action'])){
+
 	switch($_GET['action']){
+
 		case 'view':
-			$sql = "select i.id_pembelian, i.tgl, i.total, i.INV, k.Nama as pegawai, j.Nama as nama_suplier from tb_pembelian i left join tb_supel j on i.id_supel = j.id_supel left join tb_user k on i.id_user = k.id_user where i.id_pembelian = '".$_POST['id_pembelian']."' order by i.id_pembelian desc";
-		 	$gg = $db->query($sql);
-		 	if($gg->num_rows > 0){
+
+			$sql = "SELECT tb_pembelian.id_pembelian, tb_pembelian.tgl, tb_pembelian.total, tb_pembelian.INV, tb_user.Nama AS pegawai, tb_supel.Nama AS nama_suplier FROM tb_pembelian LEFT JOIN tb_supel ON tb_pembelian.id_supel = tb_supel.id_supel LEFT JOIN tb_user ON tb_pembelian.id_user = tb_user.id_user WHERE tb_pembelian.id_pembelian = '".$_POST['id_pembelian']."' ORDER BY tb_pembelian.id_pembelian DESC";
+
+			$gg = $db->query($sql);
+
+		 	if ($gg->num_rows > 0) {
 		 		$uuu = [];
-		 		while($row = mysqli_fetch_assoc($gg)) {
+		 		while ($row = mysqli_fetch_assoc($gg)) {
 		 			$uuu[] = [
 		 				'id_pembelian'=>$row['id_pembelian'],
 		 				'tgl' => $row['tgl'],
@@ -69,12 +83,14 @@ if(isset($_GET['action'])){
 		 				'nama_suplier' => $row['nama_suplier']
 		 			];
 		 		}
-			 	$detail = [];
-			 	$sql = "select i.id_detail_pem, i.id_pembelian, i.kode_brg, i.jumlah ,j.nama_brg ,i.harga,i.total from tb_detail_pembelian i left join tb_barang j on i.kode_brg = j.kode_brg where i.id_pembelian = '".$_POST['id_pembelian']."'";
+				$detail = [];
+
+				$sql = "SELECT tb_detail_pembelian.id_detail_pem, tb_detail_pembelian.id_pembelian, tb_detail_pembelian.kode_brg, tb_detail_pembelian.jumlah, tb_barang.nama_brg ,tb_detail_pembelian.harga,tb_detail_pembelian.total FROM tb_detail_pembelian LEFT JOIN tb_barang on tb_detail_pembelian.kode_brg = tb_barang.kode_brg WHERE tb_detail_pembelian.id_pembelian = '".$_POST['id_pembelian']."'";
+
 			 	$gg = $db->query($sql);
-			 	if($gg->num_rows > 0){
+
+				if ($gg->num_rows > 0) {
 		 			while($row = mysqli_fetch_assoc($gg)) {
-		 				// echo $row['id_detail_pem'];
 		 				$detail[] = [
 		 					'id_detail_pem' => $row['id_detail_pem'],
 		 					'id_pembelian' => $row['id_pembelian'],
@@ -95,10 +111,14 @@ if(isset($_GET['action'])){
 			 	echo json_encode($toJSON);
 		 	}
 		break;
+
 		case 'fetch':
-			$sql = "select i.id_pembelian, i.tgl, i.total, i.INV, k.Nama as pegawai, j.Nama as nama_suplier from tb_pembelian i left join tb_supel j on i.id_supel = j.id_supel left join tb_user k on i.id_user = k.id_user where i.status = 1 order by i.id_pembelian desc";
-		 	$gg = $db->query($sql);
-		 	echo $db->error;
+
+			$sql = "SELECT tb_pembelian.id_pembelian, tb_pembelian.tgl, tb_pembelian.total, tb_pembelian.INV, tb_user.Nama AS pegawai, tb_supel.Nama AS nama_suplier FROM tb_pembelian LEFT JOIN tb_supel ON tb_pembelian.id_supel = tb_supel.id_supel LEFT JOIN tb_user ON tb_pembelian.id_user = tb_user.id_user WHERE tb_pembelian.status = 1 ORDER BY tb_pembelian.id_pembelian DESC";
+
+			$gg = $db->query($sql);
+
+			echo $db->error;
 		 	if($gg->num_rows > 0){
 		 		$uuu = [];
 		 		while($row = mysqli_fetch_assoc($gg)) {
@@ -118,23 +138,32 @@ if(isset($_GET['action'])){
 			 	header('Content-Type: application/json');
 			 	echo json_encode($toJSON);
 		 	}
-
 		break;
-		case 'total':
-			$sql = "UPDATE tb_pembelian set no_referensi='".$_POST['no_referensi']."', tgl = '".date("Y-m-d")."', id_supel = '".$_POST['id_supel']."', total = '".$_POST['total'] ."', status='1' WHERE id_pembelian= '".$_POST['id_pembelian']."'";
-		 	if ($db->query($sql) === TRUE) {
-		    	// select kembali detail transaksi pembeliannya
-		    	$sql = "select i.id_detail_pem, i.id_pembelian, i.kode_brg, i.jumlah ,j.nama_brg ,i.harga,i.total from tb_detail_pembelian i left join tb_barang j on i.kode_brg = j.kode_brg  where  i.id_pembelian = '".$_POST['id_pembelian']."'";
-			 	$gg = $db->query($sql);
-			 	if($gg->num_rows > 0){
-			 		while($row = mysqli_fetch_assoc($gg)) {
-			 			$in_stock = "INSERT INTO  in_stok (no_transaksi,tanggal,kode_brg,qty,harga) VALUES (".$_POST['id_pembelian'].", '".date("Y-m-d")."','".$row['kode_brg']."',".$row['jumlah'].", ".$row['harga'].")";
-			 			if ($db->query($in_stock) === TRUE) {
-			 				$updateStokBarang = "UPDATE tb_barang set harga_beli = ".$row['harga']." ,stok = (stok+".$row['jumlah'].") where kode_brg = '".$row['kode_brg']."'";
-			 				if ($db->query($updateStokBarang) === TRUE) {
 
-			 				}
-			 			}else {
+		case 'total':
+
+			$sql = "UPDATE tb_pembelian SET no_referensi='".$_POST['no_referensi']."', tgl = '".date("Y-m-d")."', id_supel = '".$_POST['id_supel']."', total = '".$_POST['total'] ."', status = '1' WHERE id_pembelian= '".$_POST['id_pembelian']."'";
+
+		 	if ($db->query($sql) === TRUE) {
+
+				$sql = "SELECT tb_detail_pembelian.id_detail_pem, tb_detail_pembelian.id_pembelian, tb_detail_pembelian.kode_brg, tb_detail_pembelian.jumlah, tb_barang.nama_brg ,tb_detail_pembelian.harga,tb_detail_pembelian.total FROM tb_detail_pembelian LEFT JOIN tb_barang on tb_detail_pembelian.kode_brg = tb_barang.kode_brg WHERE tb_detail_pembelian.id_pembelian = '".$_POST['id_pembelian']."'";
+
+				$gg = $db->query($sql);
+
+			 	if ($gg->num_rows > 0) {
+			 		while($row = mysqli_fetch_assoc($gg)) {
+
+						$in_stock = "INSERT INTO  in_stok (no_transaksi, tanggal, kode_brg, qty, harga) VALUES (".$_POST['id_pembelian'].", '".date("Y-m-d")."','".$row['kode_brg']."',".$row['jumlah'].", ".$row['harga'].")";
+
+						if ($db->query($in_stock) === TRUE) {
+
+							$updateStokBarang = "UPDATE tb_barang SET harga_beli = ".$row['harga']." ,stok = (stok+".$row['jumlah'].") WHERE kode_brg = '".$row['kode_brg']."'";
+
+							if ($db->query($updateStokBarang) === TRUE) {
+								//
+							}
+
+			 			} else {
 						    echo "Error: " . $sql . "<br>" . $db->error;
 						}
 			 		}
@@ -145,7 +174,7 @@ if(isset($_GET['action'])){
 				 	header('Content-Type: application/json');
 				 	echo json_encode($toJSON);
 			 	}
-		    }else{
+		    } else {
 		    	$toJSON = [
 		    		'status' => 'error',
 			 		'message' => $db->error
@@ -155,25 +184,33 @@ if(isset($_GET['action'])){
 		    }
 			return;
 		break;
+
 		case 'new':
-		 	$sql = 'select status from tb_pembelian where id_user = '.$_SESSION['karyawan'].' AND status=0 limit 1';
-		 	$gg = mysqli_query($db,$sql);
+
+		 	$sql = 'SELECT status FROM tb_pembelian WHERE id_user = '.$_SESSION['karyawan'].' AND status = 0 LIMIT 1';
+
+			$gg = mysqli_query($db,$sql);
+
 		    $row = mysqli_fetch_row($gg);
-		    if(isset($row[0])==true){
-		    	if($row[0] == 0){
+		    if (isset($row[0]) == true) {
+		    	if ($row[0] == 0){
 		    		readyInput($db);
 		    	}
-		    }else{
-		    	$sql = "INSERT INTO  tb_pembelian (id_supel,tgl,total,id_user) VALUES (0, '".date("Y-m-d")."', 0, ".$_SESSION['karyawan'].")";
+		    } else {
+
+		    	$sql = "INSERT INTO tb_pembelian (id_supel, tgl,total, id_user) VALUES (0, '".date("Y-m-d")."', 0, ".$_SESSION['karyawan'].")";
+
 				if ($db->query($sql) === TRUE) {
-					$sql = 'select id_pembelian from tb_pembelian where id_user = '.$_SESSION['karyawan'].' and status = 0';
+
+					$sql = 'SELECT id_pembelian FROM tb_pembelian WHERE id_user = '.$_SESSION['karyawan'].' and status = 0';
+
 					$gg = mysqli_query($db,$sql);
 				    $row = mysqli_fetch_row($gg);
-				    // echo $row[0].'242342344';
-				    if(isset($row[0])==true){
-				    	// var_dump($row[0]);
-				    	$sql = "update tb_pembelian set INV = '"."IV-".str_pad($row[0], 7, "0", STR_PAD_LEFT)."' where status = 0 and id_user = '".$_SESSION['karyawan']."'";
-				    	if ($db->query($sql) === TRUE) {
+				    if (isset($row[0]) == true) {
+
+				    	$sql = "UPDATE tb_pembelian SET INV = '"."IV-".str_pad($row[0], 7, "0", STR_PAD_LEFT)."' WHERE status = 0 AND id_user = '".$_SESSION['karyawan']."'";
+
+						if ($db->query($sql) === TRUE) {
 				    		readyInput($db);
 				    	}
 				    }
@@ -185,10 +222,14 @@ if(isset($_GET['action'])){
 			return;
 
 		return;
+
 		case 'save':
-			$checkNoEMptyStock = "SELECT stok from tb_barang where kode_brg = '".$_POST['kode_brg']."'";
+
+			$checkNoEMptyStock = "SELECT stok FROM tb_barang WHERE kode_brg = '".$_POST['kode_brg']."'";
+
 			$checkNoEMptyStock = $db->query($checkNoEMptyStock);
-	    	if($checkNoEMptyStock == TRUE){
+
+			if($checkNoEMptyStock == TRUE){
 	    		$row = mysqli_fetch_array($checkNoEMptyStock);
 		    	if(count($row)==0){
 		    		$toJSON = [
@@ -201,17 +242,25 @@ if(isset($_GET['action'])){
 		    	}
 	    	}
 
+			$sql = 'SELECT * from tb_detail_pembelian LEFT JOIN tb_barang ON tb_detail_pembelian.kode_brg = tb_barang.kode_brg WHERE tb_detail_pembelian.kode_brg = "'.$_POST['kode_brg'].'" AND  id_pembelian = "'.$_POST['id_pembelian'].'"';
 
-			$sql = 'select * from tb_detail_pembelian i left join tb_barang j on i.kode_brg = j.kode_brg  where i.kode_brg = "'.$_POST['kode_brg'].'" AND  id_pembelian = "'.$_POST['id_pembelian'].'"';
 			$gg = $db->query($sql);
- 			if($gg->num_rows > 0){
- 				 try{
-				    $sql = "UPDATE tb_detail_pembelian set jumlah = ".$_POST['jumlah'].",harga=".$_POST['harga'].", total=".$_POST['jumlah']*$_POST['harga']." where kode_brg = '".$_POST['kode_brg']."' AND id_pembelian = '".$_POST['id_pembelian']."'";
+
+			if($gg->num_rows > 0){
+
+				try {
+
+					$sql = "UPDATE tb_detail_pembelian SET jumlah = ".$_POST['jumlah'].", harga = ".$_POST['harga'].", total = ".$_POST['jumlah']*$_POST['harga']." WHERE kode_brg = '".$_POST['kode_brg']."' AND id_pembelian = '".$_POST['id_pembelian']."'";
+
 					$updated = mysqli_query($db,$sql);
+
 					if ($updated) {
-						$sql = 'select i.id_detail_pem, i.id_pembelian, i.kode_brg, j.nama_brg, i.jumlah, i.harga, i.total from tb_detail_pembelian i left join tb_barang j on i.kode_brg = j.kode_brg  where  id_pembelian = "'.$_POST['id_pembelian'].'"';
-					 	$gg = $db->query($sql);
-				 		$detail = array();
+
+						$sql = 'SELECT tb_detail_pembelian.id_detail_pem, tb_detail_pembelian.id_pembelian, tb_detail_pembelian.kode_brg, tb_barang.nama_brg, tb_detail_pembelian.jumlah, tb_detail_pembelian.harga, tb_detail_pembelian.total FROM tb_detail_pembelian LEFT JOIN tb_barang on tb_detail_pembelian.kode_brg = tb_barang.kode_brg WHERE id_pembelian = "'.$_POST['id_pembelian'].'"';
+
+						$gg = $db->query($sql);
+
+						$detail = array();
 					 	if($gg->num_rows > 0){
 					 		while($row = mysqli_fetch_assoc($gg)) {
 					 			$detail[] = [
@@ -237,41 +286,52 @@ if(isset($_GET['action'])){
 				     echo $e->getMessage();
 				 }
 
- 			}else{
- 				$sql = "INSERT INTO  tb_detail_pembelian (id_pembelian,kode_brg,jumlah,harga,total) VALUES ('".$_POST['id_pembelian']."','".$_POST['kode_brg']."',".$_POST['jumlah'].",".$_POST['harga'].",".$_POST['jumlah']*$_POST['harga'].")";
-				if ($db->query($sql) === TRUE) {
-					$sql = 'select i.id_detail_pem, i.id_pembelian, i.kode_brg, j.nama_brg, i.jumlah, i.harga, i.total from tb_detail_pembelian i left join tb_barang j on i.kode_brg = j.kode_brg  where  id_pembelian = "'.$_POST['id_pembelian'].'"';
-					 	$gg = $db->query($sql);
-				 		$detail = array();
-					 	if($gg->num_rows > 0){
-					 		while($row = mysqli_fetch_assoc($gg)) {
-					 			$detail[] = [
-				 					'id_detail_pem' => $row['id_detail_pem'],
-				 					'id_pembelian' => $row['id_pembelian'],
-				 					'kode_brg' => $row['kode_brg'],
-				 					'nama_brg' => $row['nama_brg'],
-				 					'jumlah' => $row['jumlah'],
-				 					'harga' => $row['harga'],
-				 					'total' => $row['total']
-				 				];
-					 		}
-					 	}
-					 	$toJSON = [
-					 		'status' => 'success',
-					 		'tb_detail_pembelian' => $detail
-					 	];
-					 	header('Content-Type: application/json');
-					 	echo json_encode($toJSON);
+ 			} else {
+
+ 				$sql = "INSERT INTO  tb_detail_pembelian (id_pembelian, kode_brg, jumlah, harga, total) VALUES ('".$_POST['id_pembelian']."','".$_POST['kode_brg']."',".$_POST['jumlah'].",".$_POST['harga'].",".$_POST['jumlah']*$_POST['harga'].")";
+
+				 if ($db->query($sql) === TRUE) {
+					$sql = 'SELECT tb_detail_pembelian.id_detail_pem, tb_detail_pembelian.id_pembelian, tb_detail_pembelian.kode_brg, tb_barang.nama_brg, tb_detail_pembelian.jumlah, tb_detail_pembelian.harga, tb_detail_pembelian.total FROM tb_detail_pembelian LEFT JOIN tb_barang ON tb_detail_pembelian.kode_brg = tb_barang.kode_brg WHERE id_pembelian = "'.$_POST['id_pembelian'].'"';
+
+					$gg = $db->query($sql);
+
+					$detail = array();
+					if ($gg->num_rows > 0) {
+						while($row = mysqli_fetch_assoc($gg)) {
+							$detail[] = [
+								'id_detail_pem' => $row['id_detail_pem'],
+								'id_pembelian' => $row['id_pembelian'],
+								'kode_brg' => $row['kode_brg'],
+								'nama_brg' => $row['nama_brg'],
+								'jumlah' => $row['jumlah'],
+								'harga' => $row['harga'],
+								'total' => $row['total']
+							];
+						}
+					}
+					$toJSON = [
+						'status' => 'success',
+						'tb_detail_pembelian' => $detail
+					];
+					header('Content-Type: application/json');
+					echo json_encode($toJSON);
 				}
  			}
 		break;
+
 		case 'delete':
-			$sql = "DELETE from tb_detail_pembelian where kode_brg = '".$_POST['kode_brg']."' AND id_pembelian = '".$_POST['id_pembelian']."'";
+
+			$sql = "DELETE FROM tb_detail_pembelian WHERE kode_brg = '".$_POST['kode_brg']."' AND id_pembelian = '".$_POST['id_pembelian']."'";
+
 			$updated = mysqli_query($db,$sql);
+
 			if ($updated) {
-				$sql = 'select i.id_detail_pem, i.id_pembelian, i.kode_brg, j.nama_brg, i.jumlah, i.harga, i.total from tb_detail_pembelian i left join tb_barang j on i.kode_brg = j.kode_brg  where  id_pembelian = "'.$_POST['id_pembelian'].'"';
-			 	$gg = $db->query($sql);
-		 		$detail = array();
+
+				$sql = 'SELECT tb_detail_pembelian.id_detail_pem, tb_detail_pembelian.id_pembelian, tb_detail_pembelian.kode_brg, tb_barang.nama_brg, tb_detail_pembelian.jumlah, tb_detail_pembelian.harga, tb_detail_pembelian.total FROM tb_detail_pembelian LEFT JOIN tb_barang ON tb_detail_pembelian.kode_brg = tb_barang.kode_brg WHERE id_pembelian = "'.$_POST['id_pembelian'].'"';
+
+				$gg = $db->query($sql);
+
+				$detail = array();
 			 	if($gg->num_rows > 0){
 			 		while($row = mysqli_fetch_assoc($gg)) {
 			 			$detail[] = [
@@ -295,23 +355,31 @@ if(isset($_GET['action'])){
 				echo 'enggak ada';
 			}
 		break;
+
 		case 'delete-transaksi':
-			$sql = "UPDATE tb_pembelian SET tgl = '' where id_pembelian = '".$_POST['id_pembelian']."'";
+
+			$sql = "UPDATE tb_pembelian SET tgl = '' WHERE id_pembelian = '".$_POST['id_pembelian']."'";
+
 			$updated = mysqli_query($db,$sql);
+
 			if ($updated) {
-				$sql = 'DELETE from tb_detail_pembelian  where  id_pembelian = "'.$_POST['id_pembelian'].'"';
-			 	$gg = $db->query($sql);
-			 	echo $db->error;
-			 	$toJSON = [
+
+				$sql = 'DELETE FROM tb_detail_pembelian WHERE id_pembelian = "'.$_POST['id_pembelian'].'"';
+
+				$gg = $db->query($sql);
+
+				echo $db->error;
+				$toJSON = [
 			 		'status' => 'success',
 			 		'message' => 'tb_detail_pembelian sudah di delete!'
 			 	];
 			 	header('Content-Type: application/json');
 			 	echo json_encode($toJSON);
-			}else{
+			} else {
 				echo 'enggak ada';
 			}
 		break;
+
 		case 'save':
 
 		break;
